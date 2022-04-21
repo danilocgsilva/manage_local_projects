@@ -1,0 +1,9 @@
+README.md
+setup.py
+manproject/__main__.py
+manproject/sync.py
+manproject.egg-info/PKG-INFO
+manproject.egg-info/SOURCES.txt
+manproject.egg-info/dependency_links.txt
+manproject.egg-info/entry_points.txt
+manproject.egg-info/top_level.txt
