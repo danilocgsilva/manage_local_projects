@@ -6,8 +6,8 @@ class Env:
         self.working_dir = os.environ.get('PROJECT_WORKING')
         self.storage_dir = os.environ.get('PROJECT_STORAGE')
 
-    def get_working_dir() -> str:
+    def get_working_dir(self) -> str:
         return self.working_dir
 
-    def get_storage_dir() -> str:
+    def get_storage_dir(self) -> str:
         return self.storage_dir

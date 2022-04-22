@@ -25,7 +25,7 @@ def env_works(command):
         sync = Sync(env)
         sync.to_working()
     elif command == 'show_working':
-        env.get_working_dir()
+        print(env.get_working_dir())
     elif command == 'show_storage':
-        env.get_working_dir()
+        print(env.get_working_dir())
 
