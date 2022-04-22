@@ -1,4 +1,6 @@
 import os
+import json
+from pathlib import Path
 
 class AddProject:
 
@@ -13,10 +15,22 @@ class AddProject:
         self.__ask_working_dir()
         self.__ask_source_type()
         self.__ask_source_address()
-        print(
-            "Finished! The project name is {}. The working directory is {}. The source type is {}. The source address is {}.".format\
-            (self.project_name, self.working_dir, self.source_type, self.source_address)
-        )
+        self.write_to_file()
+
+    def write_to_file(self):
+        file_string = os.path.join(str(Path.home()), ".mpro")
+
+        with open(file_string) as conf_file:
+            data_configurations = json.load(conf_file)
+
+        data_configurations[self.project_name] = {
+            "working_dir": self.working_dir,
+            "source_type": self.source_type,
+            "source_address": self.source_address
+        }
+        
+        with open(file_string, 'w') as outfile:
+            json.dump(data_configurations, outfile, indent = 4)        
 
     def __ask_project_name(self):
         project_name_answer = input("Type the project's name: ")
@@ -42,3 +56,5 @@ class AddProject:
         while self.source_address is None:
             source_address_answer = input("Type the source address: ")
             self.source_address = source_address_answer
+
+    

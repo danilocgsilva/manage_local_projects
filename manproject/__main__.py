@@ -1,7 +1,4 @@
 import sys
-from manproject.Sync import Sync
-from manproject.Env import Env
-from manproject.AddProject import AddProject
 from manproject.commands_bag import commands_bag
 
 def main():
