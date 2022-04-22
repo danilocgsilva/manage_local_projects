@@ -2,13 +2,14 @@ import os
 import json
 from pathlib import Path
 
-class AddProject:
+class ProjectConfig:
 
     def __init__(self) -> None:
         self.project_name = None
         self.working_dir = None
         self.source_type = None
         self.source_address = None
+        self.file_location_config = os.path.join(str(Path.home()), ".mpro")
 
     def add(self):
         self.__ask_project_name()
@@ -17,10 +18,23 @@ class AddProject:
         self.__ask_source_address()
         self.write_to_file()
 
-    def write_to_file(self):
-        file_string = os.path.join(str(Path.home()), ".mpro")
+    def remove(self, project):
+        with open(self.file_location_config) as conf_file:
+            data_configurations = json.load(conf_file)
 
-        with open(file_string) as conf_file:
+        data_configurations.pop(project, None)
+        
+        with open(self.file_location_config, 'w') as outfile:
+            json.dump(data_configurations, outfile, indent = 4)
+
+    def list(self):
+        with open(self.file_location_config) as conf_file:
+            data_configurations = json.load(conf_file)
+        for key in data_configurations:
+            print(key)
+
+    def write_to_file(self):
+        with open(self.file_location_config) as conf_file:
             data_configurations = json.load(conf_file)
 
         data_configurations[self.project_name] = {
@@ -29,8 +43,8 @@ class AddProject:
             "source_address": self.source_address
         }
         
-        with open(file_string, 'w') as outfile:
-            json.dump(data_configurations, outfile, indent = 4)        
+        with open(self.file_location_config, 'w') as outfile:
+            json.dump(data_configurations, outfile, indent = 4)
 
     def __ask_project_name(self):
         project_name_answer = input("Type the project's name: ")

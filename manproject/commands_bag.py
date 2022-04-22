@@ -1,32 +1,41 @@
-from manproject.AddProject import AddProject
-from manproject.Env import Env
-from manproject.Sync import Sync
+from manproject.ProjectConfig import ProjectConfig
 
 commands_bag = {
 
     'add': {
         'help': 'Adds a new project.',
-        'command': lambda: 
-            AddProject().add()
+        'command': lambda *args: 
+            ProjectConfig().add()
+    },
+    'delete': {
+        'help': "Remove a project.",
+        'command': lambda *args:
+            ProjectConfig().remove(args[0])
+    },
+    'list': {
+        'help': "Lists all projects recorded.",
+        'command': lambda *args:
+            ProjectConfig().list()
     },
     'to_storage': {
         'help': 'Pass code from working dir to storage place.',
-        'command': lambda: 
+        'command': lambda *args: 
             Sync(Env()).to_storage()
     },
     'to_working': {
         'help': 'Pass code from storage place to working dir.',
-        'command': lambda: 
+        'command': lambda *args: 
             Sync(Env()).to_working()
     },
     'show_working': {
         'help': 'Types the working directory.',
-        'command': lambda:
+        'command': lambda *args:
             print(Env().get_working_dir())
     },
     'show_storage': {
         'help': 'Types the storage place address.',
         'command':
-            lambda: print(Env().get_storage_dir())
+            lambda *args:
+                print(Env().get_storage_dir())
     }
 }
