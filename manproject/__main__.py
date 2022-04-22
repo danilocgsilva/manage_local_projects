@@ -2,6 +2,7 @@ import sys
 from manproject.Sync import Sync
 from manproject.Env import Env
 from manproject.AddProject import AddProject
+from manproject.commands_bag import commands_bag
 
 def main():
     try:
@@ -10,22 +11,12 @@ def main():
         print("Types the command name. Nothing done.")
 
 def execute_command(command: str):
-    if command == 'add':
-        AddProject().add()
-    elif command in ['to_storage', 'to_working', 'show_working', 'show_storage']:
-        env_works(command)
+    if command == "help":
+        for command in commands_bag:
+            print(command + ": " + commands_bag[command]["help"])
+    elif command in commands_bag:
+        commands_bag[command]["command"]()
     else:
-        print("A don't know which is this command")
+        print("A don't know which is this command.")
 
-def env_works(command):
-    env = Env()
-    if command == 'to_storage':
-        sync = Sync(env)
-        sync.to_storage()
-    elif command == 'to_working':
-        sync = Sync(env)
-        sync.to_working()
-    elif command == 'show_working':
-        print(env.get_working_dir())
-    elif command == 'show_storage':
-        print(env.get_working_dir())
+    

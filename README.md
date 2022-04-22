@@ -1,8 +1,23 @@
 # Manage Projects
 
-Executes `mpro` in the command line.
-
 This utility still is in a very early development stage, so it still in a WIP state.
+
+## How to use
+
+### 1. Install
+
+You must have `python` and `pip` working and acessible int yours computer command line.
+
+if so:
+
+1. Go to the root project folder
+2. Just type: `pip install .`
+
+### 2. Use
+
+You can access the command utility through tiping `mpro`.
+
+Type `mpro help` to see all commands.
 
 ## Working directory and storage directory
 
