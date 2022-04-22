@@ -1,6 +1,6 @@
 import os
 
-def sync():
+def to_storage():
     project_working_dir = os.environ.get('PROJECT_WORKING')
     project_storage_dir = os.environ.get('PROJECT_STORAGE')
 

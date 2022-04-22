@@ -1,5 +1,5 @@
 import sys
-from manproject.sync import sync
+from manproject.to_storage import sync
 
 def execute_command(command: str):
     if command == 'add':
