@@ -1,6 +1,7 @@
 import sys
 from manproject.Sync import Sync
 from manproject.Env import Env
+from manproject.AddProject import AddProject
 
 def main():
     try:
@@ -10,7 +11,7 @@ def main():
 
 def execute_command(command: str):
     if command == 'add':
-        print("Lets add a project!")
+        AddProject().add()
     elif command in ['to_storage', 'to_working', 'show_working', 'show_storage']:
         env_works(command)
     else:
@@ -28,4 +29,3 @@ def env_works(command):
         print(env.get_working_dir())
     elif command == 'show_storage':
         print(env.get_working_dir())
-
