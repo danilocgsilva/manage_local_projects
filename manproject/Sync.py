@@ -1,21 +1,14 @@
-import os
+from manproject.Env import Env
 
 class Sync:
 
-    def __init__(self):
-        self.working_dir = os.environ.get('PROJECT_WORKING')
-        self.storage_dir = os.environ.get('PROJECT_STORAGE')
+    def __init__(self, env: Env):
+        self.env = env
 
     def to_storage(self):
-        self.validate()
-        os_command = "rsync -rv " + self.working_dir + " " + self.storage_dir
+        os_command = "rsync -rv " + self.env.get_working_dir() + " " + self.env.get_storage_dir()
         os.system(os_command)
         
     def to_working(self):
-        self.validate()
-        os_command = "rsync -rv " + self.storage_dir + " " + self.working_dir
+        os_command = "rsync -rv " + self.env.get_storage_dir() + " " + self.env.get_working_dir()
         os.system(os_command)
-
-    def validate(self):
-        if not self.working_dir or not self.storage_dir:
-            raise Exception("No working dir ot storage dir defined.")
