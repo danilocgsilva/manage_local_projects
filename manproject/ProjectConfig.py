@@ -10,6 +10,9 @@ class ProjectConfig:
         self.source_type = None
         self.source_address = None
         self.file_location_config = os.path.join(str(Path.home()), ".mpro")
+        if not os.path.isfile(self.file_location_config):
+            with open(self.file_location_config, "w") as config_file:
+                json.dump({}, config_file, indent=4)
 
     def add(self):
         self.__ask_project_name()
@@ -44,7 +47,10 @@ class ProjectConfig:
         }
         
         with open(self.file_location_config, 'w') as outfile:
-            json.dump(data_configurations, outfile, indent = 4)
+            json.dump(data_configurations, outfile, indent = 4, ensure_ascii=False)
+
+    def get_config_file_path(self) -> str:
+        return self.file_location_config
 
     def __ask_project_name(self):
         project_name_answer = input("Type the project's name: ")
