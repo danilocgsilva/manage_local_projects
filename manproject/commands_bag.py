@@ -1,7 +1,7 @@
 from manproject.ProjectConfig import ProjectConfig
 from manproject.Project import Project
 from manproject.Sync import Sync
-from manproject.functions import show_all_data_from_project
+from manproject.functions import show_all_data_from_project, to_working_dir
 
 commands_bag = {
 
@@ -32,8 +32,7 @@ commands_bag = {
     'to_working': {
         'help': 'Pass code from storage place to working dir.',
         'requires_argument': True,
-        'command': lambda *args:
-            Sync(Project(args[0])).to_working()
+        'command': lambda *args: to_working_dir(args[0])
     },
     'show_working': {
         'help': 'Types the working directory. Requires the project name as second parameter.',
