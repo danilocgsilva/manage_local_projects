@@ -11,7 +11,7 @@ class Sync:
         os.system(os_command)
         
     def to_working(self):
-        if self.project.get_source_type == "local":
+        if self.project.get_source_type() == "local":
             os_command = "rsync -rv " + self.__get_storage_dir() + "/ " + self.__get_working_dir() + "/"
             os.system(os_command)
         else:
