@@ -1,7 +1,7 @@
 from manproject.ProjectConfig import ProjectConfig
 from manproject.Project import Project
 from manproject.Sync import Sync
-from manproject.functions import show_all_data_from_project, to_working_dir, deploy
+from manproject.functions import show_all_data_from_project, to_working_dir, deploy, change
 
 commands_bag = {
 
@@ -49,5 +49,10 @@ commands_bag = {
         'help': 'Send work to production place.',
         'requires_argument': True,
         'command': lambda *args: deploy(args[0])
+    },
+    'alter': {
+        'help': 'Change data for project',
+        'requires_argument': True,
+        'command': lambda *args: change(args[0])
     }
 }
