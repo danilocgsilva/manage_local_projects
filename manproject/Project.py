@@ -19,3 +19,5 @@ class Project:
     def get_source_type(self) -> str:
         return self.project_data["source_type"]
 
+    def get_deploy_place(self) -> str:
+        return self.project_data["deploy_place"]

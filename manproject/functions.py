@@ -1,6 +1,7 @@
 from manproject.Project import Project
 from manproject.Sync import Sync
 import os
+# import boto3
 
 def show_all_data_from_project(project_name: str):
     project = Project(project_name)
@@ -15,3 +16,12 @@ def to_working_dir(project_name: str):
     else:
         command = "git clone {} {}".format(project.get_storage_dir(), project.get_working_dir())
         os.system(command)
+
+def deploy(project_name: str):
+    
+    # s3 = boto3.resource('s3');
+    project = Project(project_name)
+    files_from_working = os.listdir(project.get_working_dir())
+    print(files_from_working)
+
+    

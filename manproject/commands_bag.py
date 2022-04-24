@@ -1,7 +1,7 @@
 from manproject.ProjectConfig import ProjectConfig
 from manproject.Project import Project
 from manproject.Sync import Sync
-from manproject.functions import show_all_data_from_project, to_working_dir
+from manproject.functions import show_all_data_from_project, to_working_dir, deploy
 
 commands_bag = {
 
@@ -43,6 +43,11 @@ commands_bag = {
     'show_infos': {
         'help': 'Show all informations about a project',
         'requires_argument': True,
-        'command':lambda *args: show_all_data_from_project(args[0])
+        'command': lambda *args: show_all_data_from_project(args[0])
+    },
+    'deploy': {
+        'help': 'Send work to production place.',
+        'requires_argument': True,
+        'command': lambda *args: deploy(args[0])
     }
 }
