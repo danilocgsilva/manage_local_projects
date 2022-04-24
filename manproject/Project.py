@@ -16,3 +16,6 @@ class Project:
     def get_storage_dir(self) -> str:
         return self.project_data["source_address"]
 
+    def get_source_type(self) -> str:
+        return self.project_data["source_type"]
+

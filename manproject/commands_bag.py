@@ -9,15 +9,15 @@ commands_bag = {
         'command': lambda *args: 
             ProjectConfig().add()
     },
-    'delete': {
-        'help': "Remove a project.",
-        'command': lambda *args:
-            ProjectConfig().remove(args[0])
-    },
     'list': {
         'help': "Lists all projects recorded.",
         'command': lambda *args:
             ProjectConfig().list()
+    },
+    'delete': {
+        'help': "Remove a project.",
+        'command': lambda *args:
+            ProjectConfig().remove(args[0])
     },
     'to_storage': {
         'help': 'Pass code from working dir to storage place.',
@@ -26,7 +26,7 @@ commands_bag = {
     },
     'to_working': {
         'help': 'Pass code from storage place to working dir.',
-        'command': lambda *args: 
+        'command': lambda *args:
             Sync(Project(args[0])).to_working()
     },
     'show_working': {

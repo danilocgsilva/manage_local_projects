@@ -11,8 +11,11 @@ class Sync:
         os.system(os_command)
         
     def to_working(self):
-        os_command = "rsync -rv " + self.__get_storage_dir() + "/ " + self.__get_working_dir() + "/"
-        os.system(os_command)
+        if self.project.get_source_type == "local":
+            os_command = "rsync -rv " + self.__get_storage_dir() + "/ " + self.__get_working_dir() + "/"
+            os.system(os_command)
+        else:
+            print("The source type is from github. not implemented yet.")
 
     def __get_storage_dir(self) -> str:
         return "\"" + self.project.get_storage_dir() + "\""
