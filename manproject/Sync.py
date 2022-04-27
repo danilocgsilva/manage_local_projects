@@ -7,8 +7,14 @@ class Sync:
         self.project = project
 
     def to_storage(self):
-        os_command = "rsync -rv " + self.__get_working_dir() + "/ " + self.__get_storage_dir() + "/"
-        os.system(os_command)
+        if self.project.get_source_type() == "local":
+            os_command = "rsync -rv " + self.__get_working_dir() + "/ " + self.__get_storage_dir() + "/"
+            os.system(os_command)
+        elif self.project.get_source_type() == "github":
+            os_command = "git -C {} pull".format(self.project.get_working_dir())
+            os.system(os_command)
+        else:
+            print("The source type {} still was not implemented.".format())
         
     def to_working(self):
         if self.project.get_source_type() == "local":
