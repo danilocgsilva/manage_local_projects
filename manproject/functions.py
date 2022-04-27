@@ -18,7 +18,10 @@ def to_working_dir(project_name: str):
     if project.get_source_type() == 'local':
         Sync(Project(project_name)).to_working()
     else:
-        command = "git clone {} {}".format(project.get_storage_dir(), project.get_working_dir())
+        if len(os.listdir(project.get_working_dir())) == 0:
+            command = "git clone {} {}".format(project.get_storage_dir(), project.get_working_dir())
+        else:
+            command = "git -C {} pull".format(project.get_working_dir() + "/")
         os.system(command)
 
 def deploy(project_name: str):
