@@ -40,11 +40,8 @@ def deploy(project_name: str):
     by the server.
     '''
     project = Project(project_name)
-    deploy_type = project.get_deploy_type()
 
-    if deploy_type == "s3":
-        working_dir = project.get_working_dir()
-        
+    if project.get_deploy_type() == "s3":
         if project.get_production_directory() == "":
             origin = project.get_working_dir()
         else:
