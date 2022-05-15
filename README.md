@@ -19,12 +19,11 @@ You can access the command utility through tiping `mpro`.
 
 Type `mpro help` to see all commands.
 
-## Working directory and storage directory
+## Some concepts
 
-Throughout managing local project usage, you may find something like *working directory* and *storage directory*. Those are two concepts with a very specific and important meaning:
-
-* Working directory: where you will *work*, or will *code* in the local machine and, potentially, is read by the local service.
+* Working Directory: where you will *work*, or will *code* in the local machine and, potentially, is read by the local service.
 * Storage directory: where you would like to *storage* your code. For example, a directory inside your Dropbox that will be atomatically synced throughout your sync service and have code safe.
+* Source Type: The location where you store your project can be of type local, git_remote or S3.
 
 **Why?**
 

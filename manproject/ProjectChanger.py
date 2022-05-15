@@ -44,3 +44,8 @@ class ProjectChanger:
                 valid_value = True
 
         self.project.set_production_directory(user_input)
+
+    def ask_storage_type(self):
+        asking_text = "Please, set the source type: "
+        user_input = input(asking_text)
+        self.project.set_source_type(user_input)

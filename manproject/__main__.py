@@ -12,7 +12,7 @@ def execute_command(command: str):
     
     if command == "help":
         for command in commands_bag:
-            print(command + ": " + commands_bag[command]["help"])
+            print( " * " + command + ": " + commands_bag[command]["help"])
 
     elif command in commands_bag:
         if (len(sys.argv) > 2):

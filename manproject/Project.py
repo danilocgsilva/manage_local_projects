@@ -20,9 +20,13 @@ class Project:
 
     def get_source_type(self) -> str:
         '''
-        The source can be local, github or S3.
+        The source can be local, git_remote or S3.
         '''
         return self.project_data["source_type"]
+
+    def set_source_type(self, storage_type: str):
+        self.project_data['source_type'] = storage_type
+        return self
 
     def get_deploy_place(self) -> str:
         '''
@@ -65,7 +69,7 @@ class Project:
         return self.project_data["production_directory"] if "production_directory" in self.project_data else ""
 
     def get_deploy_type(self) -> str:
-        return self.project_data["deploy_type"]
+        return self.project_data["deploy_type"] if "deploy_type" in self.project_data else ""
 
     def persists(self):
         '''
