@@ -1,6 +1,7 @@
 from manproject.Project import Project
 from manproject.ProjectChanger import ProjectChanger
 from manproject.Sync import Sync
+from manproject.Envs import Envs
 import os
 
 def show_all_data_from_project(project_name: str):
@@ -39,21 +40,25 @@ def deploy(project_name: str):
     Send files from working directory to where the files will be consumed
     by the server.
     '''
+
     project = Project(project_name)
-
-    if project.get_deploy_type() == "s3":
-        if project.get_production_directory() == "":
-            origin = project.get_working_dir()
+    environments_data = project.get_environments()
+    environment = input("Which where the environment to deploy? ")
+    if environment in environments_data:
+        environmen_choosed = environments_data[environment]
+        if environmen_choosed["type"] == "ssh":
+            command = "scp -i {} -rv {} {}".format(
+                environmen_choosed["key"],
+                os.path.join(project.get_working_dir(), project.get_production_directory(), "*"),
+                environmen_choosed["fulladdress"]
+            )
+            print("The command is {}.".format(command))
+            os.system(command)
         else:
-            origin = os.path.join(project.get_working_dir(), project.get_production_directory())
-
-        destiny = "s3://" + project.get_deploy_place()
-
-        command = "aws s3 sync \"{}\" \"{}\" --profile $AWS_PROFILE".format(origin, destiny)
-        print("The command is: {}".format(command))
-        os.system(command)
+            print("Sorry! Another deployt type still is not implemented.")
     else:
-        print("The deploy is no not yet implemented for this type of deploy.")
+        print("The environment does not exists. Skiping...")
+
 
 def change(project_name: str):
     '''

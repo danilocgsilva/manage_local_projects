@@ -18,6 +18,9 @@ class Project:
     def get_storage_dir(self) -> str:
         return self.project_data["source_address"]
 
+    def get_environments(self) -> dict:
+        return self.project_data["envs"] if "envs" in self.project_data else {}
+
     def get_source_type(self) -> str:
         '''
         The source can be local, git_remote or S3.

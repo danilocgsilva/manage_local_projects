@@ -28,3 +28,8 @@ Type `mpro help` to see all commands.
 **Why?**
 
 Having your code in a local folder, and being the place to be read by the local service and at same time be a safe place to storage may not be always possible. So the idea is that you have those two different locations easily changing and updating each other, depending if you are coding or storaging your code project.
+
+## Files created locally to make stuffs works
+
+`~/.mpro`: a json file containing the projects data.
+`~/.mpro_envs`: a json file containing information about environments.

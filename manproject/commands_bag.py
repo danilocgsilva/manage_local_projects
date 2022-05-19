@@ -54,5 +54,10 @@ commands_bag = {
         'help': 'Change data for project',
         'requires_argument': True,
         'command': lambda *args: change(args[0])
+    },
+    'add_env': {
+        'help': 'Alters the enrvironment data from a project, inserting a new environment.',
+        'requires_argument': True,
+        'command': lambda *args: add_env(args[0])
     }
 }
