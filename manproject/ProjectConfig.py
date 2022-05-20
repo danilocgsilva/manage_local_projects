@@ -66,9 +66,9 @@ class ProjectConfig:
 
     def __ask_source_type(self):
         while self.source_type is None:
-            source_type_answer = input("Is the source based on github or a local directory? Type 'github' or 'local': ")
-            if source_type_answer not in ['github', 'local']:
-                print("The source type must be 'github' or 'local'.")
+            source_type_answer = input("Is the source based on git or a local directory? Type 'git' or 'local': ")
+            if source_type_answer not in ['git', 'local']:
+                print("The source type must be 'git' or 'local'.")
             else:
                 self.source_type = source_type_answer
 
