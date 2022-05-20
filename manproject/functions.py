@@ -52,7 +52,18 @@ def deploy(project_name: str):
                 os.path.join(project.get_working_dir(), project.get_production_directory(), "*"),
                 environmen_choosed["fulladdress"]
             )
-            print("The command is {}.".format(command))
+            os.system(command)
+        elif environmen_choosed["type"] == "s3":
+
+            if project.get_production_directory():
+                source = os.path.join(project.get_working_dir(), project.get_production_directory())
+            else:
+                source = project.get_working_dir()
+
+            command = "aws s3 cp {} {} --recursive".format(
+                source, 
+                "s3://" + environmen_choosed["fulladdress"]
+            )
             os.system(command)
         else:
             print("Sorry! Another deployt type still is not implemented.")

@@ -3,6 +3,13 @@ from manproject.ProjectConfig import ProjectConfig
 import json
 
 class Project:
+    '''
+    * working_dir: the local directory in the computer where you make the files changes
+    * storage_dir: where the directory will be stored
+    * production_directory: may be setted or not. Represents a special directory in the
+      project where all files that will be consumed by production are located. Tipically,
+      the builded assets from a frontend project.
+    '''
 
     def __init__(self, project_name: str):
         self.project_name = project_name
@@ -29,28 +36,6 @@ class Project:
 
     def set_source_type(self, storage_type: str):
         self.project_data['source_type'] = storage_type
-        return self
-
-    def get_deploy_place(self) -> str:
-        '''
-        Path where deploy will occur. For example, it can be a AWS S3 bucket
-        if the deploy type is S3.
-        '''
-        return self.project_data["deploy_place"] if "deploy_place" in self.project_data else ""
-
-    def set_deploy_place(self, deploy_place):
-        '''
-        The deploy place is where the files will be sent to be consumed by
-        production server.
-        '''
-        self.project_data["deploy_place"] = deploy_place
-        return self
-
-    def set_deploy_type(self, deploy_type: str):
-        '''
-        The 'S3' as deploy type if you project run in a S3 bucket.
-        '''
-        self.project_data["deploy_type"] = deploy_type
         return self
 
     def set_production_directory(self, production_directory):
