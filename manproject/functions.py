@@ -10,11 +10,6 @@ def show_all_data_from_project(project_name: str):
     print("The storage directory is {}".format(project.get_storage_dir()))
     print("The type of storage is {}".format(project.get_source_type()))
 
-    if project.get_deploy_place() == "":
-        print("No deploy place setted.")
-    else:
-        print("The deploy destiny is {}".format(project.get_deploy_place()))
-
     if project.get_production_directory() == "":
         print("No production directory setted.")
     else:
