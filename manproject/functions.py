@@ -18,12 +18,6 @@ def show_all_data_from_project(project_name: str):
         for place in deploy_places:
             print("*  " + place)
 
-    if project.get_production_directory() == "":
-        print("No production directory setted.")
-    else:
-        print("The production directory is {}.".format(project.get_production_directory()))
-
-
 def to_working_dir(project_name: str):
     '''
     Copy files from storage directory to working directory.
