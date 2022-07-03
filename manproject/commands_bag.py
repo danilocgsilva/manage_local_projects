@@ -26,7 +26,7 @@ commands_bag = {
         'command': lambda *args: Sync(Project(args[0])).to_storage()
     },
     'to_working': {
-        'help': 'Pass code from storage place to working dir.',
+        'help': 'Pass code from storage place to working dir. Needs a seconf argument beign the project name.',
         'requires_argument': True,
         'command': lambda *args: to_working_dir(args[0])
     },

@@ -59,6 +59,15 @@ class Project:
     def get_deploy_type(self) -> str:
         return self.project_data["deploy_type"] if "deploy_type" in self.project_data else ""
 
+    def get_deploy_places(self) -> list:
+        ''''
+        @recommends: this method can be a generator
+        '''
+        places = []
+        for place in self.project_data["envs"]:
+            places.append(place)
+        return places
+
     def persists(self):
         '''
         Changing the class data may still not change the data in server. You must
