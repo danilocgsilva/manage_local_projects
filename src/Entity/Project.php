@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: "projects")]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
 class Project
 {
