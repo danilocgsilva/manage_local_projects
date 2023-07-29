@@ -9,7 +9,13 @@
 </style>
 
 <div class="example-wrapper">
-    <h1>Projects</h1>
+    <h1>Projectss</h1>
+    <ul>
+    {% for project in projects %}
+        <li>{{ project.name }}</li>
+    {% endfor %}
+
+    </ul>
 
 </div>
 {% endblock %}

@@ -14,10 +14,10 @@ class ProjectsController extends AbstractController
     public function index(EntityManagerInterface $entityManager): Response
     {
         $projectRepository = $entityManager->getRepository(Project::class);
-        $projects = $projectRepository->findBy(['name' => "danilo"], ['name' => 'ASC']);
+        $projects = $projectRepository->findBy([], ['name' => 'ASC']);
         
         return $this->render('projects/index.html.twig', [
-            // 'projects' => $projects
+            'projects' => $projects
         ]);
     }
 }
