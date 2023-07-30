@@ -10,13 +10,15 @@
         {% endblock %}
 
         {% block javascripts %}
-            {{ encore_entry_script_tags('app') }} 
+            {{ encore_entry_script_tags('app') }}
         {% endblock %}
-
       
     </head>
     <body>
         {{ include('navbar.html.twig') }}
+
+
+
         {% block body %}{% endblock %}
         
     </body>

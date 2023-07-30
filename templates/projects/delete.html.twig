@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProjectsController!{% endblock %}
+
+{% block body %}
+
+<div class="wrapper">
+    <h1>Delete confirmation for {{ project.name }}</h1>
+
+    <p>Are you sure that you want to delete the project {{ project.name }}?</p>
+
+    <a class="btn btn-danger">Yes, I am pretty sure!</a>
+</div>
+{% endblock %}

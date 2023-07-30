@@ -17,10 +17,4 @@ export const app = startStimulusApp(require.context(
 // the bootstrap module doesn't export/return anything
 require('bootstrap');
 
-document.addEventListener('DOMContentLoaded', function() {
-    const popoverElement = document.querySelector('[data-toggle="popover"]')
-    if (popoverElement) {
-        popoverElement.popover();
-    }
-})
 

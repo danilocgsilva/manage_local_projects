@@ -8,19 +8,17 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
 use App\Entity\Project;
 use App\Form\ProjectType;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 
 class ProjectsController extends AbstractController
 {
     #[Route('/projects', name: 'app_projects')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(ProjectRepository $projectRepository): Response
     {
-        $projectRepository = $entityManager->getRepository(Project::class);
-        $projects = $projectRepository->findBy([], ['name' => 'ASC']);
-        
         return $this->render('projects/index.html.twig', [
-            'projects' => $projects
+            'projects' => 
+                $projectRepository->findBy([], ['name' => 'ASC'])
         ]);
     }
 
@@ -33,7 +31,6 @@ class ProjectsController extends AbstractController
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-
             $manager = $doctrine->getManager();
             $manager->persist($project);
             $manager->flush();
@@ -45,4 +42,26 @@ class ProjectsController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/projects/{project}', name: 'app_projects_show')]
+    public function show(Project $project): Response
+    {
+        return $this->render('projects/show.html.twig', [
+            'project' => $project
+        ]);
+    }
+
+    #[Route('/projects/{project}/delete', name: 'app_projects_delete_confirmation', methods: ['GET'])]
+    public function deleteConfirm(Project $project): Response
+    {
+        return $this->render('projects/delete.html.twig', [
+            'project' => $project
+        ]);
+    }
+
+    // #[Route('/projects/{project}/delete', name: 'app_projects_delete', methods: ['DELETE'])]
+    // public function controllerAction(Request request): Response
+    // {
+    //     return $this->redirectToRoute('app_projects');
+    // }
 }
