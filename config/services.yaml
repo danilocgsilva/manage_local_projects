@@ -19,6 +19,12 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    gedmo.listener.softdeleatable:
+        class: Gedmo\SoftDeleteable\SoftDeleteableListener
+        tags:
+            - { name: doctrine.event_subscriber, connection: default, method : setAnnotationReader }
+        calls:
+        - [ setAnnotationReader, [ '@annotation_reader' ] ]
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
