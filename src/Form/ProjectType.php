@@ -4,7 +4,7 @@ namespace App\Form;
 
 use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType, ChoiceType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,6 +14,12 @@ class ProjectType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
+            ->add('type', ChoiceType::class, [
+                'choices'  => [
+                    'Normal' => 'Normal',
+                    'Database' => 'Database',
+                ]
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save'
             ])
