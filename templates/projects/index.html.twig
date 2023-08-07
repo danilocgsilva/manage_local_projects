@@ -6,6 +6,15 @@
 
 <div class="wrapper">
     <h1>Projects</h1>
+
+    <div class="alert-blank">
+    {% for msg in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ msg }}
+        </div>    
+    {% endfor %}
+    </div>
+
     <ul>
     {% for project in projects %}
         <li><a href="{{ path('app_projects_show', { 'project': project.id }) }}">{{ project.name }}</a></li>

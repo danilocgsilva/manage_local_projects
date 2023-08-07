@@ -10,6 +10,7 @@ use App\Entity\Project;
 use App\Form\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use App\Form\DeleteProjectType;
 
 class ProjectsController extends AbstractController
 {
@@ -35,6 +36,8 @@ class ProjectsController extends AbstractController
             $manager->persist($project);
             $manager->flush();
 
+            $this->addFlash('success', sprintf('The project %s has been successfully registered!', $project->getName()));
+
             return $this->redirectToRoute('app_projects');
         }
         
@@ -42,7 +45,7 @@ class ProjectsController extends AbstractController
             'form' => $form,
         ]);
     }
-
+ 
     #[Route('/projects/{project}', name: 'app_projects_show')]
     public function show(Project $project): Response
     {
@@ -51,17 +54,33 @@ class ProjectsController extends AbstractController
         ]);
     }
 
-    #[Route('/projects/{project}/delete', name: 'app_projects_delete_confirmation', methods: ['GET'])]
-    public function deleteConfirm(Project $project): Response
+    #[Route('/projects/{project}/delete', name: 'app_projects_delete_confirmation')]
+    public function delete(Request $request, Project $project, PersistenceManagerRegistry $doctrine): Response
     {
+        $form = $this->createForm(DeleteProjectType::class, $project);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->remove($project);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                sprintf(
+                    'The project %s has been deleted!!', $project->getName()
+                )
+            );
+
+            return $this->redirectToRoute(
+                'app_projects'
+            );
+        }
+        
         return $this->render('projects/delete.html.twig', [
-            'project' => $project
+            'project' => $project,
+            'form' => $form,
         ]);
     }
-
-    // #[Route('/projects/{project}/delete', name: 'app_projects_delete', methods: ['DELETE'])]
-    // public function controllerAction(Request request): Response
-    // {
-    //     return $this->redirectToRoute('app_projects');
-    // }
 }

@@ -1,12 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProjectsController!{% endblock %}
+{% block title %}Hello ProjectsController!
+{% endblock %}
 
 {% block body %}
 
-<div class="wrapper">
-    <h1>{{ project.name }}</h1>
+	<div class="wrapper">
+		<h1>{{ project.name }}</h1>
 
-    <a href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}" class="btn btn-danger">Delete {{ project.name }}</a>
-</div>
+		<ul>
+			<li>
+				<a href="#">Archive only data</a>
+			</li>
+			<li>
+				<a href="#">Archive code and data</a>
+			</li>
+		</ul>
+
+		<a href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}" class="btn btn-danger">Delete
+			{{ project.name }}</a>
+	</div>
 {% endblock %}
