@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Project;
 
 use App\Entity\Project;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType, ChoiceType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class DeleteProjectType extends AbstractType
+class ProjectType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', TextType::class)
+            ->add('type', ChoiceType::class, [
+                'choices'  => [
+                    'Normal' => 'Normal',
+                    'Database' => 'Database',
+                ]
+            ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Yes, I am pretty sure!',
-                'attr' => [
-                    'class' => 'btn-danger btn', // Add the "danger" class here
-                ],
+                'label' => 'Save'
             ])
         ;
     }

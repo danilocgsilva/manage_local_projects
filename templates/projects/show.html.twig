@@ -17,7 +17,7 @@
 			</li>
 		</ul>
 
-		<a class="btn btn-primary btn-bottomspace" href="#">Set a path for project</a><br />
+		<a class="btn btn-primary btn-bottomspace" href="{{ path( 'app_project_path_new', { 'project': project.id } ) }}">Set a path for project</a><br />
 		<a href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}" class="btn btn-danger">Delete{{project.name}}</a>
 	</div>
 {% endblock %}
