@@ -30,7 +30,8 @@ class Project
         type: 'string', 
         columnDefinition: "ENUM('Normal','Database')", 
         nullable: false, 
-        options: [ "default" => ProjectType::Normal ]
+        // options: [ "default" => ProjectType::Normal ]
+        options: [ "default" => "Normal" ]
     )]
     private string $type;
 
