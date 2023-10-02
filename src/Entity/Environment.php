@@ -16,6 +16,9 @@ class Environment
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(inversedBy: 'environment')]
+    private ?Project $project = null;
+
     #[ORM\Column(length: 255)]
 
     public function getId(): ?int
@@ -31,6 +34,18 @@ class Environment
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }

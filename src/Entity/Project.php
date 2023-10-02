@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -37,6 +39,14 @@ class Project
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $path = null;
+
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Environment::class)]
+    private Collection $environment;
+
+    public function __construct()
+    {
+        $this->environment = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -82,6 +92,36 @@ class Project
     public function setPath(?string $path): static
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Environment>
+     */
+    public function getEnvironment(): Collection
+    {
+        return $this->environment;
+    }
+
+    public function addEnvironment(Environment $environment): static
+    {
+        if (!$this->environment->contains($environment)) {
+            $this->environment->add($environment);
+            $environment->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnvironment(Environment $environment): static
+    {
+        if ($this->environment->removeElement($environment)) {
+            // set the owning side to null (unless already changed)
+            if ($environment->getProject() === $this) {
+                $environment->setProject(null);
+            }
+        }
 
         return $this;
     }

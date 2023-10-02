@@ -18,20 +18,41 @@
 		</ul>
 
 		<a 
-			class="btn btn-primary btn-bottomspace" 
-			href="{{ path( 'app_project_path_new', { 'project': project.id } ) }}">
-				Set a path for project</a><br />
+			class="btn btn-primary btn-bottomspace btn-width" 
+			href="{{ path( 'app_project_path_new', { 'project': project.id } ) }}"
+		>
+			Set a path for project</a><br />
 		<a 
+			class="btn btn-primary btn-bottomspace btn-width"
 			href="{{ path( 'app_add_database_credentials') }}" 
-			class="btn btn-primary btn-bottomspace">
-				Add database credential</a><br />
+		>
+			Add database credential</a><br />
 		<a 
-			href="{{ path( 'app_add_environment') }}" 
-			class="btn btn-primary btn-bottomspace">
-				Add environment {{project.name}}</a><br />
+			href="{{ path( 'app_add_environment') }}"
+			class="btn btn-primary btn-bottomspace btn-width"
+		>
+			Add environment</a><br />
 		<a
+			class="btn btn-danger btn-width"
 			href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}"
-			class="btn btn-danger">
-			 	Delete {{project.name}}</a>
+		>
+			Delete {{project.name}}
+		</a>
+
+		<hr />
+
+		<h2>Environments:</h2>
+
+		{% if project.environment|length > 0 %}
+			<ul>
+			{% for environment in project.environment %}
+				<li>{{environment.name}}</li>
+			{% endfor %}
+			</ul>
+		{% else %}
+			<p>The project do not have any environment registered</p>
+		{% endif %}
+
+
 	</div>
 {% endblock %}
