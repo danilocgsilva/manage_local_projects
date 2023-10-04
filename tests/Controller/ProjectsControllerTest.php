@@ -4,7 +4,7 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class PathControllerTest extends WebTestCase
+class ProjectsControllerTest extends WebTestCase
 {
     public function testProjectsRouteBasic(): void
     {
@@ -12,6 +12,13 @@ class PathControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/projects');
 
         $this->assertResponseIsSuccessful();
-        // $this->assertSelectorTextContains('h1', 'Manage local projects');
+    }
+
+    public function testProjectNewRouteBasic(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request('GET', '/projects/new');
+
+        $this->assertResponseIsSuccessful();
     }
 }
