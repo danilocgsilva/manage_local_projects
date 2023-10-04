@@ -5,15 +5,30 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Environment;
-use App\Form\Path\NewCredentialType;
 use App\Form\Path\NewEnvironmentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use App\Repository\EnvironmentRepository;
 
 class EnvironmentController extends AbstractController
 {
+    #[Route('/environments', name: 'app_environments')]
+    public function index(EnvironmentRepository $environmentRepository)
+    {
+        return $this->render('environments/index.html.twig', [
+            'environments' => 
+                $environmentRepository->findBy([], ['name' => 'ASC'])
+        ]);
+    }
+
+    #[Route('/environment/{project}/environment/new', name: 'app_add_environment_to_project')]
+    public function newForProject()
+    {
+
+    }
+    
     #[Route('/environment/new', name: 'app_add_environment')]
     public function new(Request $request,  PersistenceManagerRegistry $doctrine): Response
     {

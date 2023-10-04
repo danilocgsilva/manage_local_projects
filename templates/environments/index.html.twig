@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Environments{% endblock %}
+
+{% block body %}
+
+<div class="wrapper">
+    <h1>Environments</h1>
+
+    <div class="alert-blank">
+    {% for msg in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ msg }}
+        </div>    
+    {% endfor %}
+    </div>
+
+    <ul>
+    {% for environment in environments %}
+        {#<li><a href="{{ path('app_projects_show', { 'project': project.id }) }}">{{ project.name }}</a></li>#}
+        <li>{{ environment.name }}</li>
+    {% endfor %}
+
+    </ul>
+
+</div>
+{% endblock %}

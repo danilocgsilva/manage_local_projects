@@ -17,6 +17,10 @@
           <a class="nav-link{{ app.request.attributes.get('_route') == 'app_projects_new' ? ' active' : '' }}" href="{{ path('app_projects_new') }}">Create</a>
         </li>
 
+        <li class="nav-item">
+          <a class="nav-link{{ app.request.attributes.get('_route') == 'app_environments' ? ' active' : '' }}" href="{{ path('app_environments') }}">Environments</a>
+        </li>
+
       </ul>
 
     </div>

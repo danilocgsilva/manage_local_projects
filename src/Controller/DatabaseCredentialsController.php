@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\Path\NewCredentialType;
+use App\Form\Path\PathType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
@@ -17,7 +17,7 @@ class DatabaseCredentialsController extends AbstractController
     public function new(Request $request,  PersistenceManagerRegistry $doctrine): Response
     {
         $databaseCredential = new DatabaseCredentials();
-        $form = $this->createForm(NewCredentialType::class, $databaseCredential);
+        $form = $this->createForm(PathType::class, $databaseCredential);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
