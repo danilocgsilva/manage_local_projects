@@ -44,4 +44,12 @@ class EnvironmentController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/environments/{environment}', name: 'app_show_environment')]
+    public function show(Environment $environment)
+    {
+        return $this->render('environments/show.html.twig', [
+            'environment' => $environment
+        ]);
+    }
 }

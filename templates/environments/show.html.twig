@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProjectsController!
+{% endblock %}
+
+{% block body %}
+
+<div class="wrapper">
+	<div class="alert-blank">
+	{% for msg in app.flashes('success') %}
+		<div class="alert alert-success">
+			{{ msg }}
+		</div>    
+	{% endfor %}
+	</div>
+	<h1>{{ environment.name }}</h1>
+
+    <p>This environment hosts:</p>
+
+</div>
+{% endblock %}

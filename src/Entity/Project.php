@@ -43,6 +43,9 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Environment::class)]
     private Collection $environment;
 
+    #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
+    private ?GitAddress $gitAddress = null;
+
     public function __construct()
     {
         $this->environment = new ArrayCollection();
@@ -122,6 +125,28 @@ class Project
                 $environment->setProject(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGitAddress(): ?GitAddress
+    {
+        return $this->gitAddress;
+    }
+
+    public function setGitAddress(?GitAddress $gitAddress): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($gitAddress === null && $this->gitAddress !== null) {
+            $this->gitAddress->setProject(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($gitAddress !== null && $gitAddress->getProject() !== $this) {
+            $gitAddress->setProject($this);
+        }
+
+        $this->gitAddress = $gitAddress;
 
         return $this;
     }

@@ -16,7 +16,6 @@
 		{% endfor %}
 		</div>
 		
-
 		<ul>
 			<li>
 				<a href="#">Archive only data</a>
@@ -24,29 +23,16 @@
 			<li>
 				<a href="#">Archive code and data</a>
 			</li>
+			<li>
+				<a href="{{ path( 'app_project_path_new', { 'project': project.id } ) }}">Set a path for project</a>
+			</li>
+			<li>
+				<a href="{{ path( 'app_add_database_credentials') }}">Add database credential</a>
+			</li>
+			<li>
+				<a href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">Add environment</a>
+			</li>
 		</ul>
-
-		<a 
-			class="btn btn-primary btn-bottomspace btn-width" 
-			href="{{ path( 'app_project_path_new', { 'project': project.id } ) }}"
-		>
-			Set a path for project</a><br />
-		<a 
-			class="btn btn-primary btn-bottomspace btn-width"
-			href="{{ path( 'app_add_database_credentials') }}" 
-		>
-			Add database credential</a><br />
-		<a 
-			href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}"
-			class="btn btn-primary btn-bottomspace btn-width"
-		>
-			Add environment</a><br />
-		<a
-			class="btn btn-danger btn-width"
-			href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}"
-		>
-			Delete {{project.name}}
-		</a>
 
 		<hr />
 
@@ -55,13 +41,21 @@
 		{% if project.environment|length > 0 %}
 			<ul>
 			{% for environment in project.environment %}
-				<li>{{environment.name}}</li>
+				<li><a href="{{ path( 'app_show_environment', { 'environment': environment.id }) }}">{{ environment.name }}</a></li>
 			{% endfor %}
 			</ul>
 		{% else %}
 			<p>The project do not have any environment registered</p>
 		{% endif %}
 
+		<hr />
+
+		<a
+			class="btn btn-danger btn-width"
+			href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}"
+		>
+			Delete {{project.name}}
+		</a>
 
 	</div>
 {% endblock %}
