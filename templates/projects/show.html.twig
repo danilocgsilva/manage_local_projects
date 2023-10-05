@@ -8,6 +8,15 @@
 	<div class="wrapper">
 		<h1>{{ project.name }}</h1>
 
+		<div class="alert-blank">
+		{% for msg in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ msg }}
+			</div>    
+		{% endfor %}
+		</div>
+		
+
 		<ul>
 			<li>
 				<a href="#">Archive only data</a>
@@ -28,7 +37,7 @@
 		>
 			Add database credential</a><br />
 		<a 
-			href="{{ path( 'app_add_environment') }}"
+			href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}"
 			class="btn btn-primary btn-bottomspace btn-width"
 		>
 			Add environment</a><br />

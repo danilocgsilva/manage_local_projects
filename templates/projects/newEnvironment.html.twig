@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New environment to project{% endblock %}
+
+{% block body %}
+
+<div class="wrapper">
+
+    <h2>Add a new environment to {{ project.name }}</h2>
+
+    {{ form(form) }}
+</div>
+
+
+
+{% endblock %}

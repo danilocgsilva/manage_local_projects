@@ -22,12 +22,6 @@ class EnvironmentController extends AbstractController
                 $environmentRepository->findBy([], ['name' => 'ASC'])
         ]);
     }
-
-    #[Route('/environment/{project}/environment/new', name: 'app_add_environment_to_project')]
-    public function newForProject()
-    {
-
-    }
     
     #[Route('/environment/new', name: 'app_add_environment')]
     public function new(Request $request,  PersistenceManagerRegistry $doctrine): Response

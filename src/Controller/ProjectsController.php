@@ -12,6 +12,8 @@ use App\Form\Project\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Form\Project\DeleteProjectType;
+use App\Entity\Environment;
+use App\Form\Path\NewEnvironmentType;
 
 class ProjectsController extends AbstractController
 {
@@ -51,6 +53,34 @@ class ProjectsController extends AbstractController
     public function show(Project $project): Response
     {
         return $this->render('projects/show.html.twig', [
+            'project' => $project
+        ]);
+    }
+
+    #[Route('/projects/{project}/environment/new', name: 'app_project_add_environment')]
+    public function newEnvironment(
+        Project $project, 
+        Request $request,
+        PersistenceManagerRegistry $doctrine
+    ): Response
+    {
+        $environment = new Environment();
+        $environment->setProject($project);
+        $form = $this->createForm(NewEnvironmentType::class, $environment);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($environment);
+            $manager->flush();
+
+            $this->addFlash('success', sprintf("Environment added to project %s", $project->getName()));
+
+            return $this->redirectToRoute('app_projects_show', ['project' => $project->getId()]);
+        }
+
+        return $this->render('projects/newEnvironment.html.twig', [
+            'form' => $form,
             'project' => $project
         ]);
     }
