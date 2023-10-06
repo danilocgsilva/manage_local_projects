@@ -55,7 +55,11 @@
 
 		<h2>Git remote address</h2>
 
-		<p>{{ project.gitAddress.address }}</p>
+		{% if project.gitAddress %}
+			<p>{{ project.gitAddress.address }}</p>
+		{% else %}
+			<p>No git remote address registered to this project.</p>
+		{% endif %}
 
 		<hr />
 
