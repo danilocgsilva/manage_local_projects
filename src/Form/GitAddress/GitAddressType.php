@@ -2,30 +2,32 @@
 
 declare(strict_types=1);
 
-namespace App\Form\Path;
+namespace App\Form\GitAddress;
 
-use App\Entity\Environment;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
 
-class NewEnvironmentType extends AbstractType
+class GitAddressType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('address', TextType::class, [
+                'label' => 'Address'
+            ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Add Environment'
+                'label' => 'Add github address ' . $options['project_name']
             ])
         ;
     }
 
+    
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => Environment::class
+        $resolver->setRequired([
+            'project_name'
         ]);
     }
 }

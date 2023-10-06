@@ -14,6 +14,8 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Form\Project\DeleteProjectType;
 use App\Entity\Environment;
 use App\Form\Path\NewEnvironmentType;
+use App\Entity\GitAddress;
+use App\Form\GitAddress\GitAddressType;
 
 class ProjectsController extends AbstractController
 {
@@ -53,6 +55,37 @@ class ProjectsController extends AbstractController
     public function show(Project $project): Response
     {
         return $this->render('projects/show.html.twig', [
+            'project' => $project
+        ]);
+    }
+
+    #[Route('/projects/{project}/gitaddress/new', name: 'app_project_add_gitaddress')]
+    public function newGitAddress(
+        Project $project,
+        PersistenceManagerRegistry $doctrine,
+        Request $request
+    ): Response
+    {
+        $gitaddress = new GitAddress();
+        $gitaddress->setProject($project);
+
+        $form = $this->createForm(GitAddressType::class, $gitaddress, [
+            'project_name' => $project->getName()
+        ]);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($gitaddress);
+            $manager->flush();
+
+            $this->addFlash('success', sprintf("Remote git address added to project %s", $project->getName()));
+
+            return $this->redirectToRoute('app_projects_show', ['project' => $project->getId()]);
+        }
+
+        return $this->render('projects/newGitAddress.html.twig', [
+            'form' => $form,
             'project' => $project
         ]);
     }

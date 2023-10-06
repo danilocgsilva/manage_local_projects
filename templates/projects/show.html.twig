@@ -32,6 +32,9 @@
 			<li>
 				<a href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">Add environment</a>
 			</li>
+			<li>
+				<a href="{{ path( 'app_project_add_gitaddress', { 'project': project.id } ) }}">Add Git address</a>
+			</li>
 		</ul>
 
 		<hr />
@@ -47,6 +50,12 @@
 		{% else %}
 			<p>The project do not have any environment registered</p>
 		{% endif %}
+
+		<hr />
+
+		<h2>Git remote address</h2>
+
+		<p>{{ project.gitAddress.address }}</p>
 
 		<hr />
 
