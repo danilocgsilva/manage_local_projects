@@ -12,6 +12,5 @@ class PathControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/projects');
 
         $this->assertResponseIsSuccessful();
-        // $this->assertSelectorTextContains('h1', 'Manage local projects');
     }
 }

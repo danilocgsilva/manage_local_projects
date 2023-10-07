@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\SoftDeleteable\Traits\SoftDeleteableEntity;
 use Gedmo\Mapping\Annotation as Gedmo;
 use App\Enums\ProjectType;
+use InvalidArgumentException;
 
 #[ORM\Table(name: "projects")]
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
@@ -79,7 +80,7 @@ class Project
             ProjectType::Normal->name,
             ProjectType::Database->name
         ])) {
-            throw new \InvalidArgumentException("Invalid status");
+            throw new InvalidArgumentException("Invalid status");
         }
         
         $this->type = $type;

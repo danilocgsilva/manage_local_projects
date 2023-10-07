@@ -51,6 +51,13 @@
 			<p>The project do not have any environment registered</p>
 		{% endif %}
 
+		<a
+			class="btn btn-primary btn-width"
+			href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}"
+		>
+			Create an environment to project {{project.name}}
+		</a>
+
 		<hr />
 
 		<h2>Git remote address</h2>

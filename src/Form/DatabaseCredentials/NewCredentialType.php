@@ -18,7 +18,9 @@ class NewCredentialType extends AbstractType
             ->add('user', TextType::class)
             ->add('password', TextType::class)
             ->add('host', TextType::class)
-            ->add('port', TextType::class)
+            ->add('port', TextType::class, [
+                'required' => false
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Add'
             ])

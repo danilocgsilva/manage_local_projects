@@ -1,12 +1,21 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New{% endblock %}
+{% block title %}Environments{% endblock %}
 
 {% block body %}
 
 <div class="wrapper">
+    <h1>Create database credentials</h1>
 
-<h1>Create</h1>
+    <div class="alert-blank">
+    {% for msg in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ msg }}
+        </div>    
+    {% endfor %}
+    </div>
+
     {{ form(form) }}
+
 </div>
 {% endblock %}

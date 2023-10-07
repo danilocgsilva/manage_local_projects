@@ -23,7 +23,7 @@ class EnvironmentController extends AbstractController
         ]);
     }
     
-    #[Route('/environment/new', name: 'app_add_environment')]
+    #[Route('/environments/new', name: 'app_add_environment')]
     public function new(Request $request,  PersistenceManagerRegistry $doctrine): Response
     {
         $environment = new Environment();
@@ -37,10 +37,10 @@ class EnvironmentController extends AbstractController
 
             $this->addFlash('success', 'Environment added');
 
-            return $this->redirectToRoute('app_projects');
+            return $this->redirectToRoute('app_environments');
         }
 
-        return $this->render('database_credentials/new.html.twig', [
+        return $this->render('environments/new.html.twig', [
             'form' => $form,
         ]);
     }
