@@ -5,23 +5,18 @@ namespace App\DataFixtures;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Project;
+use Faker\Factory;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $projectsNames = [
-            "My Database",
-            "Medicine time",
-            "Personal Website"
-        ];
+        $generator = Factory::create();
 
-        foreach ($projectsNames as $projectName) {
-            $project = new Project();
-            $project->setName($projectName);
-            $manager->persist($project);
-        }
-
+        $project = new Project();
+        $project->setName($generator->name());
+        $manager->persist($project);
+        
         $manager->flush();
     }
 }

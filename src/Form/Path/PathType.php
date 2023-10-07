@@ -13,10 +13,7 @@ class PathType extends AbstractType
     {
         $builder
             ->add('project_name', TextType::class)
-            ->add('submit', SubmitType::class, [
-                'label' => 'Add a path for ' . $options['project_name']
-            ])
-        ;
+            ->add('submit', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
