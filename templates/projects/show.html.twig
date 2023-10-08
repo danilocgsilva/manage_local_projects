@@ -68,6 +68,13 @@
 			<p>No git remote address registered to this project.</p>
 		{% endif %}
 
+		<a
+			class="btn btn-primary btn-width"
+			href="{{ path( 'app_project_add_gitaddress', { 'project': project.id } ) }}"
+		>
+			Register a repository remote address to {{project.name}}
+		</a>
+
 		<hr />
 
 		<a

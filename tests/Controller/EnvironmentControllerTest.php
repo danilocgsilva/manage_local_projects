@@ -17,7 +17,7 @@ class EnvironmentControllerTest extends WebTestCase
     public function testCreateRouteBasic(): void
     {
         $client = static::createClient();
-        $crawler = $client->request('GET', '/environment/new');
+        $crawler = $client->request('GET', '/environments/new');
 
         $this->assertResponseIsSuccessful();
     }

@@ -15,7 +15,14 @@
 	</div>
 	<h1>{{ environment.name }}</h1>
 
+	{% if environment.project|length > 0  %}
     <p>This environment hosts:</p>
+	<ul>
+		<li><a href="{{ path( 'app_projects_show', {project: environment.project.id}) }}">{{ environment.project.name }}</a></li>
+	</ul>
+	{% else %}
+		<p>Still no project added to current environment</p>
+	{% endif %}
 
 </div>
 {% endblock %}

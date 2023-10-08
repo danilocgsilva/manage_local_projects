@@ -16,9 +16,9 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-    public function getCurrentSystem(): string
+    public function getCurrentSystem(): string|null
     {
-        return shell_exec("uname- n");
-        // return "This is your system";
+        $results = shell_exec("uname -n");
+        return $results;
     }
 }

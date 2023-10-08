@@ -15,12 +15,15 @@
     {% endfor %}
     </div>
 
-    <ul>
-    {% for environment in environments %}
-        <li>{{ environment.name }}</li>
-    {% endfor %}
-
-    </ul>
+    {% if environments|length > 0 %}
+        <ul>
+        {% for environment in environments %}
+            <li><a href="{{ path("app_show_environment", {environment: environment.id}) }}">{{ environment.name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Still no environment registered in the platoform</p>
+    {% endif %}
 
 </div>
 {% endblock %}

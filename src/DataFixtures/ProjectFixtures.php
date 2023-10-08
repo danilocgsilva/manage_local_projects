@@ -6,8 +6,9 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Project;
 use Faker\Factory;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 
-class AppFixtures extends Fixture
+class ProjectFixtures extends Fixture implements FixtureGroupInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -18,5 +19,10 @@ class AppFixtures extends Fixture
         $manager->persist($project);
         
         $manager->flush();
+    }
+
+    public static function getGroups(): array
+    {
+        return ['projects'];
     }
 }
