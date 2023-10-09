@@ -11,7 +11,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Repository\EnvironmentRepository;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use App\Services\Environment as EnvironmentService;
 
 class EnvironmentController extends AbstractController

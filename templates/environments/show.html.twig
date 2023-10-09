@@ -31,6 +31,8 @@
 		{% endif %}
 
 		{% if environment.project|length > 0  %}
+
+			<hr />
 			<p>This environment hosts:</p>
 			<ul>
 				<li>
@@ -40,6 +42,12 @@
 		{% else %}
 			<p>Still no project added to current environment</p>
 		{% endif %}
+
+		<hr />
+
+		<a href="{{ path("app_environment_receipt_new", { environment: environment.id } ) }}" class="btn btn-primary">Add a receipt</a>
+
+		<hr />
 
 		<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
 
