@@ -6,6 +6,9 @@
 parameters:
 
 services:
+    environment:
+        class: App\Services\Environment
+        public: true
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -20,7 +23,9 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
     App\Twig\AppExtension:
-        tags: [{name: twig.extension}]
+        arguments:
+            $container: '@service_container'
+        tags: [{ name: twig.extension }]
     gedmo.listener.softdeleatable:
         class: Gedmo\SoftDeleteable\SoftDeleteableListener
         tags:

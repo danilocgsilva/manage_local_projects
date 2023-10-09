@@ -19,6 +19,12 @@ class Environment
     #[ORM\ManyToOne(inversedBy: 'environment')]
     private ?Project $project = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $uname_n_fingerprint = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $uname_a_fingerprint = null;
+
     #[ORM\Column(length: 255)]
 
     public function getId(): ?int
@@ -31,7 +37,7 @@ class Environment
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(string $name): self
     {
         $this->name = $name;
 
@@ -43,9 +49,33 @@ class Environment
         return $this->project;
     }
 
-    public function setProject(?Project $project): static
+    public function setProject(?Project $project): self
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    public function getUnameNFingerprint(): ?string
+    {
+        return $this->uname_n_fingerprint;
+    }
+
+    public function setUnameNFingerprint(?string $uname_n_fingerprint): self
+    {
+        $this->uname_n_fingerprint = $uname_n_fingerprint;
+
+        return $this;
+    }
+
+    public function getUnameAFingerprint(): ?string
+    {
+        return $this->uname_a_fingerprint;
+    }
+
+    public function setUnameAFingerprint(?string $uname_a_fingerprint): self
+    {
+        $this->uname_a_fingerprint = $uname_a_fingerprint;
 
         return $this;
     }

@@ -5,24 +5,43 @@
 
 {% block body %}
 
-<div class="wrapper">
-	<div class="alert-blank">
-	{% for msg in app.flashes('success') %}
-		<div class="alert alert-success">
-			{{ msg }}
-		</div>    
-	{% endfor %}
+	<div class="wrapper">
+		<h1>{{ environment.name }}</h1>
+
+		<div class="alert-blank">
+			{% for msg in app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ msg }}
+				</div>
+			{% endfor %}
+		</div>
+
+		{% if currentSystem() == environment.unameNFingerprint %}
+		<div class="alert alert-primary">
+			This environment is the same from the current one!
+		</div>
+		{% endif %}
+
+		{% if environment.unameNFingerprint %}
+			<p>uname -n: {{ environment.unameNFingerprint }}</p>
+		{% endif %}
+
+		{% if environment.unameAFingerprint %}
+			<p>uname -a: {{ environment.unameAFingerprint }}</p>
+		{% endif %}
+
+		{% if environment.project|length > 0  %}
+			<p>This environment hosts:</p>
+			<ul>
+				<li>
+					<a href="{{ path( 'app_projects_show', { project: environment.project.id }) }}">{{ environment.project.name }}</a>
+				</li>
+			</ul>
+		{% else %}
+			<p>Still no project added to current environment</p>
+		{% endif %}
+
+		<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
+
 	</div>
-	<h1>{{ environment.name }}</h1>
-
-	{% if environment.project|length > 0  %}
-    <p>This environment hosts:</p>
-	<ul>
-		<li><a href="{{ path( 'app_projects_show', {project: environment.project.id}) }}">{{ environment.project.name }}</a></li>
-	</ul>
-	{% else %}
-		<p>Still no project added to current environment</p>
-	{% endif %}
-
-</div>
 {% endblock %}

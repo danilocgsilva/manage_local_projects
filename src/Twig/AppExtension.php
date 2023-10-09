@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Twig;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class AppExtension extends AbstractExtension
 {
+    public function __construct(private ContainerInterface $container)
+    {
+    }
+    
     public function getFunctions(): array
     {
         return [
@@ -18,7 +23,6 @@ class AppExtension extends AbstractExtension
 
     public function getCurrentSystem(): string|null
     {
-        $results = shell_exec("uname -n");
-        return $results;
+        return $this->container->get('environment')->getUnameN();
     }
 }
