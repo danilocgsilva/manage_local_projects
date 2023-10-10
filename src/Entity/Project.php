@@ -41,16 +41,18 @@ class Project
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $path = null;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Environment::class)]
-    private Collection $environment;
 
     #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
     private ?GitAddress $gitAddress = null;
+
+    #[ORM\ManyToMany(targetEntity: Environment::class, inversedBy: 'projects')]
+    private Collection $environment;
 
     public function __construct()
     {
         $this->environment = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -100,35 +102,6 @@ class Project
         return $this;
     }
 
-    /**
-     * @return Collection<int, Environment>
-     */
-    public function getEnvironment(): Collection
-    {
-        return $this->environment;
-    }
-
-    public function addEnvironment(Environment $environment): static
-    {
-        if (!$this->environment->contains($environment)) {
-            $this->environment->add($environment);
-            $environment->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEnvironment(Environment $environment): static
-    {
-        if ($this->environment->removeElement($environment)) {
-            // set the owning side to null (unless already changed)
-            if ($environment->getProject() === $this) {
-                $environment->setProject(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getGitAddress(): ?GitAddress
     {
@@ -148,6 +121,30 @@ class Project
         }
 
         $this->gitAddress = $gitAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Environment>
+     */
+    public function getEnvironment(): Collection
+    {
+        return $this->environment;
+    }
+
+    public function addEnvironment(Environment $environment): static
+    {
+        if (!$this->environment->contains($environment)) {
+            $this->environment->add($environment);
+        }
+
+        return $this;
+    }
+
+    public function removeEnvironment(Environment $environment): static
+    {
+        $this->environment->removeElement($environment);
 
         return $this;
     }

@@ -30,14 +30,16 @@
 			<p>uname -a: {{ environment.unameAFingerprint }}</p>
 		{% endif %}
 
-		{% if environment.project|length > 0  %}
+		{% if environment.projects|length > 0  %}
 
 			<hr />
 			<p>This environment hosts:</p>
 			<ul>
+				{% for project in environment.projects %}
 				<li>
-					<a href="{{ path( 'app_projects_show', { project: environment.project.id }) }}">{{ environment.project.name }}</a>
+					<a href="{{ path( 'app_projects_show', { project: project.id }) }}">{{ project.name }}</a>
 				</li>
+				{% endfor %}
 			</ul>
 		{% else %}
 			<p>Still no project added to current environment</p>

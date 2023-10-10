@@ -14,7 +14,10 @@ class ReceiptType extends AbstractType
     {
         $builder
             ->add('receipt', TextareaType::class, [
-                'label' => 'Receipt'
+                'label' => 'Receipt',
+                'attr' => [
+                    'rows' => 25
+                ]
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Add new receipt'

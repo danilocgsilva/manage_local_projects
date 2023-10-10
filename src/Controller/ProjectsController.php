@@ -98,7 +98,7 @@ class ProjectsController extends AbstractController
     ): Response
     {
         $environment = new Environment();
-        $environment->setProject($project);
+        $environment->addProject($project);
         $form = $this->createForm(NewEnvironmentType::class, $environment);
 
         $form->handleRequest($request);
