@@ -2,11 +2,10 @@
 
 {% block title %}New{% endblock %}
 
+{% block h1 %}Add a new project{% endblock %}
+
 {% block body %}
 
-<div class="wrapper">
+{{ form(form) }}
 
-<h1>Create</h1>
-    {{ form(form) }}
-</div>
 {% endblock %}

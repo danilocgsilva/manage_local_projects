@@ -2,18 +2,9 @@
 
 {% block title %}Project list{% endblock %}
 
+{% block h1 %}Projects{% endblock %}
+
 {% block body %}
-
-<div class="wrapper">
-    <h1>Projects</h1>
-
-    <div class="alert-blank">
-    {% for msg in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ msg }}
-        </div>    
-    {% endfor %}
-    </div>
 
     <ul>
     {% for project in projects %}
@@ -24,5 +15,4 @@
 
     </ul>
 
-</div>
 {% endblock %}

@@ -30,9 +30,13 @@ class Environment
     #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'environment')]
     private Collection $projects;
 
+    #[ORM\ManyToMany(targetEntity: EnvironmentFile::class, mappedBy: 'environment')]
+    private Collection $environmentFiles;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->environmentFiles = new ArrayCollection();
     }
 
     #[ORM\Column(length: 255)]
@@ -122,6 +126,33 @@ class Environment
     {
         if ($this->projects->removeElement($project)) {
             $project->removeEnvironment($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, EnvironmentFile>
+     */
+    public function getEnvironmentFiles(): Collection
+    {
+        return $this->environmentFiles;
+    }
+
+    public function addEnvironmentFile(EnvironmentFile $environmentFile): static
+    {
+        if (!$this->environmentFiles->contains($environmentFile)) {
+            $this->environmentFiles->add($environmentFile);
+            $environmentFile->addEnvironment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEnvironmentFile(EnvironmentFile $environmentFile): static
+    {
+        if ($this->environmentFiles->removeElement($environmentFile)) {
+            $environmentFile->removeEnvironment($this);
         }
 
         return $this;

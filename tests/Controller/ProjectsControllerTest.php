@@ -31,8 +31,8 @@ class ProjectsControllerTest extends WebTestCase
     public function testPathShow(): void
     {
         $client = static::createClient();
-
         self::bootKernel();
+
         $entityManager = static::$kernel->getContainer()
             ->get('doctrine.orm.entity_manager');
 

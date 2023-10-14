@@ -2,28 +2,20 @@
 
 {% block title %}Environments{% endblock %}
 
+{% block h1 %}Environment list{% endblock %}
+
 {% block body %}
 
-<div class="wrapper">
-    <h1>Environments</h1>
+	{% if environments|length > 0 %}
+		<ul>
+			{% for environment in environments %}
+				<li>
+					<a href="{{ path("app_show_environment", {environment: environment.id}) }}">{{ environment.name }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>Still no environment registered in the platoform</p>
+	{% endif %}
 
-    <div class="alert-blank">
-    {% for msg in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ msg }}
-        </div>    
-    {% endfor %}
-    </div>
-
-    {% if environments|length > 0 %}
-        <ul>
-        {% for environment in environments %}
-            <li><a href="{{ path("app_show_environment", {environment: environment.id}) }}">{{ environment.name }}</a></li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>Still no environment registered in the platoform</p>
-    {% endif %}
-
-</div>
 {% endblock %}
