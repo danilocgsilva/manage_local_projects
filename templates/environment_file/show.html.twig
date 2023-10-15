@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Environment File{% endblock %}
+
+{% block h1 %}Environment File{% endblock %}
+
+{% block body %}
+    
+    <p>{{ environmentFile.path }}</p>
+
+    <pre>
+    {{ environmentFile.content }}
+    </pre>
+
+{% endblock %}

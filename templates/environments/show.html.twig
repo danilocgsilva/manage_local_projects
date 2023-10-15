@@ -1,62 +1,69 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create Environment
+{% block title %}Show Environment
+{% endblock %}
+
+{% block h1 %}
+	{{ environment.name }}
 {% endblock %}
 
 {% block body %}
 
-	<div class="wrapper">
-		<h1>{{ environment.name }}</h1>
-
-		<div class="alert-blank">
-			{% for msg in app.flashes('success') %}
-				<div class="alert alert-success">
-					{{ msg }}
-				</div>
-			{% endfor %}
-		</div>
-
-		{% if currentSystem() == environment.unameNFingerprint %}
+	{% if currentSystem() == environment.unameNFingerprint %}
 		<div class="alert alert-primary">
 			This environment is the same from the current one!
 		</div>
-		{% endif %}
+	{% endif %}
 
-		{% if environment.unameNFingerprint %}
-			<p>uname -n: {{ environment.unameNFingerprint }}</p>
-		{% endif %}
+	{% if environment.unameNFingerprint %}
+		<p>uname -n:
+			{{ environment.unameNFingerprint }}</p>
+	{% endif %}
 
-		{% if environment.unameAFingerprint %}
-			<p>uname -a: {{ environment.unameAFingerprint }}</p>
-		{% endif %}
+	{% if environment.unameAFingerprint %}
+		<p>uname -a:
+			{{ environment.unameAFingerprint }}</p>
+	{% endif %}
 
-		{% if environment.projects|length > 0  %}
+	{% if environment.projects|length > 0  %}
 
-			<hr />
-			<p>This environment hosts:</p>
-			<ul>
-				{% for project in environment.projects %}
+		<hr/>
+		<p>This environment hosts:</p>
+		<ul>
+			{% for project in environment.projects %}
 				<li>
 					<a href="{{ path( 'app_projects_show', { project: project.id }) }}">{{ project.name }}</a>
 				</li>
-				{% endfor %}
-			</ul>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>Still no project added to current environment</p>
+	{% endif %}
+
+	<hr/>
+
+	<a 
+		href="{{ path("app_environment_receipt_new", { environment: environment.id } ) }}" 
+		class="btn btn-primary">Add a receipt</a>
+
+	<hr/>
+
+	<a
+		href="{{ path("app_environment_file_new", { environment: environment.id }) }}"
+		class="btn btn-primary">Add a file</a>
+
+		<ul>
+		{% if environment.environmentFiles|length > 0 %}
+			{% for environment_file in environment.environmentFiles %}
+				<li><a href="{{ path('app_environment_file_show', { environmentFile: environment_file.id }) }}">{{ environment_file.path }}</a></li>
+			{% endfor %}
 		{% else %}
-			<p>Still no project added to current environment</p>
+			<p>No file receipt added to this environment<p>
 		{% endif %}
+		</ul>
 
-		<hr />
+	<hr/>
 
-		<a 
-			href="{{ path("app_environment_receipt_new", { environment: environment.id } ) }}" 
-			class="btn btn-primary">Add a receipt</a>
+	<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
 
-		<hr />
-
-
-		<hr />
-
-		<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
-
-	</div>
 {% endblock %}

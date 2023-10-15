@@ -1,88 +1,70 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProjectsController!
-{% endblock %}
+{% block title %}Hello ProjectsController!{% endblock %}
+
+{% block h1 %}Project: {{ project.name }}{% endblock %}
 
 {% block body %}
 
-	<div class="wrapper">
-		<h1>Project: {{ project.name }}</h1>
+	<ul>
+		<li>
+			<a href="#">Archive only data</a>
+		</li>
+		<li>
+			<a href="#">Archive code and data</a>
+		</li>
+		<li>
+			<a href="{{ path( 'app_add_database_credentials') }}">Add database credential</a>
+		</li>
+		<li>
+			<a href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">Add environment</a>
+		</li>
+		<li>
+			<a href="{{ path( 'app_project_add_gitaddress', { 'project': project.id } ) }}">Add Git address</a>
+		</li>
+	</ul>
 
-		<div class="alert-blank">
-		{% for msg in app.flashes('success') %}
-			<div class="alert alert-success">
-				{{ msg }}
-			</div>    
-		{% endfor %}
-		</div>
-		
+	<hr/>
+
+	<h2>Environments:</h2>
+
+	{% if project.environment|length > 0 %}
 		<ul>
-			<li>
-				<a href="#">Archive only data</a>
-			</li>
-			<li>
-				<a href="#">Archive code and data</a>
-			</li>
-			<li>
-				<a href="{{ path( 'app_project_path_new', { 'project': project.id } ) }}">Set a path for project</a>
-			</li>
-			<li>
-				<a href="{{ path( 'app_add_database_credentials') }}">Add database credential</a>
-			</li>
-			<li>
-				<a href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">Add environment</a>
-			</li>
-			<li>
-				<a href="{{ path( 'app_project_add_gitaddress', { 'project': project.id } ) }}">Add Git address</a>
-			</li>
-		</ul>
-
-		<hr />
-
-		<h2>Environments:</h2>
-
-		{% if project.environment|length > 0 %}
-			<ul>
 			{% for environment in project.environment %}
-				<li><a href="{{ path( 'app_show_environment', { 'environment': environment.id }) }}">{{ environment.name }}</a></li>
+				<li>
+					<a href="{{ path( 'app_show_environment', { 'environment': environment.id }) }}">{{ environment.name }}</a>
+				</li>
 			{% endfor %}
-			</ul>
-		{% else %}
-			<p>The project do not have any environment registered</p>
-		{% endif %}
+		</ul>
+	{% else %}
+		<p>The project do not have any environment registered</p>
+	{% endif %}
 
-		<a
-			class="btn btn-primary btn-width"
-			href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}"
-		>
-			Create an environment to project {{project.name}}
-		</a>
+	<a class="btn btn-primary btn-width" href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">
+		Create an environment to project
+		{{ project.name }}
+	</a>
 
-		<hr />
+	<hr/>
 
-		<h2>Git remote address</h2>
+	<h2>Git remote address</h2>
 
-		{% if project.gitAddress %}
-			<p>{{ project.gitAddress.address }}</p>
-		{% else %}
-			<p>No git remote address registered to this project.</p>
-		{% endif %}
+	{% if project.gitAddress %}
+		<p>{{ project.gitAddress.address }}</p>
+	{% else %}
+		<p>No git remote address registered to this project.</p>
+	{% endif %}
 
-		<a
-			class="btn btn-primary btn-width"
-			href="{{ path( 'app_project_add_gitaddress', { 'project': project.id } ) }}"
-		>
-			Register a repository remote address to {{project.name}}
-		</a>
+	<a class="btn btn-primary btn-width" href="{{ path( 'app_project_add_gitaddress', { 'project': project.id } ) }}">
+		Register a repository remote address to
+		{{ project.name }}
+	</a>
 
-		<hr />
+	<hr/>
 
-		<a
-			class="btn btn-danger btn-width"
-			href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}"
-		>
-			Delete {{project.name}}
-		</a>
+	<a class="btn btn-danger btn-width" href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}">
+		Delete
+		{{ project.name }}
+	</a>
 
-	</div>
 {% endblock %}

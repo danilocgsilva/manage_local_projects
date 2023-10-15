@@ -38,10 +38,6 @@ class Project
     )]
     private string $type;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $path = null;
-
-
     #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
     private ?GitAddress $gitAddress = null;
 
@@ -89,20 +85,6 @@ class Project
     
         return $this;
     }
-
-    public function getPath(): ?string
-    {
-        return $this->path;
-    }
-
-    public function setPath(?string $path): static
-    {
-        $this->path = $path;
-
-        return $this;
-    }
-
-
     public function getGitAddress(): ?GitAddress
     {
         return $this->gitAddress;
