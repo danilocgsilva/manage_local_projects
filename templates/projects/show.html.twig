@@ -1,8 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProjectsController!{% endblock %}
+{% block title %}Hello ProjectsController!
+{% endblock %}
 
-{% block h1 %}Project: {{ project.name }}{% endblock %}
+{% block h1 %}Project:
+	{{ project.name }}
+{% endblock %}
 
 {% block body %}
 
@@ -23,6 +26,14 @@
 			<a href="{{ path( 'app_project_add_gitaddress', { 'project': project.id } ) }}">Add Git address</a>
 		</li>
 	</ul>
+
+	<hr/>
+
+	<h2>Receipts:</h2>
+
+	<a href="#" class="btn btn-primary btn-width">
+		Create a receipt
+	</a>
 
 	<hr/>
 

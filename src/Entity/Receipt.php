@@ -17,9 +17,6 @@ class Receipt
     #[ORM\Column(type: Types::TEXT)]
     private ?string $receipt = null;
 
-    #[ORM\OneToOne(inversedBy: 'receipt', cascade: ['persist', 'remove'])]
-    private ?Environment $environment = null;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -33,18 +30,6 @@ class Receipt
     public function setReceipt(string $receipt): static
     {
         $this->receipt = $receipt;
-
-        return $this;
-    }
-
-    public function getEnvironment(): ?Environment
-    {
-        return $this->environment;
-    }
-
-    public function setEnvironment(?Environment $environment): static
-    {
-        $this->environment = $environment;
 
         return $this;
     }

@@ -24,9 +24,6 @@ class Environment
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $uname_a_fingerprint = null;
 
-    #[ORM\OneToOne(mappedBy: 'environment', cascade: ['persist', 'remove'])]
-    private ?Receipt $receipt = null;
-
     #[ORM\ManyToMany(targetEntity: Project::class, mappedBy: 'environment')]
     private Collection $projects;
 
@@ -78,28 +75,6 @@ class Environment
     public function setUnameAFingerprint(?string $uname_a_fingerprint): self
     {
         $this->uname_a_fingerprint = $uname_a_fingerprint;
-
-        return $this;
-    }
-
-    public function getReceipt(): ?Receipt
-    {
-        return $this->receipt;
-    }
-
-    public function setReceipt(?Receipt $receipt): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($receipt === null && $this->receipt !== null) {
-            $this->receipt->setEnvironment(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($receipt !== null && $receipt->getEnvironment() !== $this) {
-            $receipt->setEnvironment($this);
-        }
-
-        $this->receipt = $receipt;
 
         return $this;
     }
