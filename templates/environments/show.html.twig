@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Show Environment
+{% block title %}{{ environment.name }}
 {% endblock %}
 
 {% block h1 %}
@@ -27,7 +27,6 @@
 
 	{% if environment.projects|length > 0  %}
 
-		<hr/>
 		<p>This environment hosts:</p>
 		<ul>
 			{% for project in environment.projects %}
@@ -39,22 +38,6 @@
 	{% else %}
 		<p>Still no project added to current environment</p>
 	{% endif %}
-
-	<hr/>
-
-	<a
-		href="{{ path("app_environment_file_new", { environment: environment.id }) }}"
-		class="btn btn-primary">Add a file</a>
-
-		<ul>
-		{% if environment.environmentFiles|length > 0 %}
-			{% for environment_file in environment.environmentFiles %}
-				<li><a href="{{ path('app_environment_file_show', { environmentFile: environment_file.id }) }}">{{ environment_file.path }}</a></li>
-			{% endfor %}
-		{% else %}
-			<p>No file receipt added to this environment<p>
-		{% endif %}
-		</ul>
 
 	<hr/>
 

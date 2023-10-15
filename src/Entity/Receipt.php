@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReceiptRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -17,6 +19,17 @@ class Receipt
     #[ORM\Column(type: Types::TEXT)]
     private ?string $receipt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'receipts')]
+    private ?Project $project = null;
+
+    #[ORM\OneToMany(mappedBy: 'receipt', targetEntity: ReceiptFile::class, orphanRemoval: true)]
+    private Collection $receiptFiles;
+
+    public function __construct()
+    {
+        $this->receiptFiles = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -30,6 +43,48 @@ class Receipt
     public function setReceipt(string $receipt): static
     {
         $this->receipt = $receipt;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReceiptFile>
+     */
+    public function getReceiptFiles(): Collection
+    {
+        return $this->receiptFiles;
+    }
+
+    public function addReceiptFile(ReceiptFile $receiptFile): static
+    {
+        if (!$this->receiptFiles->contains($receiptFile)) {
+            $this->receiptFiles->add($receiptFile);
+            $receiptFile->setReceipt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceiptFile(ReceiptFile $receiptFile): static
+    {
+        if ($this->receiptFiles->removeElement($receiptFile)) {
+            // set the owning side to null (unless already changed)
+            if ($receiptFile->getReceipt() === $this) {
+                $receiptFile->setReceipt(null);
+            }
+        }
 
         return $this;
     }

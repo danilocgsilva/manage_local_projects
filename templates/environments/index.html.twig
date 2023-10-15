@@ -11,6 +11,13 @@
 			{% for environment in environments %}
 				<li>
 					<a href="{{ path("app_show_environment", {environment: environment.id}) }}">{{ environment.name }}</a>
+					<p>Host for projects:</p>
+					<ul>
+					{% for project in environment.projects %}
+						<li><a href="{{ path('app_projects_show', { project: project.id }) }}">{{ project.name }}</a></li>
+					{% endfor %}
+					</ul>
+					<hr />
 				</li>
 			{% endfor %}
 		</ul>

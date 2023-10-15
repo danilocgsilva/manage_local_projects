@@ -7,20 +7,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use App\Entity\Environment;
+use App\Entity\Project;
 use App\Entity\Receipt;
+use App\Form\Receipt\RemoveReceiptType;
 
 class ReceiptController extends AbstractController
 {
-    #[Route('/environment/{environment}/receipt/new', name: 'app_environment_receipt_new')]
+    #[Route('/project/{project}/receipt/new', name: 'app_project_receipt_new')]
     public function new(
         Request $request, 
         PersistenceManagerRegistry $doctrine,
-        Environment $environment
+        Project $project
     ): Response
     {
         $receipt = new Receipt();
-        $receipt->setEnvironment($environment);
+        $receipt->setProject($project);
         $form = $this->createForm(ReceiptType::class, $receipt);
 
         $form->handleRequest($request);
@@ -30,16 +31,73 @@ class ReceiptController extends AbstractController
             $manager->persist($receipt);
             $manager->flush();
 
-            $this->addFlash('success', sprintf('Just added a new receipt'));
+            $this->addFlash(
+                'success', 
+                sprintf(
+                    'Just added a new receipt for project %s: %s', 
+                    $project->getName(),
+                    $receipt->getReceipt()
+                )
+            );
 
-            return $this->redirectToRoute('app_projects');
-            /*return $this->redirectToRoute('app_show_environment', [
-                'environment' => $environment->getId()
-            ]);*/
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
         }
         
         return $this->render('receipt/new.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/receipt/{receipt}', name: 'app_receipt_show')]
+    public function show(Receipt $receipt): Response
+    {
+        return $this->render('receipt/show.html.twig', [
+            'receipt' => $receipt
+        ]);
+    }
+
+    #[Route('/receipt/{receipt}/delete', name: 'app_receipt_delete')]
+    public function delete(
+        Request $request, 
+        PersistenceManagerRegistry $doctrine,
+        Receipt $receipt
+    ): Response
+    {
+        $form = $this->createForm(RemoveReceiptType::class);
+
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $receiptName = $receipt->getReceipt();
+            $project = $receipt->getProject();
+            $manager->remove($receipt);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                sprintf(
+                    'Removed %s receipt from project %s', 
+                    $receiptName,
+                    $project->getName()
+                )
+            );
+
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
+
+        $this->addFlash(
+            'danger', 
+            'Caution: this action is undonable!'
+        );
+        
+        return $this->render('receipt/remove.html.twig', [
+            'form' => $form,
+            'receipt' => $receipt
         ]);
     }
 }

@@ -1,0 +1,19 @@
+<h2>Environments:</h2>
+
+{% if project.environment|length > 0 %}
+    <p>This project may exists in {{ project.environment|length }} environment(s)</p>
+	<ul>
+		{% for environment in project.environment %}
+			<li>
+				<a href="{{ path( 'app_show_environment', { environment: environment.id }) }}">{{ environment.name }}</a>
+			</li>
+		{% endfor %}
+	</ul>
+{% else %}
+	<p>The project do not have any environment registered</p>
+{% endif %}
+
+<a class="btn btn-primary btn-width" href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">
+	Create an environment to project
+	{{ project.name }}
+</a>

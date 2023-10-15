@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Are you sure?{% endblock %}
+
+{% block h1 %}Delete receipt {{ receipt.receipt }}{% endblock %}
+
+{% block body %}
+
+<p>Are you sure to delete this receipt?</p>
+
+{{ form(form) }}
+
+{% endblock %}

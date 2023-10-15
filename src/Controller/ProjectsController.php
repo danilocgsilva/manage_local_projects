@@ -119,7 +119,11 @@ class ProjectsController extends AbstractController
     }
 
     #[Route('/projects/{project}/delete', name: 'app_projects_delete_confirmation')]
-    public function delete(Request $request, Project $project, PersistenceManagerRegistry $doctrine): Response
+    public function delete(
+        Request $request, 
+        Project $project, 
+        PersistenceManagerRegistry $doctrine
+    ): Response
     {
         $form = $this->createForm(DeleteProjectType::class, $project);
 

@@ -1,0 +1,14 @@
+	<h2>Receipts:</h2>
+
+	{% if project.receipts|length > 0 %}
+		<p>This project have {{ project.receipts|length }} receipt(s)</p>
+		<ul>
+		{% for receipt in project.receipts %}
+			<li><a href="{{ path('app_receipt_show', {receipt: receipt.id}) }}">{{ receipt.receipt }}</a></li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+
+	<a href="{{ path('app_project_receipt_new', { project: project.id }) }}" class="btn btn-primary btn-width">
+		Create a receipt
+	</a>

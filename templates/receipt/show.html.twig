@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Receipt: {{ receipt.receipt }}{% endblock %}
+
+{% block h1 %}Receipt: {{ receipt.receipt }}{% endblock %}
+
+{% block body %}
+
+<p>This receipt belongs to project: <a href="{{ path('app_projects_show', { project: receipt.project.id }) }}">{{ receipt.project.name }}</a></p>
+
+<hr />
+<p style="color: #a55">Danger zone!</p>
+
+<a href="{{ path('app_receipt_delete', { receipt: receipt.id }) }}" class="btn btn-danger">Remove this receipt!</a>
+
+{% endblock %}
