@@ -3,7 +3,7 @@
 namespace App\Form\Receipt;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType, TextareaType};
 use Symfony\Component\Form\FormBuilderInterface;
 
 class ReceiptType extends AbstractType
@@ -13,6 +13,9 @@ class ReceiptType extends AbstractType
         $builder
             ->add('receipt', TextType::class, [
                 'label' => 'Receipt name (eg.: production, test, local, dev, qa, anything else)'
+            ])
+            ->add('description', TextareaType::class, [
+                'label' => 'Add a description if required'
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Add new receipt'

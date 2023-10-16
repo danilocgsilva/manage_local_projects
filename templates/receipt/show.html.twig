@@ -8,6 +8,10 @@
 
 <p>This receipt belongs to project: <a href="{{ path('app_projects_show', { project: receipt.project.id }) }}">{{ receipt.project.name }}</a></p>
 
+{% if receipt.description %}
+<p>{{ receipt.description | raw }}</p>
+{% endif %}
+
 <hr />
 
 <h3>Receipt files</h3>
@@ -23,6 +27,10 @@
 {% endif %}
 
 <a href="{{ path('app_receipt_file_new', { receipt: receipt.id }) }}" class="btn btn-primary">Add a receipt file</a>
+
+<hr />
+
+<a href="{{ path('app_receipt_edit', { receipt: receipt.id }) }}" class="btn btn-primary">Edit</a>
 
 <hr />
 <p class="danger">Danger zone!</p>

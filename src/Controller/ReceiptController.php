@@ -45,7 +45,38 @@ class ReceiptController extends AbstractController
             ]);
         }
         
-        return $this->render('receipt/new.html.twig', [
+        return $this->render('receipt/new_or_edit.html.twig.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/receipt/{receipt}/edit', name: 'app_receipt_edit')]
+    public function edit(
+        Request $request,
+        Receipt $receipt,
+        PersistenceManagerRegistry $doctrine
+    ): Response
+    {
+        $form = $this->createForm(ReceiptType::class, $receipt);
+
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($receipt);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Updated receipt',
+            );
+
+            return $this->redirectToRoute('app_receipt_show', [
+                'receipt' => $receipt->getId()
+            ]);
+        }
+
+        return $this->render('receipt/new_or_edit.html.twig', [
             'form' => $form,
         ]);
     }
