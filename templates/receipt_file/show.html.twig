@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Receipt file list{% endblock %}
+
+{% block h1 %}Receipt file list{% endblock %}
+
+{% block body %}
+
+<h3>Path:</h3>
+<pre class="code">{{ receipt_file.path }}</pre>
+
+<h3>Content:</h3>
+<pre class="code">{{ receipt_file.content }}</pre>
+
+{% endblock %}

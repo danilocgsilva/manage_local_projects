@@ -9,7 +9,23 @@
 <p>This receipt belongs to project: <a href="{{ path('app_projects_show', { project: receipt.project.id }) }}">{{ receipt.project.name }}</a></p>
 
 <hr />
-<p style="color: #a55">Danger zone!</p>
+
+<h3>Receipt files</h3>
+
+{% if receipt.receiptFiles|length > 0 %}
+    <ul>
+    {% for receiptFile in receipt.receiptFiles %}
+        <li><a href="{{ path('app_receipt_file_show', { receiptFile: receiptFile.id }) }}">{{ receiptFile.path }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+<p>No receipt file added to the receipt</p>
+{% endif %}
+
+<a href="{{ path('app_receipt_file_new', { receipt: receipt.id }) }}" class="btn btn-primary">Add a receipt file</a>
+
+<hr />
+<p class="danger">Danger zone!</p>
 
 <a href="{{ path('app_receipt_delete', { receipt: receipt.id }) }}" class="btn btn-danger">Remove this receipt!</a>
 
