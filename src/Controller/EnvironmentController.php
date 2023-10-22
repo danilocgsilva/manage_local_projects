@@ -76,9 +76,14 @@ class EnvironmentController extends AbstractController
     }
 
     #[Route('/environment/{environment}/bind_receipt', name: 'app_environment_bind_receipt')]
-    public function bindReceipt()
+    public function bindReceipt(Environment $environment)
     {
-        $form = $this->createForm(BindReceiptType::class);
+        $form = $this->createForm(BindReceiptType::class, null, [
+            'choices' => [
+                'receipt1' => 'receipt1',
+                'receipt2' => 'receipt2'
+            ]
+        ]);
 
         return $this->render('environments/bind_receipt.html.twig', [
             'form'=> $form

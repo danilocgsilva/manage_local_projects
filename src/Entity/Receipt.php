@@ -19,18 +19,19 @@ class Receipt
     #[ORM\Column(type: Types::TEXT)]
     private ?string $receipt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'receipts')]
-    private ?Project $project = null;
-
     #[ORM\OneToMany(mappedBy: 'receipt', targetEntity: ReceiptFile::class, orphanRemoval: true)]
     private Collection $receiptFiles;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'receipts')]
+    private Collection $projects;
+
     public function __construct()
     {
         $this->receiptFiles = new ArrayCollection();
+        $this->projects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -46,18 +47,6 @@ class Receipt
     public function setReceipt(string $receipt): static
     {
         $this->receipt = $receipt;
-
-        return $this;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): static
-    {
-        $this->project = $project;
 
         return $this;
     }
@@ -100,6 +89,30 @@ class Receipt
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Project>
+     */
+    public function getProjects(): Collection
+    {
+        return $this->projects;
+    }
+
+    public function addProject(Project $project): static
+    {
+        if (!$this->projects->contains($project)) {
+            $this->projects->add($project);
+        }
+
+        return $this;
+    }
+
+    public function removeProject(Project $project): static
+    {
+        $this->projects->removeElement($project);
 
         return $this;
     }

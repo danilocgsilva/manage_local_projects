@@ -44,7 +44,7 @@ class Project
     #[ORM\ManyToMany(targetEntity: Environment::class, inversedBy: 'projects')]
     private Collection $environment;
 
-    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Receipt::class)]
+    #[ORM\ManyToMany(targetEntity: Receipt::class, mappedBy: 'projects')]
     private Collection $receipts;
 
     public function __construct()
@@ -147,7 +147,7 @@ class Project
     {
         if (!$this->receipts->contains($receipt)) {
             $this->receipts->add($receipt);
-            $receipt->setProject($this);
+            $receipt->addProject($this);
         }
 
         return $this;
@@ -156,9 +156,7 @@ class Project
     public function removeReceipt(Receipt $receipt): static
     {
         if ($this->receipts->removeElement($receipt)) {
-            if ($receipt->getProject() === $this) {
-                $receipt->setProject(null);
-            }
+            $receipt->removeProject($this);
         }
 
         return $this;

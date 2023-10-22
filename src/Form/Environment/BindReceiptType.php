@@ -6,7 +6,8 @@ namespace App\Form\Environment;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\{ChoiceType, SubmitType};
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class BindReceiptType extends AbstractType
 {
@@ -14,12 +15,17 @@ class BindReceiptType extends AbstractType
     {
         $builder
             ->add('receipts', ChoiceType::class, [
-                'choices' => [
-                    'receipt1' => 'receipt1',
-                    'receipt2' => 'receipt2',
-                ]
+                'choices' => $options['choices']
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Add Environment'
             ])
         ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setRequired('choices');
     }
 }
 
