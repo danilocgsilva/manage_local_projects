@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add a new receipt to project{% endblock %}
+
+{% block h1 %}Add a new receipt{% endblock %}
+
+{% block body %}
+
+<ul>
+{% for receipt in receipts %}
+    <li><a href="{{ path('app_receipt_show', { receipt: receipt.id }) }}">{{ receipt.receipt }}</a></li>
+{% endfor %}
+</ul>
+
+{% endblock %}

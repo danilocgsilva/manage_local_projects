@@ -9,23 +9,6 @@
 
 {% block body %}
 
-	<ul>
-		<li>
-			<a href="#">Archive only data</a>
-		</li>
-		<li>
-			<a href="#">Archive code and data</a>
-		</li>
-		<li>
-			<a href="{{ path( 'app_add_database_credentials') }}">Add database credential</a>
-		</li>
-		<li>
-			<a href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">Add environment</a>
-		</li>
-	</ul>
-
-	<hr/>
-
 	{{ include('projects/sections/receipts.html.twig') }}
 
 	<hr/>

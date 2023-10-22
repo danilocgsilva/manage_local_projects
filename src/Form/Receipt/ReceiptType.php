@@ -15,10 +15,11 @@ class ReceiptType extends AbstractType
                 'label' => 'Receipt name (eg.: production, test, local, dev, qa, anything else)'
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Add a description if required'
+                'label' => 'Add a description if required',
+                'required' => false
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Add new receipt'
+                'label' => $options['label']
             ])
         ;
     }

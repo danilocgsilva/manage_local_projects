@@ -12,11 +12,11 @@ use App\Entity\Receipt;
 
 class ReceiptFileController extends AbstractController
 {
-    #[Route('/receipt_file', name: 'app_receipt_file')]
-    public function index(): Response
+    #[Route('/receipt_file/{receiptFile}/edit', name: 'app_receipt_file_edit')]
+    public function edit(ReceiptFile $receiptFile): Response
     {
-        return $this->render('receipt_file/index.html.twig', [
-            'controller_name' => 'ReceiptFileController',
+        return $this->render('receipt_file/edit.html.twig', [
+            'receipt_file' => $receiptFile
         ]);
     }
 
@@ -56,7 +56,7 @@ class ReceiptFileController extends AbstractController
             ]);
         }
 
-        return $this->render('receipt_file/new.html.twig', [
+        return $this->render('receipt_file/new_or_edit.html.twig', [
             'form' => $form
         ]);
     }

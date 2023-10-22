@@ -6,13 +6,16 @@
 
 {% block body %}
 
-<p>This receipt belongs to project: <a href="{{ path('app_projects_show', { project: receipt.project.id }) }}">{{ receipt.project.name }}</a></p>
+{% for project in receipt.projects %}
+    <p>This receipt belongs to project: <a href="{{ path('app_projects_show', { project: project.id }) }}">{{ project.name }}</a></p>
+{% endfor %}
 
 {% if receipt.description %}
-<p>{{ receipt.description | raw }}</p>
+    <h2>Description</h2>
+    <p>{{ receipt.description | raw }}</p>
+    <hr />
 {% endif %}
 
-<hr />
 
 <h3>Receipt files</h3>
 

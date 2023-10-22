@@ -3,50 +3,47 @@
 namespace App\Controller;
 
 use App\Form\Receipt\ReceiptType;
+use App\Repository\ReceiptRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use App\Entity\Project;
 use App\Entity\Receipt;
 use App\Form\Receipt\RemoveReceiptType;
 
 class ReceiptController extends AbstractController
 {
-    #[Route('/project/{project}/receipt/new', name: 'app_project_receipt_new')]
-    public function new(
-        Request $request, 
-        PersistenceManagerRegistry $doctrine,
-        Project $project
-    ): Response
+    #[Route('/receipt', name: 'app_receipt_index')]
+    public function index(ReceiptRepository $receiptRepository): Response
+    {
+        return $this->render('receipt/index.html.twig', [
+            'receipts' => $receiptRepository->findBy([], ['receipt' => 'ASC'])
+        ]);
+    }
+
+    #[Route('/receipt/new', name: 'app_add_receipt')]
+    public function new(Request $request, PersistenceManagerRegistry $doctrine): Response
     {
         $receipt = new Receipt();
-        $receipt->setProject($project);
-        $form = $this->createForm(ReceiptType::class, $receipt);
-
+        $form = $this->createForm(ReceiptType::class, $receipt, [
+            'label' => 'Create'
+        ]);
         $form->handleRequest($request);
-        
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $doctrine->getManager();
             $manager->persist($receipt);
             $manager->flush();
 
             $this->addFlash(
-                'success', 
-                sprintf(
-                    'Just added a new receipt for project %s: %s', 
-                    $project->getName(),
-                    $receipt->getReceipt()
-                )
+                'success',
+                'Created new receipt',
             );
 
-            return $this->redirectToRoute('app_projects_show', [
-                'project' => $project->getId()
-            ]);
+            return $this->redirectToRoute('app_receipt_index');
         }
-        
+
         return $this->render('receipt/new_or_edit.html.twig', [
-            'form' => $form,
+            'form' => $form
         ]);
     }
 
@@ -57,7 +54,9 @@ class ReceiptController extends AbstractController
         PersistenceManagerRegistry $doctrine
     ): Response
     {
-        $form = $this->createForm(ReceiptType::class, $receipt);
+        $form = $this->createForm(ReceiptType::class, $receipt, [
+            'label' => 'Change'
+        ]);
 
         $form->handleRequest($request);
         
@@ -96,14 +95,22 @@ class ReceiptController extends AbstractController
         Receipt $receipt
     ): Response
     {
-        $form = $this->createForm(RemoveReceiptType::class);
+        $form = $this->createForm(RemoveReceiptType::class, null, [
+            'label' => 'Custom label'
+        ]);
 
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $doctrine->getManager();
             $receiptName = $receipt->getReceipt();
-            $project = $receipt->getProject();
+            $projectsString = implode(
+                ',', 
+                array_map(
+                    fn ($entry) => $entry->getName()
+                    , $receipt->getProjects()->toArray()
+                )
+            );
             $manager->remove($receipt);
             $manager->flush();
 
@@ -112,13 +119,11 @@ class ReceiptController extends AbstractController
                 sprintf(
                     'Removed %s receipt from project %s', 
                     $receiptName,
-                    $project->getName()
+                    $projectsString
                 )
             );
 
-            return $this->redirectToRoute('app_projects_show', [
-                'project' => $project->getId()
-            ]);
+            return $this->redirectToRoute('app_receipt_index');
         }
 
         $this->addFlash(
@@ -131,6 +136,4 @@ class ReceiptController extends AbstractController
             'receipt' => $receipt
         ]);
     }
-
-
 }

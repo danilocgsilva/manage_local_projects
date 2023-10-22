@@ -12,10 +12,10 @@ use App\Form\Project\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Form\Project\DeleteProjectType;
-use App\Entity\Environment;
+use App\Entity\{GitAddress, Receipt, Environment};
 use App\Form\Path\NewEnvironmentType;
-use App\Entity\GitAddress;
 use App\Form\GitAddress\GitAddressType;
+use App\Form\Receipt\ReceiptType;
 
 class ProjectsController extends AbstractController
 {
@@ -150,5 +150,48 @@ class ProjectsController extends AbstractController
             'project' => $project,
             'form' => $form,
         ]);
+    }
+
+    #[Route('/project/{project}/receipt/new', name: 'app_project_receipt_new')]
+    public function newProjectReceipt(
+        Request $request, 
+        PersistenceManagerRegistry $doctrine,
+        Project $project
+    ): Response
+    {
+        $receipt = new Receipt();
+        $receipt->addProject($project);
+        $form = $this->createForm(ReceiptType::class, $receipt);
+
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($receipt);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                sprintf(
+                    'Just added a new receipt for project %s: %s', 
+                    $project->getName(),
+                    $receipt->getReceipt()
+                )
+            );
+
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
+        
+        return $this->render('receipt/new_or_edit.html.twig', [
+            'form' => $form,
+        ]);
+    }
+
+    #[Route('/project/{project}/bind', name: 'app_project_bind_receipt')]
+    public function bind(Project $project): Response
+    {
+        return $this->render('projects/bindReceipt.html.twig');
     }
 }

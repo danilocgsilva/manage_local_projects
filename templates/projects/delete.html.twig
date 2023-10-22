@@ -1,14 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProjectsController!{% endblock %}
+{% block title %}Delete project{% endblock %}
+
+{% block h1 %}Delete project{% endblock %}
 
 {% block body %}
 
-<div class="wrapper">
-    <h1>Delete confirmation for {{ project.name }}</h1>
+<h1>Delete confirmation for {{ project.name }}</h1>
 
-    <p>Are you sure that you want to delete the project {{ project.name }}?</p>
+<p>Are you sure that you want to delete the project {{ project.name }}?</p>
 
-    {{ form(form) }}
-</div>
+{{ form(form) }}
+
 {% endblock %}
