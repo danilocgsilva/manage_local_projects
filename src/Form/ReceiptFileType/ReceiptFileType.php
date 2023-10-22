@@ -6,7 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType, TextareaType};
 use Symfony\Component\Form\FormBuilderInterface;
 
-class ReceiptFileNewType extends AbstractType
+class ReceiptFileType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -21,7 +21,7 @@ class ReceiptFileNewType extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Create new receipt file'
+                'label' => $options['label']
             ]);
         ;
     }

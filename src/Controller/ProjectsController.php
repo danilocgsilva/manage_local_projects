@@ -13,9 +13,10 @@ use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Form\Project\DeleteProjectType;
 use App\Entity\{GitAddress, Receipt, Environment};
-use App\Form\Path\NewEnvironmentType;
 use App\Form\GitAddress\GitAddressType;
 use App\Form\Receipt\ReceiptType;
+use App\Form\Path\NewEnvironmentType;
+use App\Form\Project\ReceiptListType;
 
 class ProjectsController extends AbstractController
 {
@@ -192,6 +193,15 @@ class ProjectsController extends AbstractController
     #[Route('/project/{project}/bind', name: 'app_project_bind_receipt')]
     public function bind(Project $project): Response
     {
+        $receiptList = [
+            'alfa' => 'alfa',
+            'beta' => 'beta',
+        ];
+        
+        $form = $this->createForm(ReceiptListType::class, null, [
+            'receipt_list' => $receiptList
+        ]);
+        
         return $this->render('projects/bindReceipt.html.twig');
     }
 }

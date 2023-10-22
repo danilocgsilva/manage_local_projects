@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\ReceiptFile;
-use App\Form\Receipt\ReceiptFileNewType;
+use App\Form\ReceiptFileType\ReceiptFileType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
@@ -13,10 +13,35 @@ use App\Entity\Receipt;
 class ReceiptFileController extends AbstractController
 {
     #[Route('/receipt_file/{receiptFile}/edit', name: 'app_receipt_file_edit')]
-    public function edit(ReceiptFile $receiptFile): Response
+    public function edit(
+        ReceiptFile $receiptFile, 
+        PersistenceManagerRegistry $doctrine,
+        Request $request
+    ): Response
     {
-        return $this->render('receipt_file/edit.html.twig', [
-            'receipt_file' => $receiptFile
+        $form = $this->createForm(ReceiptFileType::class, $receiptFile, [
+            'label' => 'Update'
+        ]);
+
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($receiptFile);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                'Updated receipt file'
+            );
+
+            return $this->redirectToRoute('app_receipt_show', [
+                'receipt' => $receiptFile->getReceipt()->getId()
+            ]);
+        }
+        
+        return $this->render('receipt_file/new_or_edit.html.twig', [
+            'form' => $form
         ]);
     }
 
@@ -36,7 +61,9 @@ class ReceiptFileController extends AbstractController
     ): Response
     {
         $receiptFile = new ReceiptFile();
-        $form = $this->createForm(ReceiptFileNewType::class, $receiptFile);
+        $form = $this->createForm(ReceiptFileType::class, $receiptFile, [
+            'label' => 'Add'
+        ]);
         $receiptFile->setReceipt($receipt);
 
         $form->handleRequest($request);
