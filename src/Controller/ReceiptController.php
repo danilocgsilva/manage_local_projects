@@ -45,7 +45,7 @@ class ReceiptController extends AbstractController
             ]);
         }
         
-        return $this->render('receipt/new_or_edit.html.twig.html.twig', [
+        return $this->render('receipt/new_or_edit.html.twig', [
             'form' => $form,
         ]);
     }
@@ -131,4 +131,6 @@ class ReceiptController extends AbstractController
             'receipt' => $receipt
         ]);
     }
+
+
 }

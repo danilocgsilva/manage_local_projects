@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Form\Path;
+namespace App\Form\Environment;
 
 use App\Entity\Environment;
 use Symfony\Component\Form\AbstractType;

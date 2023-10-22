@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\{Response, Request};
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Repository\EnvironmentRepository;
 use App\Services\Environment as EnvironmentService;
+use App\Form\Environment\BindReceiptType;
 
 class EnvironmentController extends AbstractController
 {
@@ -72,5 +73,15 @@ class EnvironmentController extends AbstractController
             'app_show_environment', 
             ['environment' => $environment->getId()]
         );
+    }
+
+    #[Route('/environment/{environment}/bind_receipt', name: 'app_environment_bind_receipt')]
+    public function bindReceipt()
+    {
+        $form = $this->createForm(BindReceiptType::class);
+
+        return $this->render('environments/bind_receipt.html.twig', [
+            'form'=> $form
+        ]);
     }
 }

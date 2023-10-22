@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Receipt;
+namespace App\Form\ReceiptFileType;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType, TextareaType};

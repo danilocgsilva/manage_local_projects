@@ -39,8 +39,13 @@
 		<p>Still no project added to current environment</p>
 	{% endif %}
 
-	<hr/>
 
-	<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
+	{% if currentSystem() != environment.unameNFingerprint %}
+		<hr/>
+		<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
+	{% endif %}
+
+	<hr />
+	<a href="{{ path('app_environment_bind_receipt', { environment: environment.id }) }}" class="btn btn-primary">Bind a receipt</a>
 
 {% endblock %}

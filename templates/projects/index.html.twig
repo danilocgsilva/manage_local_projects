@@ -6,13 +6,18 @@
 
 {% block body %}
 
-    <ul>
-    {% for project in projects %}
-        <li>
-            <a href="{{ path('app_projects_show', { 'project': project.id }) }}">{{ project.name }}</a>
-        </li>
-    {% endfor %}
+    {% if projects|length is same as 0 %}
+        <p>Still no project registerd.</p>
+    {% else %}
 
-    </ul>
+        <ul>
+        {% for project in projects %}
+            <li>
+                <a href="{{ path('app_projects_show', { 'project': project.id }) }}">{{ project.name }}</a>
+            </li>
+        {% endfor %}
+
+        </ul>
+    {% endif %}
 
 {% endblock %}

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Form\GitAddress;
+namespace App\Form\EnvironmentFile;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,12 +28,4 @@ class EnvironmentFileType extends AbstractType
             ])
         ;
     }
-
-    
-    // public function configureOptions(OptionsResolver $resolver): void
-    // {
-    //     $resolver->setRequired([
-    //         'project_name'
-    //     ]);
-    // }
 }
