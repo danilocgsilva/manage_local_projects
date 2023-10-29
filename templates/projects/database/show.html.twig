@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProjectsController!
+{% endblock %}
+
+{% block h1 %}Project:
+	{{ project.name }}
+{% endblock %}
+
+{% block body %}
+
+	{{ include('projects/sections/receipts.html.twig') }}
+
+	<hr/>
+
+	{{ include('projects/sections/environments.html.twig') }}
+
+	<hr/>
+
+	<p class="danger">Danger zone!</p>
+
+	<a class="btn btn-danger btn-width" href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}">
+		Delete
+		{{ project.name }}
+	</a>
+
+{% endblock %}

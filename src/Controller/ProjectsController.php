@@ -17,6 +17,8 @@ use App\Form\GitAddress\GitAddressType;
 use App\Form\Receipt\ReceiptType;
 use App\Form\Path\NewEnvironmentType;
 use App\Form\Project\ReceiptListType;
+use App\Enums\ProjectType as EnumProjectType;
+use Exception;
 
 class ProjectsController extends AbstractController
 {
@@ -55,7 +57,20 @@ class ProjectsController extends AbstractController
     #[Route('/projects/{project}', name: 'app_projects_show')]
     public function show(Project $project): Response
     {
-        return $this->render('projects/show.html.twig', [
+        $view = "";
+
+        switch ($project->getType()) {
+            case EnumProjectType::Normal->name:
+                $view = 'projects/show.html.twig';
+                break;
+            case EnumProjectType::Database->name:
+                $view = 'projects/database/show.html.twig';
+                break;
+            default:
+                throw new Exception("Project type is not recognizable.");
+        }
+        
+        return $this->render($view, [
             'project' => $project
         ]);
     }
