@@ -196,12 +196,15 @@ class ProjectsController extends AbstractController
         $receiptList = [
             'alfa' => 'alfa',
             'beta' => 'beta',
+            'gamma' => 'gamma'
         ];
         
         $form = $this->createForm(ReceiptListType::class, null, [
             'receipt_list' => $receiptList
         ]);
         
-        return $this->render('projects/bindReceipt.html.twig');
+        return $this->render('projects/bindReceipt.html.twig', [
+            'form' => $form
+        ]);
     }
 }

@@ -14,10 +14,7 @@ class ReceiptListType extends AbstractType
     {
         $builder
             ->add('type', ChoiceType::class, [
-                'choices'  => [
-                    'Normal' => 'Normal',
-                    'Database' => 'Database',
-                ]
+                'choices'  => $options['receipt_list']
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save'
