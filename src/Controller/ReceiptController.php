@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Entity\Receipt;
 use App\Form\Receipt\RemoveReceiptType;
+use ZipArchive;
 
 class ReceiptController extends AbstractController
 {
@@ -135,5 +136,26 @@ class ReceiptController extends AbstractController
             'form' => $form,
             'receipt' => $receipt
         ]);
+    }
+
+    #[Route('/receipt/{receipt}/download', name: 'app_receipt_download')]
+    public function download(
+        Request $request, 
+        PersistenceManagerRegistry $doctrine,
+        Receipt $receipt
+    ): Response
+    {
+        $zipName = $receipt->getReceipt() . ".zip";
+        $zipNamePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $zipName;
+        $zip = new ZipArchive();
+        $zip->open($zipNamePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
+
+        foreach ($receipt->getReceiptFiles() as $file) {
+            $zip->addFromString($file->getPath(), $file->getContent());
+        }
+
+        $zip->close();
+
+        return $this->file($zipNamePath);
     }
 }
