@@ -13,7 +13,7 @@
         <ul>
         {% for project in projects %}
             <li>
-                <a href="{{ path('app_projects_show', { 'project': project.id }) }}">{{ project.name }}</a>
+                <a href="{{ path('app_projects_show', { 'project': project.id }) }}">{{ project.name }}{{ project.type == 'Database' ? ' (Database)' : '' }}</a>
             </li>
         {% endfor %}
 
