@@ -6,16 +6,14 @@
 
 {% block body %}
 
-<div class="wrapper">
     {% if database_credentials|length > 0 %}
         <ul>
             {% for database_credential in database_credentials %}
-                <li>{{ database_credential.host }}</li>
+                <li><a href="{{ path('app_show_database_credentials', { database_credentials: database_credential.id } ) }}">{{ database_credential.host }}</a></li>
             {% endfor %}
         </ul>
     {% else %}
         <p>Still no database credentials registered in the system.
     {% endif %}
 
-</div>
 {% endblock %}

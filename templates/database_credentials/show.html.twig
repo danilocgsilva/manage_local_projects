@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Database Credentials{% endblock %}
+
+{% block h1 %}Create Database Credential{% endblock %}
+
+{% block body %}
+
+<p>Host: {{ database_credentials.host }}</p>
+<p>User: {{ database_credentials.user }}</p>
+<p>Password: {{ database_credentials.password }}</p>
+<p>Port: {{ database_credentials.port }}</p>
+
+{% endblock %}

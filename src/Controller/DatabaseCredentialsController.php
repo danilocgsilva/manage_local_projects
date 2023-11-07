@@ -44,4 +44,12 @@ class DatabaseCredentialsController extends AbstractController
                 $databaseCredentialsRepository->findBy([], ['host' => 'ASC'])
         ]);
     }
+
+    #[Route('/database_credentials/{database_credentials}', name: 'app_show_database_credentials')]
+    public function show(DatabaseCredentials $database_credentials): Response
+    {
+        return $this->render('database_credentials/show.html.twig', [
+            'database_credentials' => $database_credentials
+        ]);
+    }
 }
