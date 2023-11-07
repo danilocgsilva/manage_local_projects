@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\DatabaseCredentials\NewCredentialType;
+use App\Repository\DatabaseCredentialsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
@@ -32,6 +33,15 @@ class DatabaseCredentialsController extends AbstractController
 
         return $this->render('database_credentials/new.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/database_credentials', name: 'app_index_database_credentials')]
+    public function index(DatabaseCredentialsRepository $databaseCredentialsRepository): Response
+    {
+        return $this->render('database_credentials/index.html.twig', [
+            'database_credentials' =>
+                $databaseCredentialsRepository->findBy([], ['host' => 'ASC'])
         ]);
     }
 }

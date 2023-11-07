@@ -30,10 +30,14 @@ class Environment
     #[ORM\ManyToMany(targetEntity: EnvironmentFile::class, mappedBy: 'environment')]
     private Collection $environmentFiles;
 
+    #[ORM\OneToMany(mappedBy: 'environment', targetEntity: DatabaseCredentials::class)]
+    private Collection $databaseCredentials;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
         $this->environmentFiles = new ArrayCollection();
+        $this->databaseCredentials = new ArrayCollection();
     }
 
     #[ORM\Column(length: 255)]
@@ -128,6 +132,36 @@ class Environment
     {
         if ($this->environmentFiles->removeElement($environmentFile)) {
             $environmentFile->removeEnvironment($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DatabaseCredentials>
+     */
+    public function getDatabaseCredentials(): Collection
+    {
+        return $this->databaseCredentials;
+    }
+
+    public function addDatabaseCredential(DatabaseCredentials $databaseCredential): static
+    {
+        if (!$this->databaseCredentials->contains($databaseCredential)) {
+            $this->databaseCredentials->add($databaseCredential);
+            $databaseCredential->setEnvironment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDatabaseCredential(DatabaseCredentials $databaseCredential): static
+    {
+        if ($this->databaseCredentials->removeElement($databaseCredential)) {
+            // set the owning side to null (unless already changed)
+            if ($databaseCredential->getEnvironment() === $this) {
+                $databaseCredential->setEnvironment(null);
+            }
         }
 
         return $this;

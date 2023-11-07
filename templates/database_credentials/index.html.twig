@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Database Credentials{% endblock %}
+
+{% block h1 %}Create Database Credential{% endblock %}
+
+{% block body %}
+
+<div class="wrapper">
+    {% if database_credentials|length > 0 %}
+        <ul>
+            {% for database_credential in database_credentials %}
+                <li>{{ database_credential.host }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Still no database credentials registered in the system.
+    {% endif %}
+
+</div>
+{% endblock %}

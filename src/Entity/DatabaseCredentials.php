@@ -25,6 +25,9 @@ class DatabaseCredentials
     #[ORM\Column(nullable: true)]
     private ?int $port = null;
 
+    #[ORM\ManyToOne(inversedBy: 'databaseCredentials')]
+    private ?Environment $environment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,6 +77,18 @@ class DatabaseCredentials
     public function setPort(?int $port): static
     {
         $this->port = $port;
+
+        return $this;
+    }
+
+    public function getEnvironment(): ?Environment
+    {
+        return $this->environment;
+    }
+
+    public function setEnvironment(?Environment $environment): static
+    {
+        $this->environment = $environment;
 
         return $this;
     }

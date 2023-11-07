@@ -1,19 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Environments{% endblock %}
+{% block title %}Create Database Credential{% endblock %}
+
+{% block h1 %}Create Database Credential{% endblock %}
 
 {% block body %}
 
 <div class="wrapper">
-    <h1>Create database credentials</h1>
-
-    <div class="alert-blank">
-    {% for msg in app.flashes('success') %}
-        <div class="alert alert-success">
-            {{ msg }}
-        </div>    
-    {% endfor %}
-    </div>
 
     {{ form(form) }}
 
