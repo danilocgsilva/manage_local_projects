@@ -43,14 +43,14 @@ class EncryptionService
     {
         $c = base64_decode($encodedData);
         $ivLen = openssl_cipher_iv_length(self::CIPHERING);
-        $iv = substr($c,0, $ivLen);
-        $hmac = substr($c, $ivLen, $sha2len=32);
-        $ciphertext_raw = substr($c, $ivLen, $sha2len=32);
+        $iv = substr($c, 0, $ivLen);
+        substr($c, $ivLen, $sha2len=32);
+        $ciphertext_raw = substr($c, $ivLen+$sha2len);
         return openssl_decrypt(
             $ciphertext_raw, 
             self::CIPHERING,
             $this->params->get('parameter_secret'),
-            $option=OPENSSL_RAW_DATA,
+            $options=OPENSSL_RAW_DATA,
             $iv
         );
     }

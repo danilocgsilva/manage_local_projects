@@ -58,8 +58,13 @@ class DatabaseCredentialsController extends AbstractController
     }
 
     #[Route('/database_credentials/{database_credentials}', name: 'app_show_database_credentials')]
-    public function show(DatabaseCredentials $database_credentials): Response
+    public function show(DatabaseCredentials $database_credentials, EncryptionService $encryptionService): Response
     {
+        
+        $database_credentials->setPassword(
+            $encryptionService->decryptData($database_credentials->getPassword())
+        );
+        
         return $this->render('database_credentials/show.html.twig', [
             'database_credentials' => $database_credentials
         ]);
