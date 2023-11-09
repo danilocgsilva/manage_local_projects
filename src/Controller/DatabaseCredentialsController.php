@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\DatabaseCredentials;
 use App\Form\DatabaseCredentials\NewCredentialType;
+use App\Form\DeleteType;
+use App\Services\EncryptionService;
 use App\Repository\DatabaseCredentialsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
-use App\Entity\DatabaseCredentials;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use App\Services\EncryptionService;
 
 class DatabaseCredentialsController extends AbstractController
 {
@@ -60,13 +61,44 @@ class DatabaseCredentialsController extends AbstractController
     #[Route('/database_credentials/{database_credentials}', name: 'app_show_database_credentials')]
     public function show(DatabaseCredentials $database_credentials, EncryptionService $encryptionService): Response
     {
-        
         $database_credentials->setPassword(
             $encryptionService->decryptData($database_credentials->getPassword())
         );
         
         return $this->render('database_credentials/show.html.twig', [
             'database_credentials' => $database_credentials
+        ]);
+    }
+
+    #[Route('/database_credentials/{databaseCredentials}/delete', name: 'app_delete_database_credentials')]
+    public function delete(
+        Request $request, 
+        DatabaseCredentials $databaseCredentials, 
+        PersistenceManagerRegistry $doctrine
+    ): Response
+    {
+        $form = $this->createForm(DeleteType::class, $databaseCredentials);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->remove($databaseCredentials);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                'Database credential deleted!'
+            );
+
+            return $this->redirectToRoute(
+                'app_index_database_credentials'
+            );
+        }
+        
+        return $this->render('database_credentials/delete.html.twig', [
+            'database_credential' => $databaseCredentials,
+            'form' => $form,
         ]);
     }
 }

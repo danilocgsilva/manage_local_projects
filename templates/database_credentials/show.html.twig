@@ -2,7 +2,7 @@
 
 {% block title %}Database Credentials{% endblock %}
 
-{% block h1 %}Create Database Credential{% endblock %}
+{% block h1 %}Database credential{% endblock %}
 
 {% block body %}
 
@@ -10,5 +10,13 @@
 <p>User: {{ database_credentials.user }}</p>
 <p>Password: {{ database_credentials.password }}</p>
 <p>Port: {{ database_credentials.port }}</p>
+
+	<hr/>
+
+	<p class="danger">Danger zone!</p>
+
+	<a class="btn btn-danger btn-width" href="{{ path( 'app_delete_database_credentials', { 'databaseCredentials': database_credentials.id }) }}">
+		Delete
+	</a>
 
 {% endblock %}

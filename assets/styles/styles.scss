@@ -1,6 +1,7 @@
 @import "~bootstrap/scss/bootstrap";
 
 body {
+    padding-top: 80px;
     background-color: lightgray;
 }
 
@@ -31,5 +32,4 @@ body {
     border: 1px dotted #777;
     border-radius: 10px;
     padding: 6px;
-    // margin: 6px;
 }

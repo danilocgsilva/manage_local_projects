@@ -11,8 +11,8 @@ use App\Entity\Project;
 use App\Form\Project\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use App\Form\Project\DeleteProjectType;
 use App\Entity\{GitAddress, Receipt, Environment};
+use App\Form\DeleteType;
 use App\Form\GitAddress\GitAddressType;
 use App\Form\Receipt\ReceiptType;
 use App\Form\Path\NewEnvironmentType;
@@ -141,7 +141,7 @@ class ProjectsController extends AbstractController
         PersistenceManagerRegistry $doctrine
     ): Response
     {
-        $form = $this->createForm(DeleteProjectType::class, $project);
+        $form = $this->createForm(DeleteType::class, $project);
 
         $form->handleRequest($request);
 
