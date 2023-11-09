@@ -6,6 +6,10 @@
 parameters:
 
 services:
+    encryption_service:
+        class: App\Service\EncryptionService
+
+
     environment:
         class: App\Services\Environment
         public: true
