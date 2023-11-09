@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+use ErrorException;
 
 class EncryptionService
 {
@@ -46,13 +47,18 @@ class EncryptionService
         $iv = substr($c, 0, $ivLen);
         substr($c, $ivLen, $sha2len=32);
         $ciphertext_raw = substr($c, $ivLen+$sha2len);
-        return openssl_decrypt(
-            $ciphertext_raw, 
-            self::CIPHERING,
-            $this->params->get('parameter_secret'),
-            $options=OPENSSL_RAW_DATA,
-            $iv
-        );
+        try {
+            return openssl_decrypt(
+                $ciphertext_raw, 
+                self::CIPHERING,
+                $this->params->get('parameter_secret'),
+                $options=OPENSSL_RAW_DATA,
+                $iv
+            );
+        } catch (ErrorException $e) {
+            error_log("Error on decyphering. Error message: " . $e->getMessage());
+            return "";
+        }
     }
 
     public function hashData(string $data): string
