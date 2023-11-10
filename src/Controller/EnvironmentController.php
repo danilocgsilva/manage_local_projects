@@ -5,14 +5,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Environment;
-use App\Form\Path\NewEnvironmentType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use App\Repository\EnvironmentRepository;
 use App\Services\Environment as EnvironmentService;
-use App\Form\Environment\BindReceiptType;
+use App\Form\Environment\{BindReceiptType, NewEnvironmentType};
 
 class EnvironmentController extends AbstractController
 {

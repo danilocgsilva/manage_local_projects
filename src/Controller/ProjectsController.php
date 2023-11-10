@@ -19,6 +19,7 @@ use App\Form\Path\NewEnvironmentType;
 use App\Form\Project\ReceiptListType;
 use App\Enums\ProjectType as EnumProjectType;
 use Exception;
+use App\Repository\ReceiptRepository;
 
 class ProjectsController extends AbstractController
 {
@@ -206,20 +207,20 @@ class ProjectsController extends AbstractController
     }
 
     #[Route('/project/{project}/bind', name: 'app_project_bind_receipt')]
-    public function bind(Project $project): Response
+    public function bind(Project $project, ReceiptRepository $receiptRepository): Response
     {
-        $receiptList = [
-            'alfa' => 'alfa',
-            'beta' => 'beta',
-            'gamma' => 'gamma'
-        ];
+        $receipts = [];
+        foreach ($receiptRepository->findBy([], ['receipt' => 'ASC']) as $receipt) {
+            $receipts[$receipt->getReceipt()] = $receipt->getId();
+        }
         
         $form = $this->createForm(ReceiptListType::class, null, [
-            'receipt_list' => $receiptList
+            'receipt_list' => $receipts
         ]);
         
         return $this->render('projects/bindReceipt.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'project' => $project
         ]);
     }
 }
