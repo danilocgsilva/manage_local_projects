@@ -10,11 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NewCredentialType extends AbstractType
+class DatabaseCredentialType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('name', TextType::class)
             ->add('user', TextType::class)
             ->add('password', TextType::class)
             ->add('host', TextType::class)
@@ -22,7 +23,7 @@ class NewCredentialType extends AbstractType
                 'required' => false
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Add'
+                'label' => $options['submitLabel']
             ])
         ;
     }
@@ -30,7 +31,8 @@ class NewCredentialType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => DatabaseCredentials::class
+            'data_class' => DatabaseCredentials::class,
+            'submitLabel' => null
         ]);
     }
 }

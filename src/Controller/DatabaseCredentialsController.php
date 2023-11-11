@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\DatabaseCredentials;
-use App\Form\DatabaseCredentials\NewCredentialType;
+use App\Form\DatabaseCredentials\DatabaseCredentialType;
 use App\Form\DeleteType;
 use App\Services\EncryptionService;
 use App\Repository\DatabaseCredentialsRepository;
@@ -24,7 +24,9 @@ class DatabaseCredentialsController extends AbstractController
     ): Response
     {
         $databaseCredential = new DatabaseCredentials();
-        $form = $this->createForm(NewCredentialType::class, $databaseCredential);
+        $form = $this->createForm(DatabaseCredentialType::class, $databaseCredential, [
+            'submitLabel' => 'Add'
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -99,6 +101,44 @@ class DatabaseCredentialsController extends AbstractController
         return $this->render('database_credentials/delete.html.twig', [
             'database_credential' => $databaseCredentials,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/database_credentials/{databaseCredentials}/edit', name: 'app_edit_database_credentials')]
+    public function edit(
+        Request $request,
+        DatabaseCredentials $databaseCredentials,
+        PersistenceManagerRegistry $doctrine,
+        EncryptionService $encryptionService
+    ): Response
+    {
+        $form = $this->createForm(DatabaseCredentialType::class , $databaseCredentials, [
+            'submitLabel' => 'Alter'
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($databaseCredentials);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                'Database credential changed'
+            );
+
+            return $this->redirectToRoute(
+                'app_index_database_credentials'
+            );
+        }
+
+        $form->get('password')->setData(
+            $encryptionService->decryptData(
+                $databaseCredentials->getPassword()
+            )
+        );
+        
+        return $this->render('database_credentials/new.html.twig', [
+            'form' => $form
         ]);
     }
 }

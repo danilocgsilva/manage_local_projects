@@ -6,10 +6,12 @@
 
 {% block body %}
 
-<p>Host: {{ database_credentials.host }}</p>
-<p>User: {{ database_credentials.user }}</p>
-<p>Password: {{ database_credentials.password }}</p>
-<p>Port: {{ database_credentials.port }}</p>
+	<p>Host: {{ database_credentials.host }}</p>
+	<p>User: {{ database_credentials.user }}</p>
+	<p>Password: {{ database_credentials.password }}</p>
+	<p>Port: {{ database_credentials.port }}</p>
+
+	<a class="btn btn-primary" href="{{ path('app_edit_database_credentials', { 'databaseCredentials': database_credentials.id }) }}">Edit</a>
 
 	<hr/>
 
