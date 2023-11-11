@@ -257,12 +257,36 @@ class ProjectsController extends AbstractController
     #[Route('/project/{project}/unbind/{receipt}', name: 'app_project_unbind_receipt')]
     public function unbind(
         Project $project, 
-        Receipt $receipt
+        Receipt $receipt,
+        Request $request,
+        PersistenceManagerRegistry $doctrine,
     ): Response
     {
+        $form = $this->createForm(DeleteType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $project->removeReceipt($receipt);
+
+            $manager = $doctrine->getManager();
+            $manager->persist($project);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                'Unbind succeeded'
+            );
+
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
+        
         return $this->render('projects/unbindReceipt.html.twig', [
             'project' => $project,
-            'receipt' => $receipt
+            'receipt' => $receipt,
+            'form' => $form
         ]);
     }
 }
