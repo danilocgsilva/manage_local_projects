@@ -253,4 +253,16 @@ class ProjectsController extends AbstractController
             'project' => $project
         ]);
     }
+
+    #[Route('/project/{project}/unbind/{receipt}', name: 'app_project_unbind_receipt')]
+    public function unbind(
+        Project $project, 
+        Receipt $receipt
+    ): Response
+    {
+        return $this->render('projects/unbindReceipt.html.twig', [
+            'project' => $project,
+            'receipt' => $receipt
+        ]);
+    }
 }

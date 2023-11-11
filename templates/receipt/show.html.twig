@@ -7,7 +7,7 @@
 {% block body %}
 
 {% for project in receipt.projects %}
-    <p>This receipt belongs to project: <a href="{{ path('app_projects_show', { project: project.id }) }}">{{ project.name }}</a></p>
+    <p>This receipt belongs to project: <a href="{{ path('app_projects_show', { project: project.id }) }}">{{ project.name }}</a>. <a href="{{ path('app_project_unbind_receipt', { 'project': project.id, 'receipt': receipt.id } ) }}" class="btn btn-warning">Unbind receipt from project</a></p>
 {% endfor %}
 
 {% if receipt.description %}
