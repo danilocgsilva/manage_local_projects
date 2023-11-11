@@ -13,9 +13,9 @@ class ReceiptListType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('type', ChoiceType::class, [
+            ->add('receipt', ChoiceType::class, [
                 'choices'  => $options['receipt_list'],
-                'label' => false
+                'label' => $options['label']
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save'

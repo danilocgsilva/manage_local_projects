@@ -220,19 +220,22 @@ class ProjectsController extends AbstractController
         }
         
         $form = $this->createForm(ReceiptListType::class, null, [
-            'receipt_list' => $receipts
+            'receipt_list' => $receipts,
+            'label' => 'Bind a receipt to project ' . $project->getName()
         ]);
 
         $form->handleRequest($request);
         
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $receiptId = $request->get
-
-            // $project->addReceipt()
+            $receiptChoosen = $receiptRepository->find(
+                $receiptRepository->find(
+                    $form->getData()['receipt']
+                )
+            );
+            $project->addReceipt($receiptChoosen);
 
             $manager = $doctrine->getManager();
-            $manager->persist($receipt);
+            $manager->persist($project);
             $manager->flush();
 
             $this->addFlash(
