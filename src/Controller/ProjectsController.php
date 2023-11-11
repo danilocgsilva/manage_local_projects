@@ -207,7 +207,12 @@ class ProjectsController extends AbstractController
     }
 
     #[Route('/project/{project}/bind', name: 'app_project_bind_receipt')]
-    public function bind(Project $project, ReceiptRepository $receiptRepository): Response
+    public function bind(
+        Request $request, 
+        PersistenceManagerRegistry $doctrine,
+        Project $project, 
+        ReceiptRepository $receiptRepository
+    ): Response
     {
         $receipts = [];
         foreach ($receiptRepository->findBy([], ['receipt' => 'ASC']) as $receipt) {
@@ -217,6 +222,28 @@ class ProjectsController extends AbstractController
         $form = $this->createForm(ReceiptListType::class, null, [
             'receipt_list' => $receipts
         ]);
+
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $receiptId = $request->get
+
+            // $project->addReceipt()
+
+            $manager = $doctrine->getManager();
+            $manager->persist($receipt);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                'The receipt has been binded to the project'
+            );
+
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
         
         return $this->render('projects/bindReceipt.html.twig', [
             'form' => $form,
