@@ -21,6 +21,10 @@
 
 	<hr/>
 
+	{{ include('projects/sections/deploys.html.twig') }}
+
+	<hr/>
+
 	<p class="danger">Danger zone!</p>
 
 	<a class="btn btn-danger btn-width" href="{{ path( 'app_projects_delete_confirmation', { 'project': project.id }) }}">

@@ -25,8 +25,12 @@ A normal project should hold a property, which is its url in production.
 
 ## Environment registration
 
-Can be a *computer*, or a node where project data exists.
+Can be a *computer*, or a node where project data exists. A project can have several environments.
 
 ## Credentials registration
 
 Users, password and anything else required to access an environment or system. The registration should belongs to an environment. But may also may belongs to a project as well at the same time. The credential (usually, from a database) is closely tied to the environment itself. But an project, through the environment, may access and may own the datata from the database acessible by credentials. An environment may have several database crdentials. But database credentials cannot belongs to several environment at the same time.
+
+## Deploys
+
+A dpeloy is a sum of some receipts and the environment. Basically, is the two parts required to have a running application.
