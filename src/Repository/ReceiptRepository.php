@@ -21,6 +21,15 @@ class ReceiptRepository extends ServiceEntityRepository
         parent::__construct($registry, Receipt::class);
     }
 
+    public function getReceiptsAsArray(): array
+    {
+        $receipts = [];
+        foreach ($this->findBy([], ['receipt' => 'ASC']) as $receipt) {
+            $receipts[$receipt->getReceipt()] = $receipt->getId();
+        }
+        return $receipts;
+    }
+
 //    /**
 //     * @return Receipt[] Returns an array of Receipt objects
 //     */

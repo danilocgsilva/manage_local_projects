@@ -28,10 +28,14 @@ class Receipt
     #[ORM\ManyToMany(targetEntity: Project::class, inversedBy: 'receipts')]
     private Collection $projects;
 
+    #[ORM\ManyToMany(targetEntity: Deploy::class, mappedBy: 'receipts')]
+    private Collection $deploys;
+
     public function __construct()
     {
         $this->receiptFiles = new ArrayCollection();
         $this->projects = new ArrayCollection();
+        $this->deploys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,6 +117,33 @@ class Receipt
     public function removeProject(Project $project): static
     {
         $this->projects->removeElement($project);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Deploy>
+     */
+    public function getDeploys(): Collection
+    {
+        return $this->deploys;
+    }
+
+    public function addDeploy(Deploy $deploy): static
+    {
+        if (!$this->deploys->contains($deploy)) {
+            $this->deploys->add($deploy);
+            $deploy->addReceipt($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeploy(Deploy $deploy): static
+    {
+        if ($this->deploys->removeElement($deploy)) {
+            $deploy->removeReceipt($this);
+        }
 
         return $this;
     }

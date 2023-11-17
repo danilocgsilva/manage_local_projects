@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Environment;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\{Response, Request};
-use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use App\Form\Environment\{BindReceiptType, NewEnvironmentType};
 use App\Repository\EnvironmentRepository;
 use App\Services\Environment as EnvironmentService;
-use App\Form\Environment\{BindReceiptType, NewEnvironmentType};
+use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\{Response, Request};
+use Symfony\Component\Routing\Annotation\Route;
 
 class EnvironmentController extends AbstractController
 {
@@ -25,7 +25,10 @@ class EnvironmentController extends AbstractController
     }
 
     #[Route('/environments/new', name: 'app_add_environment')]
-    public function new(Request $request, PersistenceManagerRegistry $doctrine): Response
+    public function new(
+        Request $request, 
+        PersistenceManagerRegistry $doctrine
+    ): Response
     {
         $environment = new Environment();
         $form = $this->createForm(NewEnvironmentType::class, $environment);

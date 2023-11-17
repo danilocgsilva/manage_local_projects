@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use App\Entity\Receipt;
 
 class ReceiptListType extends AbstractType
 {
@@ -26,7 +27,8 @@ class ReceiptListType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'receipt_list' => null
+            'receipt_list' => null,
+            'data_class' => Receipt::class
         ]);
     }
 }

@@ -214,13 +214,8 @@ class ProjectsController extends AbstractController
         ReceiptRepository $receiptRepository
     ): Response
     {
-        $receipts = [];
-        foreach ($receiptRepository->findBy([], ['receipt' => 'ASC']) as $receipt) {
-            $receipts[$receipt->getReceipt()] = $receipt->getId();
-        }
-        
         $form = $this->createForm(ReceiptListType::class, null, [
-            'receipt_list' => $receipts,
+            'receipt_list' => $receiptRepository->getReceiptsAsArray(),
             'label' => 'Bind a receipt to project ' . $project->getName()
         ]);
 
@@ -249,8 +244,7 @@ class ProjectsController extends AbstractController
         }
         
         return $this->render('projects/bindReceipt.html.twig', [
-            'form' => $form,
-            'project' => $project
+            'form' => $form
         ]);
     }
 

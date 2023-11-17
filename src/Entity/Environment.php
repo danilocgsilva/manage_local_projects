@@ -33,11 +33,15 @@ class Environment
     #[ORM\OneToMany(mappedBy: 'environment', targetEntity: DatabaseCredentials::class)]
     private Collection $databaseCredentials;
 
+    #[ORM\ManyToMany(targetEntity: Deploy::class, mappedBy: 'encironments')]
+    private Collection $deploys;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
         $this->environmentFiles = new ArrayCollection();
         $this->databaseCredentials = new ArrayCollection();
+        $this->deploys = new ArrayCollection();
     }
 
     #[ORM\Column(length: 255)]
@@ -162,6 +166,33 @@ class Environment
             if ($databaseCredential->getEnvironment() === $this) {
                 $databaseCredential->setEnvironment(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Deploy>
+     */
+    public function getDeploys(): Collection
+    {
+        return $this->deploys;
+    }
+
+    public function addDeploy(Deploy $deploy): static
+    {
+        if (!$this->deploys->contains($deploy)) {
+            $this->deploys->add($deploy);
+            $deploy->addEncironment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeploy(Deploy $deploy): static
+    {
+        if ($this->deploys->removeElement($deploy)) {
+            $deploy->removeEncironment($this);
         }
 
         return $this;
