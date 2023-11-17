@@ -23,6 +23,15 @@ class EnvironmentRepository extends ServiceEntityRepository
         parent::__construct($registry, Environment::class);
     }
 
+    public function getEnvironmentsAsArray(): array
+    {
+        $environments = [];
+        foreach ($this->findBy([], ['name' => 'ASC']) as $environment) {
+            $environments[$environment->getName()] = $environment->getId();
+        }
+        return $environments;
+    }
+
 //    /**
 //     * @return Environment[] Returns an array of Environment objects
 //     */

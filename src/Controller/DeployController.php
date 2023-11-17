@@ -11,19 +11,23 @@ use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\EnvironmentRepository;
 use App\Repository\ReceiptRepository;
+use App\Form\Deploy\DeployNewType;
 
 class DeployController extends AbstractController
 {
     #[Route('/deploy/new', name: 'app_add_deploy')]
     public function new(
         Request $request, 
-        PersistenceManagerRegistry $doctrine
-        //EnvironmentRepository $environmentRepository,
-        //ReceiptRepository $receiptRepository
+        PersistenceManagerRegistry $doctrine,
+        EnvironmentRepository $environmentRepository,
+        ReceiptRepository $receiptRepository
     ): Response
     {
         $deploy = new Deploy();
-        $form = $this->createForm(DeployNewType::class, $deploy);
+        $form = $this->createForm(DeployNewType::class, $deploy, [
+            'receipt_list' => $receiptRepository->getReceiptsAsArray(),
+            'environment_list' => $environmentRepository->getEnvironmentsAsArray()
+        ]);
         
         return $this->render('deploy/new.html.twig', [
             // 'environments' => $environmentRepository->findBy([], ['name' => 'ASC']),

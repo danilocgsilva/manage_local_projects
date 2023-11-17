@@ -16,7 +16,7 @@ class Deploy
     private ?int $id = null;
 
     #[ORM\ManyToMany(targetEntity: Environment::class, inversedBy: 'deploys')]
-    private Collection $environment;
+    private Collection $environments;
 
     #[ORM\ManyToMany(targetEntity: Receipt::class, inversedBy: 'deploys')]
     private Collection $receipts;
@@ -26,7 +26,7 @@ class Deploy
 
     public function __construct()
     {
-        $this->environment = new ArrayCollection();
+        $this->environments = new ArrayCollection();
         $this->receipts = new ArrayCollection();
     }
 
@@ -38,15 +38,15 @@ class Deploy
     /**
      * @return Collection<int, Environment>
      */
-    public function getEnvironment(): Collection
+    public function getEnvironments(): Collection
     {
-        return $this->environment;
+        return $this->environments;
     }
 
     public function addEnvironment(Environment $environment): static
     {
-        if (!$this->environment->contains($environment)) {
-            $this->environment->add($environment);
+        if (!$this->environments->contains($environment)) {
+            $this->environments->add($environment);
         }
 
         return $this;
@@ -54,7 +54,7 @@ class Deploy
 
     public function removeEnvironment(Environment $environment): static
     {
-        $this->environment->removeElement($environment);
+        $this->environments->removeElement($environment);
 
         return $this;
     }
