@@ -25,13 +25,23 @@ class DeployController extends AbstractController
     {
         $deploy = new Deploy();
         $form = $this->createForm(DeployNewType::class, $deploy, [
-            'receipt_list' => $receiptRepository->getReceiptsAsArray(),
-            'environment_list' => $environmentRepository->getEnvironmentsAsArray()
+            'receipt_list' => $receiptRepository->findBy([], ['receipt' => 'ASC']),
+            'environment_list' => $environmentRepository->findBy([], ['name' => 'ASC'])
         ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($deploy);
+            $manager->flush();
+
+            $this->addFlash('success', 'Deploy just created');
+
+            return $this->redirectToRoute('app_projects');
+        }
         
         return $this->render('deploy/new.html.twig', [
-            // 'environments' => $environmentRepository->findBy([], ['name' => 'ASC']),
-            // 'receipts' => $receiptRepository->findBy([], ['receipt' => 'ASC'])
             'form' => $form
         ]);
     }
