@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Deploys{% endblock %}
+
+{% block h1 %}Deploys{% endblock %}
+
+{% block body %}
+    {% if deploys|length > 0 %}
+        <ul>
+            {% for deploy in deploys %}
+                <li><a href="{{ path('app_show_deploy', {'deploy': deploy.id } ) }}">{{ deploy.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There's still no deploy registered</p>
+    {% endif %}
+{% endblock %}
