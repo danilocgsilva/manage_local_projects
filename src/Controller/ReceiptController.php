@@ -159,9 +159,63 @@ class ReceiptController extends AbstractController
     }
 
     #[Route('/receipt/{receipt}/capture', name: 'app_receipt_capture_file')]
-    public function captureFile()
+    public function captureFile(
+        Request $request,
+        PersistenceManagerRegistry $doctrine,
+        Receipt $receipt
+    ): Response
     {
-        $form = $this->createForm(CaptureFileType::class);
+        $form = $this->createForm(CaptureFileType::class, null, [
+            'path_data' => $request->query->get('path_provided')
+        ]);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+
+            $filePath = $form->getData()['file_path'];
+
+            if (!file_exists($filePath)) {
+
+                $this->addFlash(
+                    'error', 
+                    'The provided path does not exists!'
+                );
+                
+                return $this->redirectToRoute(
+                    'app_receipt_capture_file', 
+                    [
+                        'receipt' => $receipt->getId(),
+                        'path_provided' => $form->getData()['file_path']
+                    ]
+                );
+            }
+            
+            /*
+            $receiptName = $receipt->getReceipt();
+            $projectsString = implode(
+                ',', 
+                array_map(
+                    fn ($entry) => $entry->getName()
+                    , $receipt->getProjects()->toArray()
+                )
+            );
+            $manager->remove($receipt);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                sprintf(
+                    'Removed %s receipt from project %s', 
+                    $receiptName,
+                    $projectsString
+                )
+            );
+            */
+
+            return $this->redirectToRoute('app_receipt_index');
+        }
         
         return $this->render('receipt/capture.html.twig', [
             'form' => $form
