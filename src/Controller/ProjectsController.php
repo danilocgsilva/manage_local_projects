@@ -307,6 +307,7 @@ class ProjectsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $manager = $doctrine->getManager();
+            $deploy->setProject($project);
             $manager->persist($deploy);
             $manager->flush();
 

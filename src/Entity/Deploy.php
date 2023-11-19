@@ -24,6 +24,9 @@ class Deploy
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
+    #[ORM\ManyToOne(inversedBy: 'deployments')]
+    private ?Project $project = null;
+
     public function __construct()
     {
         $this->environments = new ArrayCollection();
@@ -91,6 +94,18 @@ class Deploy
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }

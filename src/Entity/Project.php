@@ -47,10 +47,14 @@ class Project
     #[ORM\ManyToMany(targetEntity: Receipt::class, mappedBy: 'projects')]
     private Collection $receipts;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: Deploy::class)]
+    private Collection $deployments;
+
     public function __construct()
     {
         $this->environment = new ArrayCollection();
         $this->receipts = new ArrayCollection();
+        $this->deployments = new ArrayCollection();
     }
 
 
@@ -157,6 +161,36 @@ class Project
     {
         if ($this->receipts->removeElement($receipt)) {
             $receipt->removeProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Deploy>
+     */
+    public function getDeployments(): Collection
+    {
+        return $this->deployments;
+    }
+
+    public function addDeployment(Deploy $deployment): static
+    {
+        if (!$this->deployments->contains($deployment)) {
+            $this->deployments->add($deployment);
+            $deployment->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDeployment(Deploy $deployment): static
+    {
+        if ($this->deployments->removeElement($deployment)) {
+            // set the owning side to null (unless already changed)
+            if ($deployment->getProject() === $this) {
+                $deployment->setProject(null);
+            }
         }
 
         return $this;

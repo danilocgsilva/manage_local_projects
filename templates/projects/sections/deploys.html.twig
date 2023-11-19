@@ -1,3 +1,14 @@
 <h2>Deploys</h2>
 
+{% if project.deployments|length > 0 %}
+    <ul>
+    {% for deploy in project.deployments %}
+        <li><a href="{{ path('app_show_deploy', { 'deploy': deploy.id } ) }}">{{ deploy.name }}</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No deployments registered yet for project.</p>
+{% endif %}
+
+
 <a href="{{ path('app_project_create_deploy', {'project': project.id}) }}" class="btn btn-primary">New Deploy Receipt</a>

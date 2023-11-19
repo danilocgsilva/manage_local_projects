@@ -11,10 +11,23 @@
         <li><a href="{{ path( 'app_show_environment', { 'environment': environment.id } ) }}">{{ environment.name }}</a></li>
     {% endfor %}
     </ul>
+
     <h2>Receipts:</h2>
     <ul>
     {% for receipt in deploy.receipts %}
         <li><a href="{{ path('app_receipt_show', { 'receipt': receipt.id } ) }}">{{ receipt.receipt }}</a></li>
     {% endfor %}
     </ul>
+
+    <h2>Project from deployment</h2>
+    {% if deploy.project %}
+        <p><a href="{{ path('app_projects_show', { 'project': deploy.project.id } ) }}">{{ deploy.project.name }}</a></p>
+    {% else %}
+        <p>No ptoject associated to this deployment.</p>
+    {% endif %}
+
+    <hr />
+	<p class="danger">Danger zone!</p>
+    <a href="{{ path('app_deploy_delete', { 'deploy': deploy.id })}}" class="btn btn-danger">Delete deployment</a>
+
 {% endblock %}

@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Deploy;
-use App\Repository\DeployRepository;
+use App\Repository\{DeployRepository, EnvironmentRepository, ReceiptRepository};
+use App\Form\{
+    DeleteType,
+    Deploy\DeployNewType
+};
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\EnvironmentRepository;
-use App\Repository\ReceiptRepository;
-use App\Form\Deploy\DeployNewType;
 
 class DeployController extends AbstractController
 {
@@ -60,6 +61,36 @@ class DeployController extends AbstractController
     {
         return $this->render('deploy/show.html.twig', [
             'deploy' => $deploy
+        ]);
+    }
+
+    #[Route('/deploy/{deploy}/delete', name: 'app_deploy_delete')]
+    public function delete(
+        PersistenceManagerRegistry $doctrine,
+        Deploy $deploy,
+        Request $request
+    ): Response
+    {
+        $form = $this->createForm(DeleteType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $manager = $doctrine->getManager();
+            $manager->remove($deploy);
+            $manager->flush();
+
+            $this->addFlash(
+                'success', 
+                'Deploy ' . $deploy->getName() . ' as been deleted.'
+            );
+
+            return $this->redirectToRoute('app_index_deploy');
+        }
+
+        return $this->render('deploy/delete.html.twig', [
+            'form' => $form,
         ]);
     }
 }
