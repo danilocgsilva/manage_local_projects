@@ -16,7 +16,6 @@
     <hr />
 {% endif %}
 
-
 <h3>Receipt files</h3>
 
 {% if receipt.receiptFiles|length > 0 %}
@@ -30,6 +29,7 @@
 {% endif %}
 
 <a href="{{ path('app_receipt_file_new', { receipt: receipt.id }) }}" class="btn btn-primary">Add a receipt file</a>
+<a href="{{ path('app_receipt_capture_file', {'receipt': receipt.id })}}" class="btn btn-primary">Capture File</a>
 <a href="{{ path('app_receipt_edit', { receipt: receipt.id }) }}" class="btn btn-primary">Edit</a>
 <a href="{{ path('app_receipt_download', { receipt: receipt.id } ) }}" class="btn btn-primary">Download</a>
 <hr />

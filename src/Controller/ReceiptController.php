@@ -2,14 +2,13 @@
 
 namespace App\Controller;
 
-use App\Form\Receipt\ReceiptType;
+use App\Entity\Receipt;
+use App\Form\Receipt\{RemoveReceiptType, CaptureFileType, ReceiptType};
 use App\Repository\ReceiptRepository;
+use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use App\Entity\Receipt;
-use App\Form\Receipt\RemoveReceiptType;
 use ZipArchive;
 
 class ReceiptController extends AbstractController
@@ -157,5 +156,15 @@ class ReceiptController extends AbstractController
         $zip->close();
 
         return $this->file($zipNamePath);
+    }
+
+    #[Route('/receipt/{receipt}/capture', name: 'app_receipt_capture_file')]
+    public function captureFile()
+    {
+        $form = $this->createForm(CaptureFileType::class);
+        
+        return $this->render('receipt/capture.html.twig', [
+            'form' => $form
+        ]);
     }
 }
