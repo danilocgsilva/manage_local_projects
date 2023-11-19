@@ -39,7 +39,7 @@ class DeployController extends AbstractController
 
             $this->addFlash('success', 'Deploy just created');
 
-            return $this->redirectToRoute('app_projects');
+            return $this->redirectToRoute('app_index_deploy');
         }
         
         return $this->render('deploy/new.html.twig', [

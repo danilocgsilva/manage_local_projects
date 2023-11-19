@@ -18,7 +18,8 @@ class DeployNewType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'Alias to determine the deploy',
-                'required' => true
+                'required' => true,
+                'data' => $options['default_deploy_name']
             ])
             ->add('environments', ChoiceType::class, [
                 'choices' => $options['environment_list'],
@@ -47,7 +48,8 @@ class DeployNewType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Deploy::class,
             'environment_list' => null,
-            'receipt_list' => null
+            'receipt_list' => null,
+            'default_deploy_name' => ''
         ]);
     }
 }

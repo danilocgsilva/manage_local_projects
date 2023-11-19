@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Repository\EnvironmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,15 +12,18 @@ use App\Entity\Project;
 use App\Form\Project\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use App\Entity\{GitAddress, Receipt, Environment};
-use App\Form\DeleteType;
-use App\Form\GitAddress\GitAddressType;
-use App\Form\Receipt\ReceiptType;
-use App\Form\Path\NewEnvironmentType;
-use App\Form\Project\ReceiptListType;
+use App\Entity\{GitAddress, Receipt, Environment, Deploy};
+use App\Form\{
+    DeleteType,
+    GitAddress\GitAddressType,
+    Receipt\ReceiptType,
+    Path\NewEnvironmentType,
+    Project\ReceiptListType
+};
 use App\Enums\ProjectType as EnumProjectType;
 use Exception;
 use App\Repository\ReceiptRepository;
+use App\Form\Deploy\DeployNewType;
 
 class ProjectsController extends AbstractController
 {
@@ -281,6 +285,26 @@ class ProjectsController extends AbstractController
             'project' => $project,
             'receipt' => $receipt,
             'form' => $form
+        ]);
+    }
+
+    #[Route('/project/{project}/deploy/new', name: 'app_project_create_deploy')]
+    public function createDeploy(
+        ReceiptRepository $receiptRepository,
+        EnvironmentRepository $environmentRepository,
+        Project $project
+    ): Response 
+    {
+        $deploy = new Deploy();
+        $form = $this->createForm(DeployNewType::class, $deploy, [
+            'receipt_list' => $receiptRepository->findBy([], ['receipt' => 'ASC']),
+            'environment_list' => $environmentRepository->findBy([], ['name' => 'ASC']),
+            'default_deploy_name' => $project->getName() . " Deploy"
+        ]);
+
+        return $this->render('deploy/new.html.twig', [
+            'form' => $form,
+            'project' => $project
         ]);
     }
 }

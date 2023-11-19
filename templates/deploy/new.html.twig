@@ -1,8 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create a deploy receipt{% endblock %}
+{% block title %}Create a deploy receipt
 
-{% block h1 %}Create a deploy receipt{% endblock %}
+    {% if project|default(null) %}
+for project {{project.name}}
+    {% endif %}
+
+{% endblock %}
+
+{% block h1 %}Create a deploy receipt
+
+    {% if project|default(null) %}
+for project {{project.name}}
+    {% endif %}
+
+{% endblock %}
 
 {% block body %}
     {{ form(form) }}
