@@ -7,55 +7,101 @@ namespace App\Tests\Controller;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\Project;
 use Faker\Factory;
-use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 
 class ProjectsControllerTest extends WebTestCase
 {
+    private $webClient;
+
+    public function setUp(): void
+    {
+        $this->webClient = static::createClient();
+    }
+    
     public function testProjectsRouteBasic(): void
     {
-        
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/projects');
+        $this->webClient->request('GET', '/projects');
 
         $this->assertResponseIsSuccessful();
     }
 
     public function testProjectNewRouteBasic(): void
     {
-        $client = static::createClient();
-        $crawler = $client->request('GET', '/projects/new');
+        $crawler = $this->webClient->request('GET', '/projects/new');
 
         $this->assertResponseIsSuccessful();
     }
 
     public function testPathShow(): void
     {
-        $client = static::createClient();
         self::bootKernel();
 
         $entityManager = static::$kernel->getContainer()
             ->get('doctrine.orm.entity_manager');
 
+        $project = $this->pullProjectFromDatabase($entityManager);
+
+        $this->webClient->request('GET', '/projects/' . $project->getId());
+
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testDeleteFormPath(): void
+    {
+        self::bootKernel();
+        $entityManager = static::$kernel->getContainer()
+            ->get('doctrine.orm.entity_manager');
+        $project = $this->pullProjectFromDatabase($entityManager);
+
+        $this->webClient->request('GET', '/projects/' . $project->getId() . '/delete');
+
+        $this->assertResponseIsSuccessful();
+    }
+
+    // public function testRemoval(): void
+    // {
+    //     self::bootKernel();
+    //     $entityManager = static::$kernel->getContainer()
+    //         ->get('doctrine.orm.entity_manager');
+    //     $project = $this->pullProjectFromDatabase($entityManager);
+    //     $projectRepository = $entityManager->getRepository(Project::class);
+    //     $foundProjects = $projectRepository->findAll();
+    //     $projectsCount = count($foundProjects);
+
+    //     $response = $this->webClient->request('DELETE', '/projects/' . $project->getId() . '/delete');
+
+
+
+    //     // $manager = $doctrine->getManager();
+    //     // $manager->remove($project);
+    //     // $manager->flush();
+
+    //     $manager = $entityManager->getManager();
+    //     $manager->remove($project);
+    //     $manager->flush();
+
+
+    //     // $this->assertEquals(204, $response->getStatusCode());
+    //     $this->assertSame(
+    //         $projectsCount - 1, 
+    //         count($projectRepository->findAll())
+    //     );
+    // }
+
+    private function pullProjectFromDatabase($entityManager)
+    {
         $projectRepository = $entityManager->getRepository(Project::class);
         $foundProjects = $projectRepository->findAll();
         if (count($foundProjects)) {
-            $projectId = $foundProjects[0]->getId();
-        } else {
-            $generator = Factory::create();
-            $project = new Project();
-            $project->setName($generator->name());
-
-            $manager = $entityManager->getManager();
-            
-            $manager->persist($project);
-            $manager->flush();
-
-            $projectId = $project->getId();
+            return $foundProjects[0];
         }
+        $generator = Factory::create();
+        $project = new Project();
+        $project->setName($generator->name());
 
+        $manager = $entityManager->getManager();
+        $manager->persist($project);
+        $manager->flush();
 
-        $crawler = $client->request('GET', '/projects/' . $projectId);
-
-        $this->assertResponseIsSuccessful();
+        return $project;
     }
 }
