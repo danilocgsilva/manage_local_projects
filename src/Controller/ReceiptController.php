@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use ZipArchive;
+use App\Entity\ReceiptFile;
 
 class ReceiptController extends AbstractController
 {
@@ -172,17 +173,10 @@ class ReceiptController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $doctrine->getManager();
 
             $filePath = $form->getData()['file_path'];
 
-            if (!file_exists($filePath)) {
-
-                $this->addFlash(
-                    'error', 
-                    'The provided path does not exists!'
-                );
-                
+            $returnInError = function($receipt, $form) {
                 return $this->redirectToRoute(
                     'app_receipt_capture_file', 
                     [
@@ -190,29 +184,49 @@ class ReceiptController extends AbstractController
                         'path_provided' => $form->getData()['file_path']
                     ]
                 );
+            };
+
+            if (!file_exists($filePath)) {
+
+                $this->addFlash(
+                    'error', 
+                    'The provided path does not exists or ths system does not have permission to reach it!'
+                );
+                
+                return $returnInError($receipt, $form);
+            }
+
+            if (!($fileResource = fopen($filePath, "r"))) {
+                $this->addFlash(
+                    'error', 
+                    'The file exists, but is not readable.'
+                );
+
+                return $returnInError($receipt, $form);
             }
             
-            /*
-            $receiptName = $receipt->getReceipt();
-            $projectsString = implode(
-                ',', 
-                array_map(
-                    fn ($entry) => $entry->getName()
-                    , $receipt->getProjects()->toArray()
-                )
-            );
-            $manager->remove($receipt);
+            $fileContent = fread($fileResource, filesize($filePath));
+            fclose($fileResource);
+
+            $receiptFile = (new ReceiptFile())
+                ->setPath(
+                    $filePath
+                )->setContent(
+                    $fileContent
+                );
+
+            $manager = $doctrine->getManager();
+
+            $manager->persist($receiptFile);
+            
+            $receipt->addReceiptFile($receiptFile);
+            $manager->persist($receipt);
             $manager->flush();
 
             $this->addFlash(
                 'success', 
-                sprintf(
-                    'Removed %s receipt from project %s', 
-                    $receiptName,
-                    $projectsString
-                )
+                'Receipt file just added to the receipt.'
             );
-            */
 
             return $this->redirectToRoute('app_receipt_index');
         }
