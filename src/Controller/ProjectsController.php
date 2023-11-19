@@ -292,7 +292,9 @@ class ProjectsController extends AbstractController
     public function createDeploy(
         ReceiptRepository $receiptRepository,
         EnvironmentRepository $environmentRepository,
-        Project $project
+        Project $project,
+        Request $request, 
+        PersistenceManagerRegistry $doctrine,
     ): Response 
     {
         $deploy = new Deploy();
@@ -301,6 +303,17 @@ class ProjectsController extends AbstractController
             'environment_list' => $environmentRepository->findBy([], ['name' => 'ASC']),
             'default_deploy_name' => $project->getName() . " Deploy"
         ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($deploy);
+            $manager->flush();
+
+            $this->addFlash('success', 'Deploy just created for project ' . $project->getName());
+
+            return $this->redirectToRoute('app_projects_show', ['project' => $project->getId()]);
+        }
 
         return $this->render('deploy/new.html.twig', [
             'form' => $form,

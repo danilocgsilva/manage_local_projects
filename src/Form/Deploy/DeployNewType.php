@@ -27,7 +27,7 @@ class DeployNewType extends AbstractType
                 'label' => 'Environment',
                 'expanded' => true,
                 'multiple' => true,
-                'data' => [''],
+                'data' => [],
             ])
             ->add('receipts', ChoiceType::class, [
                 'choices' => $options['receipt_list'],
@@ -35,7 +35,7 @@ class DeployNewType extends AbstractType
                 'label' => 'Receipt',
                 'expanded' => true,
                 'multiple' => true,
-                'data' => [''],
+                'data' => [],
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Save'
