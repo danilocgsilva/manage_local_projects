@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Controller;
 
+use App\Enums\ProjectType;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Entity\Project;
 use Faker\Factory;
@@ -57,35 +58,26 @@ class ProjectsControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    // public function testRemoval(): void
-    // {
-    //     self::bootKernel();
-    //     $entityManager = static::$kernel->getContainer()
-    //         ->get('doctrine.orm.entity_manager');
-    //     $project = $this->pullProjectFromDatabase($entityManager);
-    //     $projectRepository = $entityManager->getRepository(Project::class);
-    //     $foundProjects = $projectRepository->findAll();
-    //     $projectsCount = count($foundProjects);
+    public function testRemoval(): void
+    {
+        self::bootKernel();
+        $entityManager = static::$kernel->getContainer()
+            ->get('doctrine.orm.entity_manager');
+        $project = $this->pullProjectFromDatabase($entityManager);
+        $projectRepository = $entityManager->getRepository(Project::class);
+        $foundProjects = $projectRepository->findAll();
+        $projectsCount = count($foundProjects);
 
-    //     $response = $this->webClient->request('DELETE', '/projects/' . $project->getId() . '/delete');
+        $crawler = $this->webClient->request('GET', '/projects/' . $project->getId() . '/delete');
+        $form = $crawler->selectButton('delete_submit')->form();
+        $this->webClient->submit($form);
+        $this->assertTrue($this->webClient->getResponse()->isRedirect());
 
-
-
-    //     // $manager = $doctrine->getManager();
-    //     // $manager->remove($project);
-    //     // $manager->flush();
-
-    //     $manager = $entityManager->getManager();
-    //     $manager->remove($project);
-    //     $manager->flush();
-
-
-    //     // $this->assertEquals(204, $response->getStatusCode());
-    //     $this->assertSame(
-    //         $projectsCount - 1, 
-    //         count($projectRepository->findAll())
-    //     );
-    // }
+        $this->assertSame(
+            $projectsCount - 1, 
+            count($projectRepository->findAll())
+        );
+    }
 
     private function pullProjectFromDatabase($entityManager)
     {
@@ -97,10 +89,10 @@ class ProjectsControllerTest extends WebTestCase
         $generator = Factory::create();
         $project = new Project();
         $project->setName($generator->name());
+        $project->setType(ProjectType::Normal->name);
 
-        $manager = $entityManager->getManager();
-        $manager->persist($project);
-        $manager->flush();
+        $entityManager->persist($project);
+        $entityManager->flush();
 
         return $project;
     }
