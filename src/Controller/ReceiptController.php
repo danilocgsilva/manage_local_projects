@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use ZipArchive;
 use App\Entity\ReceiptFile;
+use Exception;
 
 class ReceiptController extends AbstractController
 {
@@ -146,17 +147,20 @@ class ReceiptController extends AbstractController
     ): Response
     {
         $zipName = $receipt->getReceipt() . ".zip";
+        $zipName = "receiptwithoutspaces.zip";
         $zipNamePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $zipName;
         $zip = new ZipArchive();
-        $zip->open($zipNamePath, ZipArchive::CREATE | ZipArchive::OVERWRITE);
-
-        foreach ($receipt->getReceiptFiles() as $file) {
-            $zip->addFromString($file->getPath(), $file->getContent());
+        if ($zip->open($zipNamePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
+            foreach ($receipt->getReceiptFiles() as $file) {
+                $zip->addFromString($file->getPath(), $file->getContent());
+            }
+    
+            $zip->close();
+    
+            return $this->file($zipNamePath);
+        } else {
+            throw new Exception("The file zip could not be created.");
         }
-
-        $zip->close();
-
-        return $this->file($zipNamePath);
     }
 
     #[Route('/receipt/{receipt}/capture', name: 'app_receipt_capture_file')]
