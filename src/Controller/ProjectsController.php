@@ -17,8 +17,8 @@ use App\Form\{
     DeleteType,
     GitAddress\GitAddressType,
     Receipt\ReceiptType,
-    Path\NewEnvironmentType,
-    Project\ReceiptListType
+    Project\ReceiptListType,
+    Environment\NewEnvironmentType
 };
 use App\Enums\ProjectType as EnumProjectType;
 use Exception;

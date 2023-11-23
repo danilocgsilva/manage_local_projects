@@ -79,6 +79,18 @@ class ProjectsControllerTest extends WebTestCase
         );
     }
 
+    public function testCreateEnvironmentForProjectTest(): void
+    {
+        self::bootKernel();
+        $entityManager = static::$kernel->getContainer()
+            ->get('doctrine.orm.entity_manager');
+        $testProject = $this->pullProjectFromDatabase($entityManager);
+        
+        $path = 'projects/' . ($projectId = $testProject->getId()) . '/environment/new';
+        $crawler = $this->webClient->request('GET', $path);
+        $this->assertResponseIsSuccessful();
+    }
+
     private function pullProjectFromDatabase($entityManager)
     {
         $projectRepository = $entityManager->getRepository(Project::class);
