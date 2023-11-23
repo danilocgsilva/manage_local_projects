@@ -146,12 +146,21 @@ class ReceiptController extends AbstractController
         Receipt $receipt
     ): Response
     {
+        $receiptFiles = array_map(fn ($entry) => $file, $receipt->getReceiptFiles()->toArray());
+        if (count($receiptFiles) === 0) {
+            $this->addFlash(
+                'success',
+                'No files from receipt.',
+            );
+            return $this->redirectToRoute('app_receipt_show', ['receipt' => $receipt->getReceipt()]);
+        }
+        
         $zipName = $receipt->getReceipt() . ".zip";
         $zipName = "receiptwithoutspaces.zip";
         $zipNamePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $zipName;
         $zip = new ZipArchive();
         if ($zip->open($zipNamePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
-            foreach ($receipt->getReceiptFiles() as $file) {
+            foreach ($receiptFiles as $file) {
                 $zip->addFromString($file->getPath(), $file->getContent());
             }
     
