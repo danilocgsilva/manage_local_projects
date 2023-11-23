@@ -91,4 +91,18 @@ class EnvironmentController extends AbstractController
             'form'=> $form
         ]);
     }
+
+    #[Route('/environment/{receipt}/edit', name: 'app_receipt_edit')]
+    public function edit(
+        Request $request,
+        Environment $environment,
+        PersistenceManagerRegistry $doctrine
+    )
+    {
+        $form = $this->createForm(NewEnvironmentType::class, $environment);
+
+        return $this->render('environments/new.html.twig', [
+            'form' => $form,
+        ]);
+    }
 }
