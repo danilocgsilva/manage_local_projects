@@ -228,7 +228,7 @@ class ProjectsController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $receiptChoosen = $receiptRepository->find(
                 $receiptRepository->find(
-                    $form->getData()['receipt']
+                    $form->getData()->getReceipt()
                 )
             );
             $project->addReceipt($receiptChoosen);
