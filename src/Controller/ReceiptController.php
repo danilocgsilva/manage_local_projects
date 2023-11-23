@@ -152,7 +152,7 @@ class ReceiptController extends AbstractController
                 'success',
                 'No files from receipt.',
             );
-            return $this->redirectToRoute('app_receipt_show', ['receipt' => $receipt->getReceipt()]);
+            return $this->redirectToRoute('app_receipt_show', ['receipt' => $receipt->getId()]);
         }
         
         $zipName = $receipt->getReceipt() . ".zip";
