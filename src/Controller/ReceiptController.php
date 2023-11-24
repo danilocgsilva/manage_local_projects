@@ -156,7 +156,6 @@ class ReceiptController extends AbstractController
         }
         
         $zipName = $receipt->getReceipt() . ".zip";
-        $zipName = "receiptwithoutspaces.zip";
         $zipNamePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $zipName;
         $zip = new ZipArchive();
         if ($zip->open($zipNamePath, ZipArchive::CREATE | ZipArchive::OVERWRITE) === true) {
