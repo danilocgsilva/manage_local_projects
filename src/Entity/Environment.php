@@ -33,7 +33,7 @@ class Environment
     #[ORM\OneToMany(mappedBy: 'environment', targetEntity: DatabaseCredentials::class)]
     private Collection $databaseCredentials;
 
-    #[ORM\ManyToMany(targetEntity: Deploy::class, mappedBy: 'encironments')]
+    #[ORM\ManyToMany(targetEntity: Deploy::class, mappedBy: 'environments')]
     private Collection $deploys;
 
     public function __construct()
@@ -183,7 +183,7 @@ class Environment
     {
         if (!$this->deploys->contains($deploy)) {
             $this->deploys->add($deploy);
-            $deploy->addEncironment($this);
+            $deploy->addEnvironment($this);
         }
 
         return $this;
@@ -192,7 +192,7 @@ class Environment
     public function removeDeploy(Deploy $deploy): static
     {
         if ($this->deploys->removeElement($deploy)) {
-            $deploy->removeEncironment($this);
+            $deploy->removeEnvironment($this);
         }
 
         return $this;

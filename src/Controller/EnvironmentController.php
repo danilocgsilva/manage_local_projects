@@ -153,6 +153,9 @@ class EnvironmentController extends AbstractController
                 )
             );
 
+            return $this->redirectToRoute('app_environments');
+        }
+
         return $this->render('environments/remove.html.twig', [
             'form' => $form,
             'environment' => $environment

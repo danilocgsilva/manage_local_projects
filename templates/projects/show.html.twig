@@ -1,10 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProjectsController!
-{% endblock %}
+{% block title %}Project {{ project.name }}{% endblock %}
 
-{% block h1 %}Project:
-	{{ project.name }}
+{% block h1 %}Project: {{ project.name }}
 {% endblock %}
 
 {% block body %}
