@@ -18,7 +18,7 @@ use App\Form\{
     GitAddress\GitAddressType,
     Receipt\ReceiptType,
     Project\ReceiptListType,
-    Environment\NewEnvironmentType
+    Environment\EnvironmentType
 };
 use App\Enums\ProjectType as EnumProjectType;
 use Exception;
@@ -120,7 +120,9 @@ class ProjectsController extends AbstractController
     {
         $environment = new Environment();
         $environment->addProject($project);
-        $form = $this->createForm(NewEnvironmentType::class, $environment);
+        $form = $this->createForm(EnvironmentType::class, $environment, [
+            'submit_label' => "Add environment"
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

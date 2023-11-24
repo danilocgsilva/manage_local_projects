@@ -39,10 +39,12 @@
 		<p>Still no project added to current environment</p>
 	{% endif %}
 
+	<a href="{{path('app_environment_edit', {'environment': environment.id} )}}" class="btn btn-primary">Edit</a>
+
 
 	{% if currentSystem() != environment.unameNFingerprint %}
-		<hr/>
-		<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
+	<hr/>
+	<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
 	{% endif %}
 
 	<hr />

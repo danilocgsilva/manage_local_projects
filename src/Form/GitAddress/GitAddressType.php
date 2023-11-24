@@ -23,7 +23,6 @@ class GitAddressType extends AbstractType
         ;
     }
 
-    
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired([

@@ -41,7 +41,7 @@ class ReceiptControllerTest extends WebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    public function getReceiptFromDatabase($entityManager)
+    public function getReceiptFromDatabase($entityManager): Receipt
     {
         $receiptRepository = $entityManager->getRepository(Receipt::class);
         $foundReceipts = $receiptRepository->findAll();

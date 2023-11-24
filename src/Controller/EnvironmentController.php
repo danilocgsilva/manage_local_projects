@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Environment;
-use App\Form\Environment\{BindReceiptType, NewEnvironmentType};
+use App\Form\Environment\{BindReceiptType, EnvironmentType};
 use App\Repository\EnvironmentRepository;
 use App\Services\Environment as EnvironmentService;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
@@ -31,7 +31,9 @@ class EnvironmentController extends AbstractController
     ): Response
     {
         $environment = new Environment();
-        $form = $this->createForm(NewEnvironmentType::class, $environment);
+        $form = $this->createForm(EnvironmentType::class, $environment, [
+            'submit_label' => 'Add environment'
+        ]);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -92,16 +94,35 @@ class EnvironmentController extends AbstractController
         ]);
     }
 
-    #[Route('/environment/{receipt}/edit', name: 'app_receipt_edit')]
+    #[Route('/environment/{environment}/edit', name: 'app_environment_edit')]
     public function edit(
         Request $request,
         Environment $environment,
         PersistenceManagerRegistry $doctrine
-    )
+    ): Response
     {
-        $form = $this->createForm(NewEnvironmentType::class, $environment);
+        $form = $this->createForm(EnvironmentType::class, $environment, [
+            'submit_label' => 'Alter environment'
+        ]);
 
-        return $this->render('environments/new.html.twig', [
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($environment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                'Updated environment',
+            );
+
+            return $this->redirectToRoute('app_show_environment', [
+                'environment' => $environment->getId()
+            ]);
+        }
+
+        return $this->render('environments/edit.html.twig', [
             'form' => $form,
         ]);
     }

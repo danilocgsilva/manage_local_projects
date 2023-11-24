@@ -10,14 +10,14 @@ use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NewEnvironmentType extends AbstractType
+class EnvironmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class)
             ->add('submit', SubmitType::class, [
-                'label' => 'Add Environment'
+                'label' => $options['submit_label']
             ])
         ;
     }
@@ -26,6 +26,10 @@ class NewEnvironmentType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Environment::class
+        ]);
+
+        $resolver->setRequired([
+            'submit_label'
         ]);
     }
 }
