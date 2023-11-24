@@ -1,9 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Delete environment{% endblock %}
+{% block title %}Delete environment {{environment.id}}{% endblock %}
 
-{% block h1 %}Delete Environment{% endblock %}
+{% block h1 %}Delete Environment {{environment.id}}{% endblock %}
+
 
 {% block body %}
+    <p>Are you sure to delete the environment {{environment.name}}? This action is undonable!<p>
     {{ form(form) }}
 {% endblock %}

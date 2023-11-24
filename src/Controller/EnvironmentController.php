@@ -128,7 +128,7 @@ class EnvironmentController extends AbstractController
         ]);
     }
 
-    #[Route('/environment/{receipt}/delete', name: 'app_environment_delete')]
+    #[Route('/environment/{environment}/delete', name: 'app_environment_delete')]
     public function delete(
         Request $request,
         PersistenceManagerRegistry $doctrine,
@@ -136,6 +136,22 @@ class EnvironmentController extends AbstractController
     ): Response
     {
         $form = $this->createForm(DeleteType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $environmentName = $environment->getName();
+            $manager = $doctrine->getManager();
+            $manager->remove($environment);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                sprintf(
+                    'The environment %s has been deleted!',
+                    $environmentName
+                )
+            );
 
         return $this->render('environments/remove.html.twig', [
             'form' => $form,
