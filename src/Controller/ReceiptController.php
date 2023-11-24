@@ -146,7 +146,7 @@ class ReceiptController extends AbstractController
         Receipt $receipt
     ): Response
     {
-        $receiptFiles = array_map(fn ($entry) => $file, $receipt->getReceiptFiles()->toArray());
+        $receiptFiles = array_map(fn ($entry) => $entry, $receipt->getReceiptFiles()->toArray());
         if (count($receiptFiles) === 0) {
             $this->addFlash(
                 'success',
