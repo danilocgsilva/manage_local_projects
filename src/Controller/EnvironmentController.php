@@ -12,6 +12,7 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
+use App\Form\DeleteType;
 
 class EnvironmentController extends AbstractController
 {
@@ -124,6 +125,21 @@ class EnvironmentController extends AbstractController
 
         return $this->render('environments/edit.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/environment/{receipt}/delete', name: 'app_environment_delete')]
+    public function delete(
+        Request $request,
+        PersistenceManagerRegistry $doctrine,
+        Environment $environment
+    ): Response
+    {
+        $form = $this->createForm(DeleteType::class);
+
+        return $this->render('environments/remove.html.twig', [
+            'form' => $form,
+            'environment' => $environment
         ]);
     }
 }

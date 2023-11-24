@@ -30,7 +30,6 @@ class DatabaseCredentialsController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-
             $databaseCredential->setPassword(
                 $encryptionService->encryptData(
                     $databaseCredential->getPassword()
@@ -115,8 +114,16 @@ class DatabaseCredentialsController extends AbstractController
         $form = $this->createForm(DatabaseCredentialType::class , $databaseCredentials, [
             'submitLabel' => 'Alter'
         ]);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $databaseCredentials->setPassword(
+                $encryptionService->encryptData(
+                    $databaseCredentials->getPassword()
+                )
+            );
+            
             $manager = $doctrine->getManager();
             $manager->persist($databaseCredentials);
             $manager->flush();
