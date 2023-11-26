@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Environment;
-use App\Form\Environment\{BindReceiptType, EnvironmentType};
+use App\Form\Environment\{BindDatabaseCredentialType, EnvironmentType};
 use App\Repository\EnvironmentRepository;
 use App\Services\Environment as EnvironmentService;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\DeleteType;
+use App\Form\{DeleteType};
+use App\Repository\DatabaseCredentialsRepository;
 
 class EnvironmentController extends AbstractController
 {
@@ -80,21 +81,6 @@ class EnvironmentController extends AbstractController
         );
     }
 
-    #[Route('/environment/{environment}/bind_receipt', name: 'app_environment_bind_receipt')]
-    public function bindReceipt(Environment $environment)
-    {
-        $form = $this->createForm(BindReceiptType::class, null, [
-            'choices' => [
-                'receipt1' => 'receipt1',
-                'receipt2' => 'receipt2'
-            ]
-        ]);
-
-        return $this->render('environments/bind_receipt.html.twig', [
-            'form'=> $form
-        ]);
-    }
-
     #[Route('/environment/{environment}/edit', name: 'app_environment_edit')]
     public function edit(
         Request $request,
@@ -159,6 +145,36 @@ class EnvironmentController extends AbstractController
         return $this->render('environments/remove.html.twig', [
             'form' => $form,
             'environment' => $environment
+        ]);
+    }
+
+    #[Route('/environments/{environment}/bind_database_credential', name: 'app_environment_bind_database_credential')]
+    public function bindDatabaseCredential(
+        Request $request,
+        PersistenceManagerRegistry $doctrine,
+        Environment $environment,
+        DatabaseCredentialsRepository $databaseCredentialsRepository
+    ): Response
+    {
+        $form = $this->createForm(BindDatabaseCredentialType::class, $environment, [
+            'database_credential_list' => $databaseCredentialsRepository->findBy([], ['name' => 'ASC'])
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->persist($environment);
+            $manager->flush();
+            
+            $this->addFlash('success', 'Bind done');
+
+            return $this->redirectToRoute('app_show_environment', [
+                'environment' => $environment->getId()
+            ]);
+        }
+        
+        return $this->render('environments/bind_database_credential.html.twig', [
+            'form' => $form
         ]);
     }
 }

@@ -41,14 +41,14 @@
 
 	<a href="{{path('app_environment_edit', {'environment': environment.id} )}}" class="btn btn-primary">Edit</a>
 
+	<a href="{{ path('app_environment_bind_database_credential', { 'environment': environment.id } )}}" class="btn btn-primary">Bind a database credential</a>
+
 
 	{% if currentSystem() != environment.unameNFingerprint %}
 	<hr/>
 	<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
 	{% endif %}
 
-	<hr />
-	<a href="{{ path('app_environment_bind_receipt', { environment: environment.id }) }}" class="btn btn-primary">Bind a receipt</a>
 	<hr />
 
 	<p class="danger">Danger zone!</p>
