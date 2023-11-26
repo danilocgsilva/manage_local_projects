@@ -68,7 +68,6 @@ class ReceiptControllerTest extends WebTestCase
         $receipt->setReceipt($generator->name());
 
         $manager = $entityManager->getManager();
-        
         $manager->persist($receipt);
         $manager->flush();
 

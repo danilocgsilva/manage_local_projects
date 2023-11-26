@@ -1,11 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ environment.name }}
-{% endblock %}
+{% block title %}Environment: {{ environment.name }}{% endblock %}
 
-{% block h1 %}
-	{{ environment.name }}
-{% endblock %}
+{% block h1 %}Environment: {{ environment.name }}{% endblock %}
 
 {% block body %}
 
@@ -27,7 +24,7 @@
 
 	{% if environment.projects|length > 0  %}
 
-		<p>This environment hosts:</p>
+		<p>This environment may host:</p>
 		<ul>
 			{% for project in environment.projects %}
 				<li>
@@ -40,6 +37,20 @@
 	{% endif %}
 
 	<a href="{{path('app_environment_edit', {'environment': environment.id} )}}" class="btn btn-primary">Edit</a>
+
+	<hr />
+
+	<h2>Database Credentials</h2>
+
+	{% if environment.databaseCredentials|length > 0 %}
+		<ul>
+		{% for database_credential in environment.databaseCredentials %}
+			<li><a href="{{path('app_show_database_credentials', {'database_credentials': database_credential.id})}}">{{ database_credential.name }}</a></li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>There's no database credential binded to the environment</p>
+	{% endif %}
 
 	<a href="{{ path('app_environment_bind_database_credential', { 'environment': environment.id } )}}" class="btn btn-primary">Bind a database credential</a>
 

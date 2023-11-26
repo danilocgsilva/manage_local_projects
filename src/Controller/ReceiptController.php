@@ -69,7 +69,7 @@ class ReceiptController extends AbstractController
 
             $this->addFlash(
                 'success',
-                'Updated receipt',
+                'Updated receipt'
             );
 
             return $this->redirectToRoute('app_receipt_show', [
