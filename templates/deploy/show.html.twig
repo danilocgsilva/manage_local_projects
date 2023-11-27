@@ -6,18 +6,29 @@
 
 {% block body %}
     <h2>Environments:</h2>
+
+    {% if deploy.environments|length > 0 %}
     <ul>
     {% for environment in deploy.environments %}
         <li><a href="{{ path( 'app_show_environment', { 'environment': environment.id } ) }}">{{ environment.name }}</a></li>
     {% endfor %}
     </ul>
+    {% else %}
+        <p>Still no environment related to the deploy.</p>
+    {% endif %}
+
 
     <h2>Receipts:</h2>
-    <ul>
-    {% for receipt in deploy.receipts %}
-        <li><a href="{{ path('app_receipt_show', { 'receipt': receipt.id } ) }}">{{ receipt.receipt }}</a></li>
-    {% endfor %}
-    </ul>
+
+    {% if deploy.receipts %}
+        <ul>
+        {% for receipt in deploy.receipts %}
+            <li><a href="{{ path('app_receipt_show', { 'receipt': receipt.id } ) }}">{{ receipt.receipt }}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>Still no receipts assigned to this deploy.</p>
+    {% endif %}
 
     <h2>Project from deployment</h2>
     {% if deploy.project %}
