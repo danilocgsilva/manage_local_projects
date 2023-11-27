@@ -37,6 +37,7 @@
         <p>No ptoject associated to this deployment.</p>
     {% endif %}
 
+    <a href="#" class="btn btn-primary">Deploy</a>
     <hr />
 	<p class="danger">Danger zone!</p>
     <a href="{{ path('app_deploy_delete', { 'deploy': deploy.id })}}" class="btn btn-danger">Delete deployment</a>

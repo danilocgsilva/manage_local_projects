@@ -93,4 +93,9 @@ class DeployController extends AbstractController
             'form' => $form,
         ]);
     }
+
+    #[Route('/deplou/make', name: 'app_make_deploy')]
+    public function makeDeploy(Request $request): Response
+    {
+    }
 }

@@ -13,6 +13,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use PDO;
+use PDOException;
 
 class DatabaseCredentialsController extends AbstractController
 {
@@ -42,7 +44,9 @@ class DatabaseCredentialsController extends AbstractController
 
             $this->addFlash('success', 'Database credentials has been successfully registered!');
 
-            return $this->redirectToRoute('app_show_database_credentials', ['database_credentials' => $databaseCredential->getId() ]);
+            return $this->redirectToRoute('app_show_database_credentials', [
+                'database_credentials' => $databaseCredential->getId() 
+            ]);
         }
 
         return $this->render('database_credentials/new.html.twig', [
@@ -146,6 +150,40 @@ class DatabaseCredentialsController extends AbstractController
         
         return $this->render('database_credentials/new.html.twig', [
             'form' => $form
+        ]);
+    }
+
+    #[Route('/database_credentials/{databaseCredentials}/test', name: 'app_check_database_credentials')]
+    public function check(
+        Request $request,
+        DatabaseCredentials $databaseCredentials,
+        EncryptionService $encryptionService
+    ): Response
+    {
+        try {
+            new PDO(
+                sprintf(
+                    'mysql:host=%s;dbname=%s',
+                    $databaseCredentials->getHost(),
+                    $databaseCredentials->getName()
+                ),
+                $databaseCredentials->getUser(), 
+                $encryptionService->decryptData($databaseCredentials->getPassword())
+            );
+
+            $this->addFlash(
+                'success', 
+                'The database has been reached!'
+            );
+        } catch (PDOException $e) {
+            $this->addFlash(
+                'error', 
+                'The database could not be reached! Chech if there are some error or if the database is reachable from current application.'
+            );
+        }
+
+        return $this->redirectToRoute('app_show_database_credentials', [
+            'database_credentials' => $databaseCredentials->getId()
         ]);
     }
 }

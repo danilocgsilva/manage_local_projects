@@ -12,6 +12,7 @@
 	<p>Port: {{ database_credentials.port }}</p>
 
 	<a class="btn btn-primary" href="{{ path('app_edit_database_credentials', { 'databaseCredentials': database_credentials.id }) }}">Edit</a>
+	<a class="btn btn-primary" href="{{ path('app_check_database_credentials', { 'databaseCredentials': database_credentials.id })}}">Test</a>
 
 	<hr/>
 
