@@ -161,7 +161,7 @@ class DatabaseCredentialsController extends AbstractController
     ): Response
     {
         $dbHost = $databaseCredentials->getHost();
-        $dbName = $databaseCredentials->getName();
+        $dbName = $databaseCredentials->getDatabaseName();
         $dbUser = $databaseCredentials->getUser();
         $dbPass = $encryptionService->decryptData($databaseCredentials->getPassword());
 
