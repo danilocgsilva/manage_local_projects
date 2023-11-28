@@ -164,9 +164,14 @@ class DatabaseCredentialsController extends AbstractController
         $dbName = $databaseCredentials->getDatabaseName();
         $dbUser = $databaseCredentials->getUser();
         $dbPass = $encryptionService->decryptData($databaseCredentials->getPassword());
+        $dbPort = $databaseCredentials->getPort();
 
         try {
-            new PDO(sprintf('mysql:host=%s;dbname=%s', $dbHost, $dbName), $dbUser, $dbPass);
+            if ($dbPort) {
+                new PDO(sprintf('mysql:host=%s;dbname=%s;port=%s', $dbHost, $dbName, $dbPort), $dbUser, $dbPass);
+            } else {
+                new PDO(sprintf('mysql:host=%s;dbname=%s', $dbHost, $dbName), $dbUser, $dbPass);
+            }
 
             $this->addFlash(
                 'success', 
