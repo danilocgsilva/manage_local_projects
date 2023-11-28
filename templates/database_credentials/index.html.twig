@@ -9,7 +9,7 @@
     {% if database_credentials|length > 0 %}
         <ul>
             {% for database_credential in database_credentials %}
-                <li><a href="{{ path('app_show_database_credentials', { database_credentials: database_credential.id } ) }}">{{ database_credential.name | default(database_credential.id) }}</a></li>
+                <li><a href="{{ path('app_show_database_credentials', { database_credentials: database_credential.id } ) }}">{{ database_credential.credentialsName | default(database_credential.id) }}</a></li>
             {% endfor %}
         </ul>
     {% else %}

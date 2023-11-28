@@ -29,7 +29,10 @@ class DatabaseCredentials
     private ?Environment $environment = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $name = null;
+    private ?string $credentialsName = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $databaseName = null;
 
     public function getId(): ?int
     {
@@ -96,14 +99,26 @@ class DatabaseCredentials
         return $this;
     }
 
-    public function getName(): ?string
+    public function getCredentialsName(): ?string
     {
-        return $this->name;
+        return $this->credentialsName;
     }
 
-    public function setName(?string $name): static
+    public function setCredentialsName(?string $credentialsName): static
     {
-        $this->name = $name;
+        $this->credentialsName = $credentialsName;
+
+        return $this;
+    }
+
+    public function getDatabaseName(): ?string
+    {
+        return $this->databaseName;
+    }
+
+    public function setDatabaseName(string $databaseName): static
+    {
+        $this->databaseName = $databaseName;
 
         return $this;
     }

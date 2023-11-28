@@ -15,7 +15,8 @@ class DatabaseCredentialType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
+            ->add('credentialsName', TextType::class)
+            ->add('databaseName', TextType::class)
             ->add('user', TextType::class)
             ->add('password', TextType::class)
             ->add('host', TextType::class)

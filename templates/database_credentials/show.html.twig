@@ -1,11 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Database credential: {{ database_credentials.name }}{% endblock %}
+{% block title %}Database credential: {{ database_credentials.credentialsName }}{% endblock %}
 
-{% block h1 %}Database credential: {{ database_credentials.name }}{% endblock %}
+{% block h1 %}Database credential: {{ database_credentials.credentialsName }}{% endblock %}
 
 {% block body %}
 
+	<p>Credential Name: {{ database_credentials.credentialsName }}</p>
+	<p>Database Name: {{ database_credentials.databaseName }}</p>
 	<p>Host: {{ database_credentials.host }}</p>
 	<p>User: {{ database_credentials.user }}</p>
 	<p>Password: {{ database_credentials.password }}</p>
