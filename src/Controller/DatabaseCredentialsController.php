@@ -160,16 +160,13 @@ class DatabaseCredentialsController extends AbstractController
         EncryptionService $encryptionService
     ): Response
     {
+        $dbHost = $databaseCredentials->getHost();
+        $dbName = $databaseCredentials->getName();
+        $dbUser = $databaseCredentials->getUser();
+        $dbPass = $encryptionService->decryptData($databaseCredentials->getPassword());
+
         try {
-            new PDO(
-                sprintf(
-                    'mysql:host=%s;dbname=%s',
-                    $databaseCredentials->getHost(),
-                    $databaseCredentials->getName()
-                ),
-                $databaseCredentials->getUser(), 
-                $encryptionService->decryptData($databaseCredentials->getPassword())
-            );
+            new PDO(sprintf('mysql:host=%s;dbname=%s', $dbHost, $dbName), $dbUser, $dbPass);
 
             $this->addFlash(
                 'success', 
