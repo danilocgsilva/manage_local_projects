@@ -18,6 +18,7 @@ use App\Form\{
     GitAddress\GitAddressType,
     Receipt\ReceiptType,
     Project\ReceiptListType,
+    Project\BindEnvironmentType,
     Environment\EnvironmentType
 };
 use App\Enums\ProjectType as EnumProjectType;
@@ -319,6 +320,23 @@ class ProjectsController extends AbstractController
         }
 
         return $this->render('deploy/new.html.twig', [
+            'form' => $form,
+            'project' => $project
+        ]);
+    }
+
+    #[Route('/project/{project}/environment/bind', name: 'app_project_bind_environment')]
+    public function bindEnvironment(
+        Project $project,
+        EnvironmentRepository $environmentRepository,
+    ): Response
+    {
+        $form = $this->createForm(BindEnvironmentType::class, null, [
+            'environments_list' => $environmentRepository->findBy([], ['name' => 'ASC']),
+            'label' => 'Bind a receipt to project ' . $project->getName()
+        ]);
+        
+        return $this->render('projects/bindEnvironment.html.twig', [
             'form' => $form,
             'project' => $project
         ]);

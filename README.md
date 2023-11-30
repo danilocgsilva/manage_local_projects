@@ -12,6 +12,8 @@ The remote git address for the project.
 
 ## An environment can belongs to a project
 
+Can be a *computer*, or a node where project data exists. A project can have several environments.
+
 And an environment can have several projects.
 
 ## Project registration
@@ -22,10 +24,6 @@ A project can be of two types:
 * Database: a database project
 
 A normal project should hold a property, which is its url in production.
-
-## Environment registration
-
-Can be a *computer*, or a node where project data exists. A project can have several environments.
 
 ## Database credentials registration
 

@@ -34,6 +34,21 @@ class EnvironmentControllerTest extends WebTestCase
 
         $environment = $this->getEnvironmentFromDatabase($entityManager);
         
+        $client->request('GET', '/environment/' . $environment->getId() . '/edit');
+
+        $this->assertResponseIsSuccessful();
+    }
+
+    public function testShow(): void
+    {
+        $client = static::createClient();
+        self::bootKernel();
+
+        $entityManager = static::$kernel->getContainer()
+            ->get('doctrine.orm.entity_manager');
+
+        $environment = $this->getEnvironmentFromDatabase($entityManager);
+        
         $client->request('GET', '/environments/' . $environment->getId());
 
         $this->assertResponseIsSuccessful();
