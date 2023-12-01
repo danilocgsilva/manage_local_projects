@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType, ChoiceType
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Environment;
+use App\Entity\Project;
 
 class BindEnvironmentType extends AbstractType
 {
@@ -33,7 +34,7 @@ class BindEnvironmentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Environment::class,
+            'data_class' => Project::class,
             'environments_list' => null,
         ]);
     }

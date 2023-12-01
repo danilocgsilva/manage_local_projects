@@ -327,7 +327,9 @@ class ProjectsController extends AbstractController
 
     #[Route('/project/{project}/environment/bind', name: 'app_project_bind_environment')]
     public function bindEnvironment(
+        Request $request, 
         Project $project,
+        PersistenceManagerRegistry $doctrine,
         EnvironmentRepository $environmentRepository,
     ): Response
     {
@@ -335,6 +337,20 @@ class ProjectsController extends AbstractController
             'environments_list' => $environmentRepository->findBy([], ['name' => 'ASC']),
             'label' => 'Bind a receipt to project ' . $project->getName()
         ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $selectedEnvironment = $form->get('environment')->getData();
+            foreach ($selectedEnvironment as $environment) {
+                $project->addEnvironment($environment);
+            }
+            $manager->persist($project);
+            $manager->flush();
+            $this->addFlash('success', 'Environment binded to project');
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
         
         return $this->render('projects/bindEnvironment.html.twig', [
             'form' => $form,
