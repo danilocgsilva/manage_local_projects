@@ -14,6 +14,7 @@
 {% endif %}
 
 <a class="btn btn-primary btn-width" href="{{ path( 'app_project_add_environment', { 'project': project.id } ) }}">
-	Create an environment to project
-	{{ project.name }}
+	Create an environment to project {{ project.name }}
 </a>
+
+<a class="btn btn-primary" href="{{ path('app_project_bind_environment', {'project': project.id }) }}">Bind an existing environment</a>

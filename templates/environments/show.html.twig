@@ -45,7 +45,7 @@
 	{% if environment.databaseCredentials|length > 0 %}
 		<ul>
 		{% for database_credential in environment.databaseCredentials %}
-			<li><a href="{{path('app_show_database_credentials', {'database_credentials': database_credential.id})}}">{{ database_credential.name }}</a></li>
+			<li><a href="{{path('app_show_database_credentials', {'database_credentials': database_credential.id})}}">{{ database_credential.CredentialsName }}</a></li>
 		{% endfor %}
 		</ul>
 	{% else %}

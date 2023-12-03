@@ -18,6 +18,7 @@ use App\Form\{
     GitAddress\GitAddressType,
     Receipt\ReceiptType,
     Project\ReceiptListType,
+    Project\BindEnvironmentType,
     Environment\EnvironmentType
 };
 use App\Enums\ProjectType as EnumProjectType;
@@ -324,7 +325,7 @@ class ProjectsController extends AbstractController
         ]);
     }
 
-    #[Route('/project/{project}/unbind/environment/{environment}', name: 'app_project_unbind_environment')]
+    #[Route('/project/{project}/environment/unbind/{environment}', name: 'app_project_unbind_environment')]
     public function unbindEnvironment(
         Request $request
     ): Response
@@ -333,6 +334,39 @@ class ProjectsController extends AbstractController
         
         return $this->render('projects/unbind_environment.html.twig', [
             'form' => $form
+        ]);
+    }
+
+    #[Route('/project/{project}/environment/bind', name: 'app_project_bind_environment')]
+    public function bindEnvironment(
+        Request $request, 
+        Project $project,
+        PersistenceManagerRegistry $doctrine,
+        EnvironmentRepository $environmentRepository,
+    ): Response
+    {
+        $form = $this->createForm(BindEnvironmentType::class, null, [
+            'environments_list' => $environmentRepository->findBy([], ['name' => 'ASC']),
+            'label' => 'Bind a receipt to project ' . $project->getName()
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $selectedEnvironment = $form->get('environment')->getData();
+            foreach ($selectedEnvironment as $environment) {
+                $project->addEnvironment($environment);
+            }
+            $manager->persist($project);
+            $manager->flush();
+            $this->addFlash('success', 'Environment binded to project');
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
+        
+        return $this->render('projects/bindEnvironment.html.twig', [
+            'form' => $form,
+            'project' => $project
         ]);
     }
 }

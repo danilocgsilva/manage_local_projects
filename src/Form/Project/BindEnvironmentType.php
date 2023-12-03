@@ -1,27 +1,29 @@
 <?php
 
+
 declare(strict_types=1);
 
-namespace App\Form\Environment;
+namespace App\Form\Project;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\{SubmitType, ChoiceType};
+use Symfony\Component\Form\Extension\Core\Type\{SubmitType, TextType, ChoiceType};
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Entity\Environment;
+use App\Entity\Project;
 
-class BindDatabaseCredentialType extends AbstractType
+class BindEnvironmentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('databaseCredentials', ChoiceType::class, [
-                'choices' => $options['database_credential_list'],
+            ->add('environment', ChoiceType::class, [
+                'choices' => $options['environments_list'],
                 'choice_label' => 'name',
+                'label' => 'Choose environments to bind',
+                'expanded' => true,
+                'multiple' => true,
                 'data' => [],
-                'expanded' => false,
-                'label' => 'Database Credentials',
-                'multiple' => true
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Bind'
@@ -32,8 +34,8 @@ class BindDatabaseCredentialType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Environment::class,
-            'database_credential_list' => null
+            'data_class' => Project::class,
+            'environments_list' => null,
         ]);
     }
 }
