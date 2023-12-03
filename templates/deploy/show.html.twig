@@ -20,7 +20,7 @@
 
     <h2>Receipts:</h2>
 
-    {% if deploy.receipts %}
+    {% if deploy.receipts|length > 0 %}
         <ul>
         {% for receipt in deploy.receipts %}
             <li><a href="{{ path('app_receipt_show', { 'receipt': receipt.id } ) }}">{{ receipt.receipt }}</a></li>
