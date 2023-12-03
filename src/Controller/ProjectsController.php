@@ -323,4 +323,16 @@ class ProjectsController extends AbstractController
             'project' => $project
         ]);
     }
+
+    #[Route('/project/{project}/unbind/environment/{environment}', name: 'app_project_unbind_environment')]
+    public function unbindEnvironment(
+        Request $request
+    ): Response
+    {
+        $form = $this->createForm()
+        
+        return $this->render('projects/unbind_environment.html.twig', [
+            'form' => $form
+        ]);
+    }
 }

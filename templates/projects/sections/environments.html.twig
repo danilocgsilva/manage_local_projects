@@ -5,8 +5,8 @@
 	<ul>
 		{% for environment in project.environment %}
 			<li>
-				<a href="{{ path( 'app_show_environment', { environment: environment.id }) }}">{{ environment.name }}</a>
-			</li>
+				<a href="{{ path( 'app_show_environment', { environment: environment.id }) }}">{{ environment.name }}</a> <a href="#" class="btn btn-warning">Unbind</a>
+			</li> 
 		{% endfor %}
 	</ul>
 {% else %}
