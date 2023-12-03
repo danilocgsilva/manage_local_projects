@@ -299,10 +299,23 @@ class ProjectsController extends AbstractController
         PersistenceManagerRegistry $doctrine,
     ): Response 
     {
+        if (
+            count(
+                ($receiptList = $receiptRepository->findBy([], ['receipt' => 'ASC']))
+            ) === 0
+            ||
+            count(
+                ($environmentList = $environmentRepository->findBy([], ['name' => 'ASC']))
+            ) === 0
+        ) {
+            $this->addFlash('error', 'We need to have at least one environment and at least one receipt registered to allow a deployment creation.');
+            return $this->redirectToRoute('app_projects_show', ['project' => $project->getId()]);
+        }
+        
         $deploy = new Deploy();
         $form = $this->createForm(DeployNewType::class, $deploy, [
-            'receipt_list' => $receiptRepository->findBy([], ['receipt' => 'ASC']),
-            'environment_list' => $environmentRepository->findBy([], ['name' => 'ASC']),
+            'receipt_list' => $receiptList,
+            'environment_list' => $environmentList,
             'default_deploy_name' => $project->getName() . " Deploy"
         ]);
         $form->handleRequest($request);
