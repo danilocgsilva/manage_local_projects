@@ -328,11 +328,22 @@ class ProjectsController extends AbstractController
     public function unbindEnvironment(
         Request $request,
         Environment $environment,
-        Project $project
+        Project $project,
+        PersistenceManagerRegistry $doctrine
     ): Response
     {
         $form = $this->createForm(ConfirmType::class);
-        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $project->removeEnvironment($environment);
+            $manager->persist($project);
+            $manager->flush();
+            $this->addFlash('success', 'Environment unbinded from project');
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
         return $this->render('projects/unbind_environment.html.twig', [
             'form' => $form,
             'environment' => $environment,
