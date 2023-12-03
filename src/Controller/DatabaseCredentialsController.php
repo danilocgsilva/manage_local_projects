@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Entity\DatabaseCredentials;
 use App\Form\DatabaseCredentials\DatabaseCredentialType;
-use App\Form\DeleteType;
+use App\Form\ConfirmType;
 use App\Services\EncryptionService;
 use App\Repository\DatabaseCredentialsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -82,7 +82,7 @@ class DatabaseCredentialsController extends AbstractController
         PersistenceManagerRegistry $doctrine
     ): Response
     {
-        $form = $this->createForm(DeleteType::class, $databaseCredentials);
+        $form = $this->createForm(ConfirmType::class, $databaseCredentials);
 
         $form->handleRequest($request);
 

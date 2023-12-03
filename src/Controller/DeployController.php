@@ -7,7 +7,7 @@ namespace App\Controller;
 use App\Entity\Deploy;
 use App\Repository\{DeployRepository, EnvironmentRepository, ReceiptRepository};
 use App\Form\{
-    DeleteType,
+    ConfirmType,
     Deploy\DeployNewType
 };
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
@@ -71,7 +71,7 @@ class DeployController extends AbstractController
         Request $request
     ): Response
     {
-        $form = $this->createForm(DeleteType::class);
+        $form = $this->createForm(ConfirmType::class);
 
         $form->handleRequest($request);
 

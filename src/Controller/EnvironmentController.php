@@ -12,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\{DeleteType};
+use App\Form\ConfirmType;
 use App\Repository\DatabaseCredentialsRepository;
 
 class EnvironmentController extends AbstractController
@@ -121,7 +121,7 @@ class EnvironmentController extends AbstractController
         Environment $environment
     ): Response
     {
-        $form = $this->createForm(DeleteType::class);
+        $form = $this->createForm(ConfirmType::class);
 
         $form->handleRequest($request);
 

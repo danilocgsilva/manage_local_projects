@@ -8,13 +8,12 @@ use App\Repository\EnvironmentRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
-use App\Entity\Project;
 use App\Form\Project\ProjectType;
 use App\Repository\ProjectRepository;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
-use App\Entity\{GitAddress, Receipt, Environment, Deploy};
+use App\Entity\{GitAddress, Receipt, Environment, Deploy, Project};
 use App\Form\{
-    DeleteType,
+    ConfirmType,
     GitAddress\GitAddressType,
     Receipt\ReceiptType,
     Project\ReceiptListType,
@@ -149,7 +148,7 @@ class ProjectsController extends AbstractController
         PersistenceManagerRegistry $doctrine
     ): Response
     {
-        $form = $this->createForm(DeleteType::class, $project);
+        $form = $this->createForm(ConfirmType::class, $project);
 
         $form->handleRequest($request);
 
@@ -263,7 +262,7 @@ class ProjectsController extends AbstractController
         PersistenceManagerRegistry $doctrine,
     ): Response
     {
-        $form = $this->createForm(DeleteType::class);
+        $form = $this->createForm(ConfirmType::class);
 
         $form->handleRequest($request);
 
@@ -327,13 +326,17 @@ class ProjectsController extends AbstractController
 
     #[Route('/project/{project}/environment/unbind/{environment}', name: 'app_project_unbind_environment')]
     public function unbindEnvironment(
-        Request $request
+        Request $request,
+        Environment $environment,
+        Project $project
     ): Response
     {
-        $form = $this->createForm()
+        $form = $this->createForm(ConfirmType::class);
         
         return $this->render('projects/unbind_environment.html.twig', [
-            'form' => $form
+            'form' => $form,
+            'environment' => $environment,
+            'project' => $project
         ]);
     }
 

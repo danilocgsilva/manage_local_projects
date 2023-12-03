@@ -69,7 +69,7 @@ class ProjectsControllerTest extends WebTestCase
         $projectsCount = count($foundProjects);
 
         $crawler = $this->webClient->request('GET', '/projects/' . $project->getId() . '/delete');
-        $form = $crawler->selectButton('delete_submit')->form();
+        $form = $crawler->selectButton('confirm_submit')->form();
         $this->webClient->submit($form);
         $this->assertTrue($this->webClient->getResponse()->isRedirect());
 
