@@ -10,6 +10,7 @@ use App\Form\{
     ConfirmType,
     Deploy\DeployNewType
 };
+use App\Services\FileSystemAdapterInterface;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -98,11 +99,14 @@ class DeployController extends AbstractController
     #[Route('/deploy/{deploy}/make', name: 'app_make_deploy')]
     public function makeDeploy(
         Request $request,
-        Deploy $deploy
+        Deploy $deploy,
+        FileSystemAdapterInterface $fileSystemAdapter
     ): Response
     {
         try {
-            mkdir($deploy->getFileSystemPath());
+            $receipt = $deploy->getReceipts();
+            foreach ()
+            
             $this->addFlash(
                'success',
                'First trial'
