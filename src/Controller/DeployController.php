@@ -11,6 +11,7 @@ use App\Form\{
     Deploy\DeployNewType
 };
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
@@ -94,8 +95,30 @@ class DeployController extends AbstractController
         ]);
     }
 
-    #[Route('/deplou/make', name: 'app_make_deploy')]
-    public function makeDeploy(Request $request): Response
+    #[Route('/deploy/{deploy}/make', name: 'app_make_deploy')]
+    public function makeDeploy(
+        Request $request,
+        Deploy $deploy
+    ): Response
     {
+        try {
+            mkdir($deploy->getFileSystemPath());
+            $this->addFlash(
+               'success',
+               'First trial'
+            );
+            return $this->redirectToRoute('app_show_deploy', [
+                'deploy' => $deploy->getId()
+            ]);
+        } catch (Exception $e) {
+            $this->addFlash(
+                'error',
+                'Something goes wrong'
+            );
+
+            return $this->redirectToRoute('app_show_deploy', [
+                'deploy' => $deploy->getId()
+            ]);
+        }
     }
 }
