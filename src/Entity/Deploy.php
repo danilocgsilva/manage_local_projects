@@ -27,6 +27,9 @@ class Deploy
     #[ORM\ManyToOne(inversedBy: 'deployments')]
     private ?Project $project = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fileSystemPath = null;
+
     public function __construct()
     {
         $this->environments = new ArrayCollection();
@@ -106,6 +109,18 @@ class Deploy
     public function setProject(?Project $project): static
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    public function getFileSystemPath(): ?string
+    {
+        return $this->fileSystemPath;
+    }
+
+    public function setFileSystemPath(?string $fileSystemPath): static
+    {
+        $this->fileSystemPath = $fileSystemPath;
 
         return $this;
     }

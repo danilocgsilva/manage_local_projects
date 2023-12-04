@@ -65,10 +65,8 @@ class EnvironmentControllerTest extends WebTestCase
         $environment = new Environment();
         $environment->setName($generator->name());
 
-        $manager = $entityManager->getManager();
-        
-        $manager->persist($environment);
-        $manager->flush();
+        $entityManager->persist($environment);
+        $entityManager->flush();
 
         return $environment;
     }
