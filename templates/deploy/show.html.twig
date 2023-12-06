@@ -42,7 +42,8 @@
     <p>{{ deploy.fileSystemPath }}</p>
 
     <a href="#" class="btn btn-primary">Deploy</a>
-    <a href="{{path('app_deploy_edit', {'deploy': deploy.id})}}" class="btn btn-primary">Edit</a>
+    <a href="{{ path('app_deploy_edit', {'deploy': deploy.id} )}}" class="btn btn-primary">Edit</a>
+    <a href="{{ path('app_make_deploy', {'deploy': deploy.id} )}}" class="btn btn-primary">Deploy</a>
     <hr />
 	<p class="danger">Danger zone!</p>
     <a href="{{ path('app_deploy_delete', { 'deploy': deploy.id })}}" class="btn btn-danger">Delete deployment</a>

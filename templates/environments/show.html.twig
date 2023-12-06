@@ -56,8 +56,26 @@
 
 
 	{% if currentSystem() != environment.unameNFingerprint %}
+	
 	<hr/>
+
+	<h2>Fingerprint</h2>
+	
 	<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
+	{% endif %}
+
+	<hr />
+
+	<h2>Deployments</h2>
+
+	{% if environment.deploys|length > 0 %}
+		<ul>
+		{% for deploy in environment.deploys %}
+			<li><a href="{{ path('app_show_deploy', {'deploy': deploy.id }) }}">{{deploy.name}}</a></li>
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>Still the current environment does not belongs to any deployment</p>
 	{% endif %}
 
 	<hr />
