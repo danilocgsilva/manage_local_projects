@@ -8,7 +8,8 @@ use App\Entity\Deploy;
 use App\Repository\{DeployRepository, EnvironmentRepository, ReceiptRepository};
 use App\Form\{
     ConfirmType,
-    Deploy\DeployNewType
+    Deploy\DeployNewType,
+    Deploy\DeployEditType
 };
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -91,6 +92,33 @@ class DeployController extends AbstractController
 
         return $this->render('deploy/delete.html.twig', [
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/deploy/{deploy}/edit', name: 'app_deploy_edit')]
+    public function edit(
+        Request $request,
+        Deploy $deploy,
+        PersistenceManagerRegistry $doctrine
+    ): Response
+    {
+        $form = $this->createForm(DeployEditType::class, $deploy, [
+            'currentFileSystemPathValue' => $deploy->getFileSystemPath()
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $manager->flush();
+            $this->addFlash(
+               'success',
+               'File System Path changed.'
+            );
+            return $this->redirectToRoute('app_show_deploy', [
+                'deploy' => $deploy->getId(),
+            ]);
+        }
+        return $this->render('/deploy/edit.html.twig', [
+            'form' => $form
         ]);
     }
 

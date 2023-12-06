@@ -34,7 +34,7 @@
     {% if deploy.project %}
         <p><a href="{{ path('app_projects_show', { 'project': deploy.project.id } ) }}">{{ deploy.project.name }}</a></p>
     {% else %}
-        <p>No ptoject associated to this deployment.</p>
+        <p>No project associated to this deployment.</p>
     {% endif %}
 
 
@@ -42,6 +42,7 @@
     <p>{{ deploy.fileSystemPath }}</p>
 
     <a href="#" class="btn btn-primary">Deploy</a>
+    <a href="{{path('app_deploy_edit', {'deploy': deploy.id})}}" class="btn btn-primary">Edit</a>
     <hr />
 	<p class="danger">Danger zone!</p>
     <a href="{{ path('app_deploy_delete', { 'deploy': deploy.id })}}" class="btn btn-danger">Delete deployment</a>
