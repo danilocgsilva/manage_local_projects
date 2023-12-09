@@ -6,9 +6,14 @@
 parameters:
 
 services:
+    file_system_service:
+        class: App\Service\FileSystemService
+
+    write_receipt_service:
+        class: App\Service\WriteReceiptService
+
     encryption_service:
         class: App\Service\EncryptionService
-
 
     environment:
         class: App\Services\Environment

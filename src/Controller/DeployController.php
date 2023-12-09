@@ -11,12 +11,14 @@ use App\Form\{
     Deploy\DeployNewType,
     Deploy\DeployEditType
 };
-use App\Services\FileSystemAdapterInterface;
+use App\Services\FileSystemService;
 use Doctrine\Persistence\ManagerRegistry as PersistenceManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
+use Psr\Log\LoggerInterface;
+use App\Services\WriteReceiptService;
 
 class DeployController extends AbstractController
 {
@@ -128,16 +130,34 @@ class DeployController extends AbstractController
     public function makeDeploy(
         Request $request,
         Deploy $deploy,
-        FileSystemAdapterInterface $fileSystemAdapter
+        FileSystemService $fileSystemService,
+        WriteReceiptService $writeReceiptService,
+        LoggerInterface $logger
     ): Response
     {
         try {
-            $receipt = $deploy->getReceipts();
             
-            $this->addFlash(
-               'success',
-               'First trial'
-            );
+            if ($fileSystemService->createFolder(
+                ($fileSystemToWrite = $deploy->getFileSystemPath()),
+                $logger
+            )) {
+                $writeReceiptService->writeReceipt(
+                    $fileSystemService,
+                    $deploy->getReceipts()->first(),
+                    $fileSystemToWrite
+                );
+
+                $this->addFlash(
+                    'success',
+                    'First trial'
+                 );
+            } else {
+                $this->addFlash(
+                   'warning',
+                   'Folder already exists. Nothing done.'
+                );
+            }
+            
             return $this->redirectToRoute('app_show_deploy', [
                 'deploy' => $deploy->getId()
             ]);
@@ -152,4 +172,5 @@ class DeployController extends AbstractController
             ]);
         }
     }
+
 }
