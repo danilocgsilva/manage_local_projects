@@ -107,7 +107,7 @@ class DeployController extends AbstractController
     ): Response
     {
         $form = $this->createForm(DeployEditType::class, $deploy, [
-            'currentFileSystemPathValue' => $deploy->getFileSystemPath()
+            'currentFileSystemPathValue' => $deploy->getFileSystemProjectPath()
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,9 +136,8 @@ class DeployController extends AbstractController
     ): Response
     {
         try {
-            
             if ($fileSystemService->createFolder(
-                ($fileSystemToWrite = $deploy->getFileSystemPath()),
+                ($fileSystemToWrite = $deploy->getFileSystemProjectPath()),
                 $logger
             )) {
                 $writeReceiptService->writeReceipt(

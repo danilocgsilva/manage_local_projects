@@ -14,7 +14,10 @@ class DeployEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('fileSystemPath', TextType::class)
+            ->add('fileSystemProjectPath', TextType::class)
+            ->add('dockerVolumeMountPath', TextType::class, [
+                'required' => false
+            ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Atualizar'
             ])

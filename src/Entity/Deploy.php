@@ -27,8 +27,11 @@ class Deploy
     #[ORM\ManyToOne(inversedBy: 'deployments')]
     private ?Project $project = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $fileSystemProjectPath = null;
+
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $fileSystemPath = null;
+    private ?string $dockerVolumeMountPath = null;
 
     public function __construct()
     {
@@ -113,14 +116,26 @@ class Deploy
         return $this;
     }
 
-    public function getFileSystemPath(): ?string
+    public function getFileSystemProjectPath(): ?string
     {
-        return $this->fileSystemPath;
+        return $this->fileSystemProjectPath;
     }
 
-    public function setFileSystemPath(?string $fileSystemPath): static
+    public function setFileSystemProjectPath(string $fileSystemProjectPath): static
     {
-        $this->fileSystemPath = $fileSystemPath;
+        $this->fileSystemProjectPath = $fileSystemProjectPath;
+
+        return $this;
+    }
+
+    public function getDockerVolumeMountPath(): ?string
+    {
+        return $this->dockerVolumeMountPath;
+    }
+
+    public function setDockerVolumeMountPath(?string $dockerVolumeMountPath): static
+    {
+        $this->dockerVolumeMountPath = $dockerVolumeMountPath;
 
         return $this;
     }

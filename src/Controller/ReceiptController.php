@@ -210,6 +210,14 @@ class ReceiptController extends AbstractController
                 );
             }
 
+            if (is_dir($filePath)) {
+                return $returnInError(
+                    $receipt,
+                    $form,
+                    'You provided a directory path instead of a file. Must be a file path.'
+                );
+            }
+
             if (!($fileResource = fopen($filePath, "r"))) {
                 return $returnInError(
                     $receipt, 
@@ -222,11 +230,9 @@ class ReceiptController extends AbstractController
             fclose($fileResource);
 
             $receiptFile = (new ReceiptFile())
-                ->setPath(
-                    $filePath
-                )->setContent(
-                    $fileContent
-                );
+                ->setPath($filePath)
+                ->setContent($fileContent)
+            ;
 
             $manager = $doctrine->getManager();
 
