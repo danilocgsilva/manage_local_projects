@@ -51,7 +51,9 @@ class ProjectsController extends AbstractController
 
             $this->addFlash('success', sprintf('The project %s has been successfully registered!', $project->getName()));
 
-            return $this->redirectToRoute('app_projects');
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
         }
         
         return $this->render('projects/new.html.twig', [

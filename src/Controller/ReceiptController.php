@@ -185,10 +185,14 @@ class ReceiptController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $filePath = $form->getData()['file_path'];
 
-            $returnInError = function($receipt, $form) {
+            $returnInError = function($receipt, $form, string $errorMessage) {
+                $this->addFlash(
+                    'error', 
+                    $errorMessage
+                );
+                
                 return $this->redirectToRoute(
                     'app_receipt_capture_file', 
                     [
@@ -198,23 +202,20 @@ class ReceiptController extends AbstractController
                 );
             };
 
-            if (!file_exists($filePath)) {
-
-                $this->addFlash(
-                    'error', 
+            if (!file_exists($filePath)) {               
+                return $returnInError(
+                    $receipt, 
+                    $form,
                     'The provided path does not exists or ths system does not have permission to reach it!'
                 );
-                
-                return $returnInError($receipt, $form);
             }
 
             if (!($fileResource = fopen($filePath, "r"))) {
-                $this->addFlash(
-                    'error', 
+                return $returnInError(
+                    $receipt, 
+                    $form,
                     'The file exists, but is not readable.'
                 );
-
-                return $returnInError($receipt, $form);
             }
             
             $fileContent = fread($fileResource, filesize($filePath));

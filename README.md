@@ -32,3 +32,7 @@ Users, password and anything else required to access an environment or system. T
 ## Deploys
 
 A deloy is a sum of some receipts and the environment. Basically, is the two parts required to have a running application. Sometimes, a deploy may need several receipt, for example, some for backend and antoher for frontend building, so a deploy may depends upon several receipts at the same time. A deploymant also may require several environments to work. For example, a server for database and another for the application. So a single deploy may require several environments as well. And finally, a deploy must belongs to a project. A same project may have several deployments (as an example, one for local development, another for QA and the production environment), but a deploy may belongs to just one Project.
+
+## Receipt
+
+Is what prepares then environment to run the project. A receipt is made of several files. Those files can be, for example, the a whole docker-compose bundle files to make an environment run locally or in a server.

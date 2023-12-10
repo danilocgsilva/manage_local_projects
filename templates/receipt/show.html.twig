@@ -28,10 +28,32 @@
 <p>No receipt file added to the receipt</p>
 {% endif %}
 
-<a href="{{ path('app_receipt_file_new', { receipt: receipt.id }) }}" class="btn btn-primary">Add a receipt file</a>
-<a href="{{ path('app_receipt_capture_file', {'receipt': receipt.id })}}" class="btn btn-primary">Capture File</a>
-<a href="{{ path('app_receipt_edit', { receipt: receipt.id }) }}" class="btn btn-primary">Edit</a>
-<a href="{{ path('app_receipt_download', { receipt: receipt.id } ) }}" class="btn btn-primary">Download</a>
+<a
+    href="{{ path('app_receipt_file_new', { receipt: receipt.id }) }}"
+    class="btn btn-primary"
+    data-toggle="tooltip"
+    title="Add a receipt file informing the file name and its content."
+>Add a receipt file</a>
+
+<a 
+    href="{{ path('app_receipt_capture_file', {'receipt': receipt.id })}}" 
+    class="btn btn-primary" 
+    data-toggle="tooltip" 
+    title="Inform a file path, so we know that this files makes part of the receipt. The file title and content will be automatically fetched and stored."
+>Capture File</a>
+
+<a
+    href="{{ path('app_receipt_edit', { receipt: receipt.id }) }}"
+    class="btn btn-primary"
+    data-toggle="tooltip"
+    title="Change the receipt, name and/or description"
+>Edit</a>
+<a
+    href="{{ path('app_receipt_download', { receipt: receipt.id } ) }}"
+    class="btn btn-primary"
+    data-toggle="tooltip"
+    title="Download the whole receipt as a zip file."
+>Download</a>
 <hr />
 <p class="danger">Danger zone!</p>
 
