@@ -10,15 +10,23 @@ class WriteReceiptService
     public function writeReceipt(
         FileSystemService $fileSystemService,
         Receipt $receipt,
-        string $fileSystemToWrite,
+        string $fileSystemPathBase,
+        ?string $dockerVolumePath,
+        ?string $gitHubPath
     ): void
     {
         foreach ($receipt->getReceiptFiles() as $receiptFile) {
             $fileSystemService->write(
                 $receiptFile->getContent(),
                 $receiptFile->getPath(),
-                $fileSystemToWrite
+                $fileSystemPathBase
             );
+        }
+        if ($dockerVolumePath && $gitHubPath) {
+            $pathToClone = $fileSystemPathBase . DIRECTORY_SEPARATOR . $dockerVolumePath;
+            $shellCommand = 'git clone ' . $gitHubPath . ' ' . $pathToClone;
+            // $results = shell_exec($shellCommand);
+            $results = exec($shellCommand);
         }
     }
 }

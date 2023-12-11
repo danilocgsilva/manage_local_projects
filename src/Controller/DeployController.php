@@ -115,7 +115,7 @@ class DeployController extends AbstractController
             $manager->flush();
             $this->addFlash(
                'success',
-               'File System Path changed.'
+               'Deploy data changed'
             );
             return $this->redirectToRoute('app_show_deploy', [
                 'deploy' => $deploy->getId(),
@@ -143,7 +143,9 @@ class DeployController extends AbstractController
                 $writeReceiptService->writeReceipt(
                     $fileSystemService,
                     $deploy->getReceipts()->first(),
-                    $fileSystemToWrite
+                    $fileSystemToWrite,
+                    $deploy->getDockerVolumeMountPath(),
+                    $deploy->getProject()->getGitAddress()->getAddress()
                 );
 
                 $this->addFlash(
