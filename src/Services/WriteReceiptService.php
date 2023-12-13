@@ -24,7 +24,7 @@ class WriteReceiptService
         }
         if ($dockerVolumePath && $gitHubPath) {
             $pathToClone = $fileSystemPathBase . DIRECTORY_SEPARATOR . $dockerVolumePath;
-            $shellCommand = 'git clone ' . $gitHubPath . ' ' . $pathToClone;
+            $shellCommand = "git clone " . $gitHubPath . " " . $pathToClone . " 2>&1 ";
             // $results = shell_exec($shellCommand);
             $results = exec($shellCommand);
         }

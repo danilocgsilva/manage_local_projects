@@ -113,6 +113,28 @@ class ProjectsController extends AbstractController
         ]);
     }
 
+    #[Route('/projects/{project}/gitaddress/remove', name: 'app_project_remove_gitaddress')]
+    public function removeGitRemoteAddress(
+        Project $project,
+        PersistenceManagerRegistry $doctrine,
+        Request $request
+    ): Response
+    {
+        $manager = $doctrine->getManager();
+
+        return $this->redirectToRoute('app_projects_show', [
+            'project' => $project->getId()
+        ]);
+    }
+
+    /*
+    public function removeEnvironment(Environment $environment): static
+    {
+        $this->environment->removeElement($environment);
+
+        return $this;
+    }*/
+
     #[Route('/projects/{project}/environment/new', name: 'app_project_add_environment')]
     public function newEnvironment(
         Project $project, 
