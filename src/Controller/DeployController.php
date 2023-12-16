@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\{Response, Request};
 use Symfony\Component\Routing\Annotation\Route;
 use Psr\Log\LoggerInterface;
 use App\Services\WriteReceiptService;
+use App\Exceptions\FileSystemException;
 
 class DeployController extends AbstractController
 {
@@ -136,8 +137,12 @@ class DeployController extends AbstractController
     ): Response
     {
         try {
+            $fileSystemToWrite = $deploy->getFileSystemProjectPath();
+            if ($fileSystemToWrite === "") {
+                throw new FileSystemException();
+            }
             if ($fileSystemService->createFolder(
-                ($fileSystemToWrite = $deploy->getFileSystemProjectPath()),
+                $fileSystemToWrite,
                 $logger
             )) {
                 $writeReceiptService->writeReceipt(
@@ -145,7 +150,7 @@ class DeployController extends AbstractController
                     $deploy->getReceipts()->first(),
                     $fileSystemToWrite,
                     $deploy->getDockerVolumeMountPath(),
-                    $deploy->getProject()->getGitAddress()->getAddress()
+                    $deploy->getProject()->getGitAddresses()->first()->getAddress()
                 );
 
                 $this->addFlash(
@@ -159,6 +164,14 @@ class DeployController extends AbstractController
                 );
             }
             
+            return $this->redirectToRoute('app_show_deploy', [
+                'deploy' => $deploy->getId()
+            ]);
+        } catch (FileSystemException $e) {
+            $this->addFlash(
+                'warning',
+                'Deploy does not have a Docker directory.'
+            );
             return $this->redirectToRoute('app_show_deploy', [
                 'deploy' => $deploy->getId()
             ]);

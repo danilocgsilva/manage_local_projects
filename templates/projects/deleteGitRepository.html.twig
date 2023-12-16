@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Remove git address from project{% endblock %}
+
+{% block h1 %}Remove git address from project{% endblock %}
+
+{% block body %}
+
+<p>Are you sure that you want to remove the git repository {{ git_remote_address }} from project {{ project_name }}?</p>
+
+{{ form(form) }}
+
+{% endblock %}

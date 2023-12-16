@@ -1,7 +1,7 @@
 <h2>Git remote address</h2>
 {% if project.gitAddresses|length > 0 %}
 	{% for gitAddress in project.gitAddresses %}
-		<p>{{ gitAddress.address }}</p>
+		<p>{{ gitAddress.address }} <a href="{{ path('app_project_remove_gitaddress', {'project': project.id, 'gitAddress': gitAddress.id }) }}" class="btn btn-warning">Remove</a></p>
 	{% endfor %}
 {% else %}
 	<p>No git remote address registered to this project.</p>
@@ -10,5 +10,3 @@
 	Register a repository remote address to
 	{{ project.name }}
 </a><br /><br />
-
-<a href="#" class="btn btn-primary btn-width">Remove git remote addres</a>

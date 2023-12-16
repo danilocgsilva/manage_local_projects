@@ -89,12 +89,12 @@ class ProjectsController extends AbstractController
         Request $request
     ): Response
     {
-        $gitaddress = new GitAddress();
-        $gitaddress->setProject($project);
-
-        $form = $this->createForm(GitAddressType::class, $gitaddress, [
-            'project_name' => $project->getName()
-        ]);
+        $form = $this->createForm(
+            GitAddressType::class, 
+            ($gitaddress = (new GitAddress())->setProject($project)), [
+                'project_name' => $project->getName()
+            ]
+        );
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -113,27 +113,39 @@ class ProjectsController extends AbstractController
         ]);
     }
 
-    #[Route('/projects/{project}/gitaddress/remove', name: 'app_project_remove_gitaddress')]
+    #[Route('/projects/{project}/gitaddress/{gitAddress}/remove', name: 'app_project_remove_gitaddress')]
     public function removeGitRemoteAddress(
         Project $project,
         PersistenceManagerRegistry $doctrine,
-        Request $request
+        Request $request,
+        GitAddress $gitAddress
     ): Response
     {
-        $manager = $doctrine->getManager();
+        $form = $this->createForm(ConfirmType::class, $project);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $doctrine->getManager();
+            $project->removeGitAddress($gitAddress);
+            $manager->persist($project);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                sprintf(
+                    'The github address %s has been removed from project.',
+                    $gitAddress->getAddress()
+                )
+            );
+            return $this->redirectToRoute('app_projects_show', [
+                'project' => $project->getId()
+            ]);
+        }
 
-        return $this->redirectToRoute('app_projects_show', [
-            'project' => $project->getId()
+        return $this->render('projects/deleteGitRepository.html.twig', [
+            'form' => $form,
+            'git_remote_address' => $gitAddress->getAddress(),
+            'project_name' => $project->getName()
         ]);
     }
-
-    /*
-    public function removeEnvironment(Environment $environment): static
-    {
-        $this->environment->removeElement($environment);
-
-        return $this;
-    }*/
 
     #[Route('/projects/{project}/environment/new', name: 'app_project_add_environment')]
     public function newEnvironment(

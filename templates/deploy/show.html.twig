@@ -41,9 +41,11 @@
     <h2>Filesystem path to deploy</h2>
     <p>{{ deploy.fileSystemProjectPath }}</p>
 
+    <h2>Docker volume mount path</h2>
     {% if deploy.dockerVolumeMountPath %}
-        <h2>Docker volume mount path</h2>
         <p>{{ deploy.dockerVolumeMountPath }}</p>
+    {% else %}
+        <p>&lt;No docker volume mount path setted to the project.&gt;</p>
     {% endif %}
 
     <a href="{{ path('app_deploy_edit', {'deploy': deploy.id} )}}" class="btn btn-primary">Edit</a>
