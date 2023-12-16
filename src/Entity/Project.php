@@ -38,8 +38,6 @@ class Project
     )]
     private string $type;
 
-    #[ORM\OneToOne(mappedBy: 'project', cascade: ['persist', 'remove'])]
-    private ?GitAddress $gitAddress = null;
 
     #[ORM\ManyToMany(targetEntity: Environment::class, inversedBy: 'projects')]
     private Collection $environment;
@@ -50,11 +48,15 @@ class Project
     #[ORM\OneToMany(mappedBy: 'project', targetEntity: Deploy::class)]
     private Collection $deployments;
 
+    #[ORM\OneToMany(mappedBy: 'project', targetEntity: GitAddress::class)]
+    private Collection $gitAddresses;
+
     public function __construct()
     {
         $this->environment = new ArrayCollection();
         $this->receipts = new ArrayCollection();
         $this->deployments = new ArrayCollection();
+        $this->gitAddresses = new ArrayCollection();
     }
 
 
@@ -91,27 +93,6 @@ class Project
         
         $this->type = $type;
     
-        return $this;
-    }
-    public function getGitAddress(): ?GitAddress
-    {
-        return $this->gitAddress;
-    }
-
-    public function setGitAddress(?GitAddress $gitAddress): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($gitAddress === null && $this->gitAddress !== null) {
-            $this->gitAddress->setProject(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($gitAddress !== null && $gitAddress->getProject() !== $this) {
-            $gitAddress->setProject($this);
-        }
-
-        $this->gitAddress = $gitAddress;
-
         return $this;
     }
 
@@ -190,6 +171,36 @@ class Project
             // set the owning side to null (unless already changed)
             if ($deployment->getProject() === $this) {
                 $deployment->setProject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GitAddress>
+     */
+    public function getGitAddresses(): Collection
+    {
+        return $this->gitAddresses;
+    }
+
+    public function addGitAddress(GitAddress $gitAddress): static
+    {
+        if (!$this->gitAddresses->contains($gitAddress)) {
+            $this->gitAddresses->add($gitAddress);
+            $gitAddress->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGitAddress(GitAddress $gitAddress): static
+    {
+        if ($this->gitAddresses->removeElement($gitAddress)) {
+            // set the owning side to null (unless already changed)
+            if ($gitAddress->getProject() === $this) {
+                $gitAddress->setProject(null);
             }
         }
 

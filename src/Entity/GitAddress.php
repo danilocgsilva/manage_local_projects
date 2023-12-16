@@ -13,27 +13,15 @@ class GitAddress
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(inversedBy: 'gitAddress', cascade: ['persist', 'remove'])]
-    private ?Project $project = null;
-
     #[ORM\Column(length: 255)]
     private ?string $address = null;
+
+    #[ORM\ManyToOne(inversedBy: 'gitAddresses')]
+    private ?Project $project = null;
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): static
-    {
-        $this->project = $project;
-
-        return $this;
     }
 
     public function getAddress(): ?string
@@ -44,6 +32,18 @@ class GitAddress
     public function setAddress(string $address): static
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    public function getProject(): ?Project
+    {
+        return $this->project;
+    }
+
+    public function setProject(?Project $project): static
+    {
+        $this->project = $project;
 
         return $this;
     }

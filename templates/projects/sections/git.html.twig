@@ -1,6 +1,8 @@
 <h2>Git remote address</h2>
-{% if project.gitAddress %}
-	<p>{{ project.gitAddress.address }}</p>
+{% if project.gitAddresses|length > 0 %}
+	{% for gitAddress in project.gitAddresses %}
+		<p>{{ gitAddress.address }}</p>
+	{% endfor %}
 {% else %}
 	<p>No git remote address registered to this project.</p>
 {% endif %}
