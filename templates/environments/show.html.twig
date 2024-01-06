@@ -54,7 +54,6 @@
 
 	<a href="{{ path('app_environment_bind_database_credential', { 'environment': environment.id } )}}" class="btn btn-primary">Bind a database credential</a>
 
-
 	{% if currentSystem() != environment.unameNFingerprint %}
 	
 	<hr/>
@@ -63,6 +62,12 @@
 	
 	<a href="{{ path("app_environment_fingerprint", { environment: environment.id }) }}" class="btn btn-primary">Fingerprint this!</a>
 	{% endif %}
+
+	<hr />
+
+	<h2>Manage</h2>
+
+	<a href="{{ path('app_environment_disable_x_debug', { environment: environment.id }) }}" class="btn btn-primary">Disable xdebug</a>
 
 	<hr />
 

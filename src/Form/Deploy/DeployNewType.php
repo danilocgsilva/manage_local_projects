@@ -37,7 +37,7 @@ class DeployNewType extends AbstractType
                 'multiple' => true,
                 'data' => [],
             ])
-            ->add('fileSystemPath', TextType::class)
+            // ->add('fileSystemPath', TextType::class)
             ->add('submit', SubmitType::class, [
                 'label' => 'Save'
             ])

@@ -177,4 +177,14 @@ class EnvironmentController extends AbstractController
             'form' => $form
         ]);
     }
+
+    /**
+     * @Route("/environments/{environment}/disableXDebug", name="app_environment_disable_x_debug")
+     */
+    public function disableXDebug(Environment $environment): Response
+    {
+        return $this->redirectToRoute('app_show_environment', [
+            'environment' => $environment->getId()
+        ]);
+    }
 }
